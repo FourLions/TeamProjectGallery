@@ -62,4 +62,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
 }
