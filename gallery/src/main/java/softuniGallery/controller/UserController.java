@@ -27,6 +27,12 @@ public class UserController {
         return "base-layout";
     }
 
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("view", "user/login");
+        return "base-layout";
+    }
+
     @PostMapping("/register")
     public String registerProcess(UserBindingModel userBindingModel){
         if(!userBindingModel.getPassword().equals(userBindingModel.getConfirmPassword())){
