@@ -9,11 +9,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.ArticleBindingModel;
 import softuniGallery.entity.Article;
 import softuniGallery.entity.User;
 import softuniGallery.repository.ArticleRepository;
 import softuniGallery.repository.UserRepository;
+
+import java.io.File;
+import java.io.IOException;
 
 @Controller
 public class ArticleController {
@@ -46,6 +50,30 @@ public class ArticleController {
         );
 
         this.articleRepository.saveAndFlush(articleEntity);
+
+        // here is the code for uploading files in Controller, to work at your computer change the path.
+        // You can write the path in application.properties to be not so ugly.
+        // I leaved it like that to be more understandable, how it works.
+        //I did some changes in create.html, ArticleBindingModel, Article.
+
+        //Some tips, What i found:
+        //To display a picture You have to save the path to picture in MySQL article column
+        // and after that to show the path in <img> tag
+        // img tag should looks like: <img th:src="article.imagePath">
+        // the thymeleaf take the information from DateBase with tag "th"
+        // Good Luck :)
+
+        MultipartFile file = articleBindingModel.getPicture();
+        if (file != null) {
+            String originalName = file.getOriginalFilename();
+            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\images", originalName);
+            try {
+                file.transferTo(imageFile);
+                articleEntity.setImagePath(imageFile.getPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         return "redirect:/";
     }

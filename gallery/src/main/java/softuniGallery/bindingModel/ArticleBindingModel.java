@@ -1,9 +1,14 @@
 package softuniGallery.bindingModel;
 
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.NotNull;
 
 public class ArticleBindingModel {
+
+    //new field to upload file
+    private MultipartFile picture;
 
     @NotNull
     private String title;
@@ -25,5 +30,14 @@ public class ArticleBindingModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    // getter and setters for the file
+    public MultipartFile getPicture() {
+        return picture;
+    }
+
+    public void setPicture(MultipartFile picture) {
+        this.picture = picture;
     }
 }

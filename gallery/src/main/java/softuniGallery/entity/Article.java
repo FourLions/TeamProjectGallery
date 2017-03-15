@@ -10,6 +10,8 @@ public class Article {
     private String title;
     private String content;
     private User author;
+    // new field for imagePath
+    private String imagePath;
 
     public Article(String title, String content, User author) {
         this.title = title;
@@ -56,6 +58,17 @@ public class Article {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    // getter here i try to crete Column in Date Base but it doesn't works :)
+    @Column(columnDefinition = "text", nullable = false)
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    // here is the setter
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Transient
