@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 public class ArticleBindingModel {
 
-    //new field to upload file
     private MultipartFile picture;
 
     @NotNull
@@ -32,7 +31,6 @@ public class ArticleBindingModel {
         this.content = content;
     }
 
-    // getter and setters for the file
     public MultipartFile getPicture() {
         return picture;
     }
