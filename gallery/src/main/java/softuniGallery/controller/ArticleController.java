@@ -16,6 +16,7 @@ import softuniGallery.entity.User;
 import softuniGallery.repository.ArticleRepository;
 import softuniGallery.repository.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 
@@ -37,7 +38,7 @@ public class ArticleController {
 
     @PostMapping("/article/create")
     @PreAuthorize("isAuthenticated()")
-    public String createProcess(ArticleBindingModel articleBindingModel) {
+    public String createProcess(ArticleBindingModel articleBindingModel, HttpServletRequest servletRequest) {
         UserDetails user = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
 
@@ -56,7 +57,7 @@ public class ArticleController {
             File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
             try {
                 file.transferTo(imageFile);
-                articleEntity.setImagePath(imageFile.getPath());
+                articleEntity.setImagePath("/images/" + originalName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
