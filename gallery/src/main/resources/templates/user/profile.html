@@ -3,11 +3,22 @@
         <div class="row">
             <div id="main" class="col-sm-9">
                 <div>
+                    <div>Email:</div>
                     <span th:text="${user.email}"></span>
                     <br/>
+                    <div>Username:</div>
                     <span th:text="${user.fullName}"></span>
+
                 </div>
+
             </div>
+
         </div>
+        <footer>
+            <div class="pull-right">
+                <a class="btn btn-default btn-xs"
+                   th:href="@{/profile/createAlbum}">Create Album</a>
+            </div>
+        </footer>
     </div>
 </main>
