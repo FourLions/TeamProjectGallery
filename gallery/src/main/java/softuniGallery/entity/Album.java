@@ -13,7 +13,7 @@ public class Album {
 
     private Integer id;
     private String name;
-    // private User author;
+    private User author;
     // private List<Article> albumArticlesContainerList;
 
     @Id
@@ -30,10 +30,15 @@ public class Album {
 
     }
 
-    public Album(String albumNameConstr/*, User author*/) {
-        this.name = albumNameConstr;
-        // this.author = author;
+    public Album(User author) {
+        //this.name = albumNameConstr;
+        this.author = author;
     }
+
+    /*public Album(String albumNameConstr, User author) {
+        this.name = albumNameConstr;
+        this.author = author;
+    }*/
 
     @Column(nullable = false)
     public String getName() {
@@ -44,23 +49,21 @@ public class Album {
         this.name = albumNameConstr;
     }
 
-    /*@ManyToOne()
+    @ManyToOne()
     @JoinColumn(nullable = false, name = "authorId")
     public User getAuthor() {
         return author;
-    }*/
-
-    /*public void setAuthor(User author) {
-        this.author = author;
-    }*/
-
-
-
-
-  /*  public List<Article> getAlbumArticlesContainerList() {
-        return albumArticlesContainerList;
     }
 
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+
+
+  /*public List<Article> getAlbumArticlesContainerList() {
+        return albumArticlesContainerList;
+    }
     public void setAlbumArticlesContainerList(List<Article> albumArticlesContainerList) {
         this.albumArticlesContainerList = albumArticlesContainerList;
     }*/
