@@ -14,17 +14,28 @@ public class User {
     private String password;
     private Set<Role> roles;
     private Set<Article> articles;
+    private Set<Album> albums;
 
     public User(String email, String fullName, String password) {
         this.email = email;
         this.password = password;
         this.fullName = fullName;
-        this. roles = new HashSet<>();
+        this.roles = new HashSet<>();
         this.articles = new HashSet<>();
+        this.albums = new HashSet<>();
     }
 
     public User() {
 
+    }
+
+    @OneToMany(mappedBy = "author")
+    public Set<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
     }
 
     @OneToMany(mappedBy = "author")

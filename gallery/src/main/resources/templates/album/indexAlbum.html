@@ -1,0 +1,29 @@
+<main xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:c="http://java.sun.com/xml/ns/javaee">
+    <div class="container body-content">
+        <div class="row">
+            <th:block th:each="album : ${albums}">
+                <div class="col-md-6">
+                    <article>
+                        <header>
+                            <h2 th:text="${album.name}"></h2>
+                        </header>
+                        <th:block th:each="image : ${album.imagePathList}">
+                        <img th:src="${image}" width="400" height="300"/> <!-- не знам :) дали е  da ne e taka ?... tazi cqlata promenliwa ne q prashtash na view-to? -->
+                        </th:block>
+                        <!-- towa dori i da sraboti shte ti trqbwa for each za wsqka img :) taka shte wzemem samo 1wata да знам view to ne mi e gotovo 6to ne znaeh dali tam ne e problema
+                         onzi not found inache go oprawihme
+                         -->
+                        <small class="author" th:text="${album.author.fullName}"></small>
+
+                        <footer>
+                            <div class="pull-right">
+                                <a class="btn btn-default btn-xs"
+                                   th:href="@{/album/{id}(id=${album.id})}">See more &raquo;</a>
+                            </div>
+                        </footer>
+                    </article>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</main>

@@ -2,9 +2,6 @@ package softuniGallery.bindingModel;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by George-Lenovo on 3/14/2017.
- */
 public class UserBindingModel {
     @NotNull
     private String email;

@@ -1,11 +1,13 @@
 package softuniGallery.bindingModel;
 
-import javax.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Created by George-Lenovo on 3/22/2017.
- */
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
 public class AlbumBindingModel {
+
+    private List<MultipartFile> pictures;
 
     @NotNull
     private String name;
@@ -16,5 +18,13 @@ public class AlbumBindingModel {
 
     public void setName(String albumNameBind) {
         this.name = albumNameBind;
+    }
+
+    public List<MultipartFile> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<MultipartFile> pictures) {
+        this.pictures = pictures;
     }
 }

@@ -1,6 +1,5 @@
 package softuniGallery.bindingModel;
 
-
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;

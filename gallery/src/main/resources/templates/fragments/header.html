@@ -13,12 +13,12 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/viewAlbums}">
+                        <a th:href="@{/album/viewAlbums}">
                             View Albums
                         </a>
                     </li>
                     <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/createAlbum}">
+                        <a th:href="@{/album/createAlbum}">
                             Create Album
                         </a>
                     </li>
