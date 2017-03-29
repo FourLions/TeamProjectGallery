@@ -1,0 +1,35 @@
+<main xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="container body-content">
+        <div class="well">
+            <h2>All Albums</h2>
+            <div class="row">
+                <table class="table table-striped table-hover ">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Album Name</th>
+                        <th>Author</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <th:block th:each="album : ${albums}">
+                        <!--<tr th:class="${album.userIsAuthor() ? 'info' : null}"> za sega ne moga da go podkaram :D-->
+                        <tr th:class="${'info'}">
+                            <td th:text="${album.id}"></td>
+                            <td th:text="${album.name}"></td>
+                            <td th:text="${album.author.fullName}"></td>
+                            <td>
+                                <a th:href="@{/admin/albums/edit/{id}(id=${album.id})}">Edit</a>
+                                <a th:href="@{/admin/albums/delete/{id}(id=${album.id})}">Delete</a>
+                            </td>
+                        </tr>
+                    </th:block>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>

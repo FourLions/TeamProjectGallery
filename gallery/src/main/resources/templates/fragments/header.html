@@ -1,4 +1,4 @@
-<header  th:fragment="header">
+<header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="navbar navbar-default navbar-static-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -17,21 +17,24 @@
                             Share Link
                         </a>
                     </li>
-
-                    <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/album/viewAlbums}">
-                            View Albums
-                        </a>
-                    </li>
-                    <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/album/createAlbum}">
-                            Create Album
-                        </a>
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Albums<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a th:href="@{/album/createAlbum}">Create Album</a></li>
+                            <li><a th:href="@{/album/viewAlbums}">View Albums</a></li>
+                        </ul>
                     </li>
                     <li sec:authorize="isAuthenticated()">
                         <a th:href="@{/article/create}">
                             Create Article
                         </a>
+                    </li>
+                    <li class="dropdown" sec:authorize="hasRole('ADMIN')">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin panel<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a th:href="@{/admin/albums/}">Albums</a></li>
+                            <li><a th:href="@{/admin/users/}">Users</a></li>
+                        </ul>
                     </li>
                     <li sec:authorize="isAuthenticated()">
                         <a th:href="@{/profile}">

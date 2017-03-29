@@ -76,4 +76,13 @@ public class AlbumController {
         this.albumRepository.saveAndFlush(albumEntity);
         return "redirect:/album/viewAlbums";
     }
+
+    private boolean isUserAuthorOrAdmin(Album album) {
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        User userEntity = this.userRepository.findByEmail(user.getUsername());
+
+        return userEntity.isAdmin() || userEntity.isAuthor(album);
+    }
 }

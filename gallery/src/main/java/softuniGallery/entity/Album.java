@@ -3,6 +3,7 @@ package softuniGallery.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -70,4 +71,8 @@ public class Album {
         this.author = author;
     }
 
+    @Transient
+    public boolean userIsAuthor(Album album) {
+        return Objects.equals(this.getId(), album.getAuthor().getId());
+    }
 }
