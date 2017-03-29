@@ -12,6 +12,7 @@ import softuniGallery.entity.Album;
 import softuniGallery.repository.AlbumRepository;
 import softuniGallery.repository.UserRepository;
 
+import javax.persistence.Transient;
 import java.util.List;
 
 @Controller
@@ -88,4 +89,5 @@ public class AdminAlbumController {
 
         return "redirect:/admin/albums/";
     }
+
 }

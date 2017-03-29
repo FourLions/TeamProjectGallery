@@ -13,6 +13,13 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-sm-4 control-label" for="image">File</label>
+                        <div class="col-sm-4 ">
+                            <input type="file" class="form-control" id="image" name="picture"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="col-sm-4 control-label" for="article_content">Content</label>
                         <div class="col-sm-6">
                             <textarea class="form-control" rows="6" id="article_content" name="content" th:field="${article.content}"></textarea>

@@ -77,12 +77,12 @@ public class AlbumController {
         return "redirect:/album/viewAlbums";
     }
 
-    private boolean isUserAuthorOrAdmin(Album album) {
+   /* private boolean isUserAuthorOrAdmin(Album album) {
         UserDetails user = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
 
         User userEntity = this.userRepository.findByEmail(user.getUsername());
 
         return userEntity.isAdmin() || userEntity.isAuthor(album);
-    }
+    }*/
 }

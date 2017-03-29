@@ -72,7 +72,8 @@ public class Album {
     }
 
     @Transient
-    public boolean userIsAuthor(Album album) {
-        return Objects.equals(this.getId(), album.getAuthor().getId());
+    public boolean userIsAuthor(Album albumP) {
+        return Objects.equals(this.getAuthor().getId(), albumP.getAuthor().getId());
+
     }
 }

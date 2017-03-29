@@ -1,0 +1,32 @@
+<main>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" th:action="@{/link/delete/{id}(id=${link.id})}" method="POST">
+                <fieldset>
+                    <legend>Delete Post</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="link_content">Delete Link</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="6" id="link_content" name="content" th:field="${link.content}" disabled="disabled"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="link_link">Link</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="6" id="link_link" name="link" th:field="${link.link}" disabled="disabled"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" th:href="@{/link/{id}(id = ${link.id})}">Cancel</a>
+                            <input type="submit" class="btn btn-danger" value="Delete"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>

@@ -54,7 +54,7 @@ public class ArticleController {
         MultipartFile file = articleBindingModel.getPicture();
         if (file != null) {
             String originalName = file.getOriginalFilename();
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
             try {
                 file.transferTo(imageFile);
                 articleEntity.setImagePath("/images/" + originalName);
@@ -108,9 +108,22 @@ public class ArticleController {
         }
 
         Article article = this.articleRepository.findOne(id);
-
         article.setContent(articleBindingModel.getContent());
         article.setTitle(articleBindingModel.getTitle());
+        article.setImagePath("testPathImageasdsadasdsasda");
+/////////////////////////////////////////////////////////////////////////////
+        MultipartFile file = articleBindingModel.getPicture();
+        /*if (file != null) {
+            String originalName = file.getOriginalFilename();
+            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+            try {
+                file.transferTo(imageFile);
+                article.setImagePath("/images/" + originalName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
+        /////////////////////////////////////////////////////////////////////////////
 
         this.articleRepository.saveAndFlush(article);
 

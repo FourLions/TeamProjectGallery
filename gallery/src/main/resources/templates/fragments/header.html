@@ -12,13 +12,17 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/link/create}">
-                            Share Link
-                        </a>
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Links<span
+                                class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a th:href="@{/link/create}">Share Link</a></li>
+                            <li><a th:href="@{/link/viewLinks}">View Links</a></li>
+                        </ul>
                     </li>
                     <li class="dropdown" sec:authorize="isAuthenticated()">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Albums<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Albums<span
+                                class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a th:href="@{/album/createAlbum}">Create Album</a></li>
                             <li><a th:href="@{/album/viewAlbums}">View Albums</a></li>
@@ -30,7 +34,8 @@
                         </a>
                     </li>
                     <li class="dropdown" sec:authorize="hasRole('ADMIN')">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin panel<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin
+                            panel<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a th:href="@{/admin/albums/}">Albums</a></li>
                             <li><a th:href="@{/admin/users/}">Users</a></li>

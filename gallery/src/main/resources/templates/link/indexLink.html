@@ -10,10 +10,11 @@
 
                         <p th:text="${link.content}"> </p>
 
-                        <iframe th:src="${link.link}" height="300" width="400" frameborder="0" scrolling="no"></iframe>
+                        <img th:src="${link.link}" width="400" height="300"/>
 
+                        <!--<iframe th:src="${link.link}" height="300" width="400" frameborder="0" scrolling="no"></iframe> s4upva gi taka -->
 
-                        <small class="author" th:text="${link.author.fullName}"></small>
+                        <!-- <small class="author" th:text="${link.author.fullName}"></small>-->
 
                         <footer>
                             <div class="pull-right">

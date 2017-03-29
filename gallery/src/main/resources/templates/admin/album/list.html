@@ -16,7 +16,8 @@
 
                     <th:block th:each="album : ${albums}">
                         <!--<tr th:class="${album.userIsAuthor() ? 'info' : null}"> za sega ne moga da go podkaram :D-->
-                        <tr th:class="${'info'}">
+                        <!--<tr th:class="${'info'}"> az su6to za sega nqmam nareduk :/ variant s baza ima no bez neq bi bilo po-dobre-->
+                        <tr>
                             <td th:text="${album.id}"></td>
                             <td th:text="${album.name}"></td>
                             <td th:text="${album.author.fullName}"></td>
