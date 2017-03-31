@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotNull;
 
 public class ArticleBindingModel {
-
+    @NotNull
     private MultipartFile picture;
 
     @NotNull

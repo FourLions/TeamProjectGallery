@@ -108,12 +108,14 @@ public class ArticleController {
         }
 
         Article article = this.articleRepository.findOne(id);
+
         article.setContent(articleBindingModel.getContent());
         article.setTitle(articleBindingModel.getTitle());
-        article.setImagePath("testPathImageasdsadasdsasda");
+
+        //shte napravq nov metod i nqma da imame dublirane na kod s po gore no sega burzam ina4e ba4ka bez problemi
 /////////////////////////////////////////////////////////////////////////////
         MultipartFile file = articleBindingModel.getPicture();
-        /*if (file != null) {
+        if (file != null) {
             String originalName = file.getOriginalFilename();
             File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
             try {
@@ -122,7 +124,7 @@ public class ArticleController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
         /////////////////////////////////////////////////////////////////////////////
 
         this.articleRepository.saveAndFlush(article);
