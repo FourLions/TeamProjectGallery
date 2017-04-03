@@ -130,4 +130,30 @@ public class AdminUserController {
 
         return "redirect:/admin/users/";
     }
+
+    @GetMapping("/userAlbums/{id}")
+    public String listAlbumsProccess(@PathVariable Integer id, Model model) {
+        System.out.print("in listAlbumsProccess getMap");
+        if (!this.userRepository.exists(id)) {
+            return "redirect:/admin/users/";
+        }
+
+        User user = this.userRepository.findOne(id);
+        Set<Album> albums = user.getAlbums();
+
+        model.addAttribute("user", user);
+        model.addAttribute("albums", albums);
+        //model.addAttribute("roles", roles);
+        model.addAttribute("view", "admin/album/list");
+
+
+        return "base-layout";
+    }
+
+    @PostMapping("/userAlbums/{id}")
+    public String listAlbumsProccess(@PathVariable Integer id,
+                              UserEditBindingModel userBindingModel) {
+        System.out.print("in listAlbumsProccess postmapping");
+        return "redirect:/admin/users/";
+    }
 }
