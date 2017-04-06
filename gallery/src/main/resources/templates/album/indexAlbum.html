@@ -8,11 +8,14 @@
                             <h2 th:text="${album.name}"></h2>
                         </header>
                         <th:block th:each="image : ${album.imagePathList}">
-                        <img th:src="${image}" width="400" height="300"/> <!-- не знам :) дали е  da ne e taka ?... tazi cqlata promenliwa ne q prashtash na view-to? -->
+
+                        <img th:src="${image}" width="400" height="300"/>
+
+                            <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                            <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="1"></div>
+
                         </th:block>
-                        <!-- towa dori i da sraboti shte ti trqbwa for each za wsqka img :) taka shte wzemem samo 1wata да знам view to ne mi e gotovo 6to ne znaeh dali tam ne e problema
-                         onzi not found inache go oprawihme
-                         -->
+
                         <small class="author" th:text="${album.author.fullName}"></small>
 
                         <footer>

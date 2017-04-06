@@ -41,7 +41,7 @@ public class LinkController {
         User userEntity = this.userRepository.findByEmail(user.getUsername());
 
         Link linkEntity = new Link(
-                linkBindingModel.getLink(),
+                linkBindingModel.getLink() + "/embed",
                 linkBindingModel.getContent(),
                 userEntity
         );
