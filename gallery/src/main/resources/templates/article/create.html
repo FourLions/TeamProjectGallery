@@ -25,7 +25,22 @@
                             <textarea class="form-control" rows="6" id="article_content" name="content"></textarea>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label for="article_category" class="col-sm-4 control-label"> Category</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" id="article_category" name="categoryId">
+                                <option th:each="category : ${categories}" th:value="${category.id}"
+                                        th:text="${category.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="article_tags" class="col-sm-4 control-label">Tags</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="article_tags" placeholder="Tags"
+                            name="tagString"/>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <a class="btn btn-default" th:href="@{/}">Cancel</a>

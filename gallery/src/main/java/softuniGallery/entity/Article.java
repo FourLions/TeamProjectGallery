@@ -1,6 +1,7 @@
 package softuniGallery.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "articles")
@@ -10,13 +11,15 @@ public class Article {
     private String title;
     private String content;
     private User author;
-
+    private Category category;
     private String imagePath;
+    private Set<Tag> tags;
 
-    public Article(String title, String content, User author) {
+    public Article(String title, String content, User author, Category category) {
         this.title = title;
         this.content = content;
         this.author = author;
+        this.category= category;
     }
 
     public Article() {
@@ -74,4 +77,14 @@ public class Article {
     public String getSummary() {
         return this.getContent().substring(0, this.getContent().length() / 2) + "...";
     }
+
+    @ManyToOne()
+    @JoinColumn(nullable = false, name ="categoryId")
+    public Category getCategory(){return category;}
+    public void setCategory(Category category){this.category=category;}
+
+    @ManyToMany()
+    @JoinColumn(table="articles_tags")
+    public Set<Tag> getTags(){return tags;}
+    public void setTags(Set<Tag> tags){this.tags=tags;}
 }

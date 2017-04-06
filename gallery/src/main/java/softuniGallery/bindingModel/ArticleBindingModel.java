@@ -37,4 +37,17 @@ public class ArticleBindingModel {
     public void setPicture(MultipartFile picture) {
         this.picture = picture;
     }
+
+    private Integer categoryId;
+    public Integer getCategoryId(){
+        return categoryId;
+    }
+    public void setCategoryId(Integer categoryId){
+        this.categoryId = categoryId;
+    }
+
+    private String tagString;
+
+    public String getTagString(){return tagString;}
+    public void setTagString(String tagString){this.tagString=tagString;}
 }
