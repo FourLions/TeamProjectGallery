@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static org.springframework.security.config.http.MatcherType.regex;
 
@@ -56,11 +58,13 @@ public class ArticleController {
 
         User userEntity = this.userRepository.findByEmail(user.getUsername());
         Category category = this.categoryRepository.findOne(articleBindingModel.getCategoryId());
+        HashSet<Tag> tags = this.findTagsFromString(articleBindingModel.getTagString());
         Article articleEntity = new Article(
                 articleBindingModel.getTitle(),
                 articleBindingModel.getContent(),
                 userEntity,
-                category
+                category,
+                tags
         );
 
 
@@ -106,9 +110,11 @@ public class ArticleController {
 
         Article article = this.articleRepository.findOne(id);
         List<Category> categories = this.categoryRepository.findAll();
+        String tagString = article.getTags().stream().map(Tag::getName).collect(Collectors.joining(", "));
         model.addAttribute("view", "article/edit");
         model.addAttribute("article", article);
         model.addAttribute("categories", categories);
+        model.addAttribute("tags", tagString);
         return "base-layout";
     }
 
@@ -122,9 +128,11 @@ public class ArticleController {
 
         Article article = this.articleRepository.findOne(id);
         Category category = this.categoryRepository.findOne(articleBindingModel.getCategoryId());
+        HashSet<Tag> tags = this.findTagsFromString(articleBindingModel.getTagString());
         article.setCategory(category);
         article.setContent(articleBindingModel.getContent());
         article.setTitle(articleBindingModel.getTitle());
+        article.setTags(tags);
 
         //shte napravq nov metod i nqma da imame dublirane na kod s po gore no sega burzam ina4e ba4ka bez problemi
 /////////////////////////////////////////////////////////////////////////////
