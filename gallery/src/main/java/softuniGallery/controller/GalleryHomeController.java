@@ -7,22 +7,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import softuniGallery.entity.Article;
 import softuniGallery.entity.Category;
-import softuniGallery.repository.ArticleRepository;
+import softuniGallery.entity.User;
 import softuniGallery.repository.CategoryRepository;
+import softuniGallery.repository.UserRepository;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class GalleryHomeController {
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     public String index(Model model) {
 
         List<Category> categories = this.categoryRepository.findAll();
 
+        List<User> latestFiveUsers = this.userRepository.findAll()
+                .stream()
+                .sorted((a, b) -> b.getId().compareTo(a.getId()))
+                .limit(5)
+                .collect(Collectors.toList());
+
+        model.addAttribute("latestFiveUsers", latestFiveUsers);
         model.addAttribute("view", "home/index");
         model.addAttribute("categories", categories);
 
