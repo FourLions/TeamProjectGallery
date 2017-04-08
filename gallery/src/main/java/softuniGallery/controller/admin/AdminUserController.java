@@ -57,6 +57,7 @@ public class AdminUserController {
         return "base-layout";
     }
 
+
     @PostMapping("/edit/{id}")
     public String editProcess(@PathVariable Integer id,
                               UserEditBindingModel userBindingModel) {
@@ -126,9 +127,24 @@ public class AdminUserController {
             this.linkRepository.delete(currentLink);
         }
 
+        Set<Role> userRoles = user.getRoles();
+        boolean containsAdminRole = false;
+
+        for (Role currentRole: userRoles) {
+            if (currentRole.getName().equals("ROLE_ADMIN")) {
+                containsAdminRole = true;
+            }
+        }
+
+        String redirectAddress = "redirect:/admin/users/";
+
+        if (containsAdminRole) {
+            redirectAddress = "redirect:/logout";
+        }
+
         this.userRepository.delete(user);
 
-        return "redirect:/admin/users/";
+        return redirectAddress;
     }
 
     @GetMapping("/userAlbums/{id}")
