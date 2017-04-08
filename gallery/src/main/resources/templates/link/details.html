@@ -7,16 +7,17 @@
                         <h2 th:text="${link.author.fullName}"></h2>
                     </header>
 
-                    <p th:text="${link.content}"> </p>
-
                     <img th:src="${link.link}" width="400" height="300"/>
 
+                    <p th:text="${link.content}"></p>
 
                     <footer>
                         <div class="pull-right">
+                            <!--<th:block sec:authorize="isAuthenticated()">-->
                             <th:block sec:authorize="isAuthenticated()">
                                 <a class="btn btn-success btn-xs" th:href="@{/link/edit/{id}(id = ${link.id})}">Edit</a>
-                                <a class="btn btn-danger btn-xs" th:href="@{/link/delete/{id}(id = ${link.id})}">Delete</a>
+                                <a class="btn btn-danger btn-xs"
+                                   th:href="@{/link/delete/{id}(id = ${link.id})}">Delete</a>
                             </th:block>
                             <a class="btn btn-default btn-xs" th:href="@{/link/viewLinks}">back &raquo;</a>
                         </div>

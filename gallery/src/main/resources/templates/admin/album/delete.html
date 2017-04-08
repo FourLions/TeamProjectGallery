@@ -19,7 +19,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
-                            <a class="btn btn-default" th:href="@{/admin/albums/}">Cancel</a>
+                            <a class="btn btn-default" th:href="@{/admin/users/userAlbums/{id} (id = ${album.author.id})}">Cancel</a>
                             <input value="Delete" type="submit" class="btn btn-danger"/>
                         </div>
                     </div>

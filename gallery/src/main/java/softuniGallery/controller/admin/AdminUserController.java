@@ -10,14 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import softuniGallery.bindingModel.UserEditBindingModel;
-import softuniGallery.entity.Album;
-import softuniGallery.entity.Article;
-import softuniGallery.entity.Role;
-import softuniGallery.entity.User;
-import softuniGallery.repository.AlbumRepository;
-import softuniGallery.repository.ArticleRepository;
-import softuniGallery.repository.RoleRepository;
-import softuniGallery.repository.UserRepository;
+import softuniGallery.entity.*;
+import softuniGallery.repository.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -34,9 +28,11 @@ public class AdminUserController {
     private AlbumRepository albumRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private LinkRepository linkRepository;
 
     @GetMapping("/")
-    public String listUsers(Model model){
+    public String listUsers(Model model) {
         List<User> users = this.userRepository.findAll();
 
         model.addAttribute("users", users);
@@ -45,7 +41,7 @@ public class AdminUserController {
         return "base-layout";
     }
 
-   @GetMapping("/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         if (!this.userRepository.exists(id)) {
             return "redirect:/admin/users/";
@@ -85,7 +81,7 @@ public class AdminUserController {
 
         Set<Role> roles = new HashSet<>();
 
-        for (Integer roleId : userBindingModel.getRoles()){
+        for (Integer roleId : userBindingModel.getRoles()) {
             roles.add(this.roleRepository.findOne(roleId));
         }
 
@@ -97,7 +93,7 @@ public class AdminUserController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id, Model model){
+    public String delete(@PathVariable Integer id, Model model) {
         if (!this.userRepository.exists(id)) {
             return "redirect:/admin/users/";
         }
@@ -118,12 +114,16 @@ public class AdminUserController {
 
         User user = this.userRepository.findOne(id);
 
-        for (Article article : user.getArticles()){
+        for (Article article : user.getArticles()) {
             this.articleRepository.delete(article);
         }
 
-        for (Album album : user.getAlbums()){
+        for (Album album : user.getAlbums()) {
             this.albumRepository.delete(album);
+        }
+
+        for (Link currentLink : user.getLinks()) {
+            this.linkRepository.delete(currentLink);
         }
 
         this.userRepository.delete(user);
@@ -152,7 +152,7 @@ public class AdminUserController {
 
     @PostMapping("/userAlbums/{id}")
     public String listAlbumsProccess(@PathVariable Integer id,
-                              UserEditBindingModel userBindingModel) {
+                                     UserEditBindingModel userBindingModel) {
         System.out.print("in listAlbumsProccess postmapping");
         return "redirect:/admin/users/";
     }

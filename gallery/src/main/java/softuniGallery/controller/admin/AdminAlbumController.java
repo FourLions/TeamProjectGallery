@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import softuniGallery.bindingModel.AlbumBindingModel;
 import softuniGallery.entity.Album;
+import softuniGallery.entity.User;
 import softuniGallery.repository.AlbumRepository;
 import softuniGallery.repository.UserRepository;
 
@@ -55,12 +56,13 @@ public class AdminAlbumController {
         }
 
         Album album = this.albumRepository.findOne(id);
+        int userId = album.getAuthor().getId();
 
         album.setName(albumBindingModel.getName());
 
         this.albumRepository.saveAndFlush(album);
 
-        return "redirect:/admin/albums/";
+        return "redirect:/admin/users/userAlbums/" + userId;
     }
 
     @GetMapping("/delete/{id}")
@@ -84,10 +86,11 @@ public class AdminAlbumController {
         }
 
         Album album = this.albumRepository.findOne(id);
+        int userId = album.getAuthor().getId();
 
         this.albumRepository.delete(album);
 
-        return "redirect:/admin/albums/";
+        return "redirect:/admin/users/userAlbums/" + userId;
     }
 
 }
