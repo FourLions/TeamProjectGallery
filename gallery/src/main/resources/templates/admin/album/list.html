@@ -31,7 +31,7 @@
                     -->
 
                     <th:block th:each="album : ${albums}">
-                        <tr th:class="${user.isAdmin() ? 'info' : null}">
+                        <tr th:class="${user.isAdmin() ? 'info' : null}"> <!--dava error-->
 
                             <td th:text="${album.id}"></td>
                             <td th:text="${album.name}"></td>

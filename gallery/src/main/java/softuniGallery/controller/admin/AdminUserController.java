@@ -33,7 +33,7 @@ public class AdminUserController {
     private RoleRepository roleRepository;
 
     @GetMapping("/")
-    public String listUsers(Model model){
+    public String listUsers(Model model) {
         List<User> users = this.userRepository.findAll();
 
         model.addAttribute("users", users);
@@ -42,7 +42,7 @@ public class AdminUserController {
         return "base-layout";
     }
 
-   @GetMapping("/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         if (!this.userRepository.exists(id)) {
             return "redirect:/admin/users/";
@@ -57,6 +57,7 @@ public class AdminUserController {
 
         return "base-layout";
     }
+
 
     @PostMapping("/edit/{id}")
     public String editProcess(@PathVariable Integer id,
@@ -82,7 +83,7 @@ public class AdminUserController {
 
         Set<Role> roles = new HashSet<>();
 
-        for (Integer roleId : userBindingModel.getRoles()){
+        for (Integer roleId : userBindingModel.getRoles()) {
             roles.add(this.roleRepository.findOne(roleId));
         }
 
@@ -94,7 +95,7 @@ public class AdminUserController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id, Model model){
+    public String delete(@PathVariable Integer id, Model model) {
         if (!this.userRepository.exists(id)) {
             return "redirect:/admin/users/";
         }
@@ -115,11 +116,11 @@ public class AdminUserController {
 
         User user = this.userRepository.findOne(id);
 
-        for (Article article : user.getArticles()){
+        for (Article article : user.getArticles()) {
             this.articleRepository.delete(article);
         }
 
-        for (Album album : user.getAlbums()){
+        for (Album album : user.getAlbums()) {
             this.albumRepository.delete(album);
         }
 
@@ -129,7 +130,7 @@ public class AdminUserController {
 
         this.userRepository.delete(user);
 
-        return "redirect:/admin/users/";
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/userAlbums/{id}")
@@ -153,7 +154,7 @@ public class AdminUserController {
 
     @PostMapping("/userAlbums/{id}")
     public String listAlbumsProccess(@PathVariable Integer id,
-                              UserEditBindingModel userBindingModel) {
+                                     UserEditBindingModel userBindingModel) {
         System.out.print("in listAlbumsProccess postmapping");
         return "redirect:/admin/users/";
     }

@@ -111,17 +111,15 @@ public class User {
     }
 
     @Transient
-    public boolean isAdmin() {
+    public boolean isAdmin(){
         return this.getRoles()
                 .stream()
-                .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+                .anyMatch(role->role.getName().equals("ROLE_ADMIN"));
     }
 
-    @Transient
-    public boolean isAuthor(Article article) {
-        return Objects.equals(this.getId(), article.getAuthor().getId());
+    public boolean isAuthor(Article article){
+        return Objects.equals(this.getId(),article.getAuthor().getId());
     }
-
     /*@Transient
     public boolean isAuthor(Album album) {
         return Objects.equals(this.getId(), album.getAuthor().getId());
