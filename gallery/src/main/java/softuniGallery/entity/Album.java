@@ -34,16 +34,7 @@ public class Album {
 
     }
 
-    @ElementCollection //@Column(columnDefinition = "text", nullable = false)
-    // tui mai trqbwa da e relaciq nqkakva - i da sochi kam drugata tablica
-    // edin album kolko imagePathList-a moje da ima// ами аз гледам от нета и каквото скалъпя не знам дали е правилно. С една снимка става но с много
-    // znachiii ideqta e che tuk pazish wsichki snimki kam albuma, taka li?
-    // уж ..
-    // I see .. ok, ami ne go znam towa ElementCollection kakwo prawi, ama mi se struwa che nishto :D
-    // znachi towa koeto moga da gi predloja e da naprawish Entity "Image" koeto si ima "Path" i "Album"
-    // A w Album-a da sojish HashSet<Image> images ... podobno na towa ot bloga, kadeto edin Article si ima Category,
-    // a pak Category-qta si ima HashSet<Article> articles
-    // ще пробвам на ново. Иначе това ElementCollection ми направи листа мисля в базата. hmmm mi dai da widim neshto
+    @ElementCollection
     public List<String> getImagePathList() {
         return imagePathList;
     }

@@ -117,6 +117,7 @@ public class User {
                 .anyMatch(role->role.getName().equals("ROLE_ADMIN"));
     }
 
+    @Transient
     public boolean isAuthor(Article article){
         return Objects.equals(this.getId(),article.getAuthor().getId());
     }

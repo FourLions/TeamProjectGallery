@@ -26,9 +26,9 @@ public class AlbumHomeController {
         return "base-layout";
     }
 
-    @GetMapping("/album/{id}")
-    public String details(Model model) {
-        System.out.println("Print from details getMapping method in albumhomecontroller.");
-        return "album/details";
-    }
+//    @GetMapping("/album/{id}")
+//    public String details(Model model) {
+//        System.out.println("Print from details getMapping method in albumhomecontroller.");
+//        return "album/details";
+//    }
 }

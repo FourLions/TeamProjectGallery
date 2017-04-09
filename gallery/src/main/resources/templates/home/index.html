@@ -1,10 +1,11 @@
 <main xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:c="http://java.sun.com/xml/ns/javaee"
       xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container body-content">
+
         <ul class="col-lg-offset-10 col-md-8">
             <p>Latest 5 registered users:</p>
             <li th:each="user : ${latestFiveUsers}">
-                <span th:text="${user.fullName}"></span>
+            <span th:text="${user.fullName}"></span>
             </li>
         </ul>
         <div class="row">

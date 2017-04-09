@@ -4,17 +4,27 @@
             <div class="col-md-12">
                 <article>
                     <header>
-                        <h2>header now also h2 in here</h2>
+                        <h2 th:text="${album.name}"></h2>
                     </header>
 
-                    <span>I'm going to start this next time i sit. If you want and have time, feel free to start. :)</span>
-                    <p>Content paragraph here</p>
+                    <th:block th:each="image : ${album.imagePathList}">
 
-                    <small>Some small class??</small>
+                        <img th:src="${image}" width="400" height="300"/>
 
-                    <p>tags paragraph</p>
+                    <small class="author" th:text="${album.author.fullName}"></small>
 
-                    <footer>The footer.</footer>
+                    </th:block>
+
+                    <footer>
+
+                        <div class="pull-right">
+
+                            <a class="btn btn-success btn-xs" th:href="@{/album/edit/{id}(id = ${album.id})}">Edit</a>
+                            <a class="btn btn-danger btn-xs" th:href="@{/album/delete/{id}(id = ${album.id})}">Delete</a>
+
+                            <a class="btn btn-default btn-xs" th:href="@{/album/viewAlbums}">back &raquo;</a>
+                        </div>
+                    </footer>
                 </article>
             </div>
         </div>
