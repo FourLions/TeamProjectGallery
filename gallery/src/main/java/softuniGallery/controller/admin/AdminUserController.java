@@ -10,14 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import softuniGallery.bindingModel.UserEditBindingModel;
-import softuniGallery.entity.Album;
-import softuniGallery.entity.Article;
-import softuniGallery.entity.Role;
-import softuniGallery.entity.User;
-import softuniGallery.repository.AlbumRepository;
-import softuniGallery.repository.ArticleRepository;
-import softuniGallery.repository.RoleRepository;
-import softuniGallery.repository.UserRepository;
+import softuniGallery.entity.*;
+import softuniGallery.repository.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -26,12 +20,15 @@ import java.util.Set;
 @Controller
 @RequestMapping("/admin/users")
 public class AdminUserController {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ArticleRepository articleRepository;
     @Autowired
     private AlbumRepository albumRepository;
+    @Autowired
+    private LinkRepository linkRepository;
     @Autowired
     private RoleRepository roleRepository;
 
@@ -124,6 +121,10 @@ public class AdminUserController {
 
         for (Album album : user.getAlbums()){
             this.albumRepository.delete(album);
+        }
+
+        for (Link link : user.getLinks()) {
+            this.linkRepository.delete(link);
         }
 
         this.userRepository.delete(user);

@@ -9,12 +9,12 @@
 
                     <p th:text="${link.content}"> </p>
 
-                    <img th:src="${link.link}" width="400" height="300"/>
-
+                    <!-- <img th:src="${link.link}" width="400" height="300"/> -->
+                    <iframe th:src="${link.link}" frameborder="0" width="100%" height="200"></iframe>
 
                     <footer>
                         <div class="pull-right">
-                            <th:block sec:authorize="isAuthenticated()">
+                            <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(link)}">
                                 <a class="btn btn-success btn-xs" th:href="@{/link/edit/{id}(id = ${link.id})}">Edit</a>
                                 <a class="btn btn-danger btn-xs" th:href="@{/link/delete/{id}(id = ${link.id})}">Delete</a>
                             </th:block>

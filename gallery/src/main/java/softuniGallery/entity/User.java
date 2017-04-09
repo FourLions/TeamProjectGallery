@@ -127,4 +127,8 @@ public class User {
         return Objects.equals(this.getId(), album.getAuthor().getId());
     }*/
 
+    @Transient
+    public boolean isAuthor(Link link) {
+        return Objects.equals(this.getId(), link.getAuthor().getId());
+    }
 }
