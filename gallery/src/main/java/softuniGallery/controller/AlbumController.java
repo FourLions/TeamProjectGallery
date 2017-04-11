@@ -56,6 +56,13 @@ public class AlbumController {
         List<MultipartFile> files = albumBindingModel.getPictures();
         List<String> listImages = new LinkedList<>();
 
+        uploadFiles(albumEntity, files, listImages);
+
+        this.albumRepository.saveAndFlush(albumEntity);
+        return "redirect:/album/viewAlbums";
+    }
+
+    private void uploadFiles(Album albumEntity, List<MultipartFile> files, List<String> listImages) {
         if (files != null && files.size() > 0) {
             for (int i = 0; i < files.size(); i++) {
 
@@ -73,9 +80,6 @@ public class AlbumController {
                 }
             }
         }
-
-        this.albumRepository.saveAndFlush(albumEntity);
-        return "redirect:/album/viewAlbums";
     }
 
     @GetMapping("/album/{id}")
@@ -118,30 +122,41 @@ public class AlbumController {
 
         album.setName(albumBindingModel.getName());
 
+        List<String> imagesPath = album.getImagePathList();
+
+        deleteFiles(imagesPath);
+
         List<MultipartFile> files = albumBindingModel.getPictures();
         List<String> listImages = new LinkedList<>();
 
-        if (files != null && files.size() > 0) {
-            for (int i = 0; i < files.size(); i++) {
-
-                if (files.get(i) != null) {
-                    String originalName = files.get(i).getOriginalFilename();
-                    File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
-                    try {
-                        files.get(i).transferTo(imageFile);
-                        String image = "/images/" + originalName;
-                        listImages.add(image);
-                        album.setImagePathList(listImages);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+        uploadFiles(album, files, listImages);
 
         this.albumRepository.saveAndFlush(album);
 
         return "redirect:/album/" + album.getId();
+    }
+
+    private void deleteFiles(List<String> imagesPath) {
+        if (imagesPath != null && imagesPath.size() > 0) {
+
+            for (int i = 0; i < imagesPath.size(); i++) {
+
+                if (imagesPath.get(i) != null) {
+                    String originalName = imagesPath.get(i);
+
+                    try {
+                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalName);
+                        if (imageFile.delete()) {
+                            System.out.println(imageFile.getName() + " is deleted!");
+                        } else {
+                            System.out.println("Delete operation is failed!");
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Failed to delete image!");
+                    }
+                }
+            }
+        }
     }
 
     @GetMapping("/album/delete/{id}")
@@ -168,11 +183,9 @@ public class AlbumController {
 
         Album album = this.albumRepository.findOne(id);
 
-//        List<MultipartFile> files = albumBindingModel.getPictures();
-//
-//        for (int i = 0; i < files.size(); i++) {
-//            files.remove(i);
-//        }
+        List<String> imagesPath = album.getImagePathList();
+
+        deleteFiles(imagesPath);
 
         this.albumRepository.delete(album);
 

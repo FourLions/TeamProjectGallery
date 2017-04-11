@@ -70,6 +70,15 @@ public class ArticleController {
 
 
         MultipartFile file = articleBindingModel.getPicture();
+
+        uploadFile(articleEntity, file);
+
+        this.articleRepository.saveAndFlush(articleEntity);
+
+        return "redirect:/";
+    }
+
+    private void uploadFile(Article articleEntity, MultipartFile file) {
         if (file != null) {
             String originalName = file.getOriginalFilename();
             File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
@@ -80,10 +89,6 @@ public class ArticleController {
                 e.printStackTrace();
             }
         }
-
-        this.articleRepository.saveAndFlush(articleEntity);
-
-        return "redirect:/";
     }
 
     @GetMapping("/article/{id}")
@@ -150,20 +155,9 @@ public class ArticleController {
         article.setTitle(articleBindingModel.getTitle());
         article.setTags(tags);
 
-        //shte napravq nov metod i nqma da imame dublirane na kod s po gore no sega burzam ina4e ba4ka bez problemi
-/////////////////////////////////////////////////////////////////////////////
         MultipartFile file = articleBindingModel.getPicture();
-        if (file != null) {
-            String originalName = file.getOriginalFilename();
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
-            try {
-                file.transferTo(imageFile);
-                article.setImagePath("/images/" + originalName);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        /////////////////////////////////////////////////////////////////////////////
+
+        uploadFile(article, file);
 
         this.articleRepository.saveAndFlush(article);
 
