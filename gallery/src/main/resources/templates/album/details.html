@@ -16,12 +16,11 @@
                     </th:block>
 
                     <footer>
-
                         <div class="pull-right">
-
+                            <th:block sec:authorize="isAuthenticated()">
                             <a class="btn btn-success btn-xs" th:href="@{/album/edit/{id}(id = ${album.id})}">Edit</a>
                             <a class="btn btn-danger btn-xs" th:href="@{/album/delete/{id}(id = ${album.id})}">Delete</a>
-
+                            </th:block>
                             <a class="btn btn-default btn-xs" th:href="@{/album/viewAlbums}">back &raquo;</a>
                         </div>
                     </footer>

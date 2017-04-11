@@ -92,12 +92,90 @@ public class AlbumController {
         return "base-layout";
     }
 
-   /* private boolean isUserAuthorOrAdmin(Album album) {
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+    @GetMapping("/album/edit/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String edit(@PathVariable Integer id, Model model) {
+        if (!this.albumRepository.exists(id)) {
+            return "redirect:/album/viewAlbums";
+        }
 
-        User userEntity = this.userRepository.findByEmail(user.getUsername());
+        Album album = this.albumRepository.findOne(id);
 
-        return userEntity.isAdmin() || userEntity.isAuthor(album);
-    }*/
+        model.addAttribute("view", "album/edit");
+        model.addAttribute("album", album);
+
+        return "base-layout";
+    }
+
+    @PostMapping("/album/edit/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String editProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
+        if (!this.albumRepository.exists(id)) {
+            return "redirect:/album/viewAlbums";
+        }
+
+        Album album = this.albumRepository.findOne(id);
+
+        album.setName(albumBindingModel.getName());
+
+        List<MultipartFile> files = albumBindingModel.getPictures();
+        List<String> listImages = new LinkedList<>();
+
+        if (files != null && files.size() > 0) {
+            for (int i = 0; i < files.size(); i++) {
+
+                if (files.get(i) != null) {
+                    String originalName = files.get(i).getOriginalFilename();
+                    File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                    try {
+                        files.get(i).transferTo(imageFile);
+                        String image = "/images/" + originalName;
+                        listImages.add(image);
+                        album.setImagePathList(listImages);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        this.albumRepository.saveAndFlush(album);
+
+        return "redirect:/album/" + album.getId();
+    }
+
+    @GetMapping("/album/delete/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String delete(Model model, @PathVariable Integer id) {
+        if (!this.albumRepository.exists(id)) {
+            return "redirect:/album/viewAlbums";
+        }
+
+        Album album = this.albumRepository.findOne(id);
+
+        model.addAttribute("album", album);
+        model.addAttribute("view", "album/delete");
+
+        return "base-layout";
+    }
+
+    @PostMapping("/album/delete/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String deleteProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
+        if (!this.albumRepository.exists(id)) {
+            return "redirect:/album/viewAlbums";
+        }
+
+        Album album = this.albumRepository.findOne(id);
+
+//        List<MultipartFile> files = albumBindingModel.getPictures();
+//
+//        for (int i = 0; i < files.size(); i++) {
+//            files.remove(i);
+//        }
+
+        this.albumRepository.delete(album);
+
+        return "redirect:/album/viewAlbums";
+    }
 }
