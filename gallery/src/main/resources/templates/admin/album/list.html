@@ -1,4 +1,4 @@
-<main xmlns:th="http://www.w3.org/1999/xhtml">
+<main>
     <div class="container body-content">
         <div class="well">
             <h2>All User Albums</h2>
@@ -9,33 +9,23 @@
                         <th>#</th>
                         <th>Album Name</th>
                         <th>Author</th>
-                        <th>Actions</th>
+                        <th>Images</th>
                     </tr>
                     </thead>
 
                     <tbody>
 
-                    <!-- <th:block th:each="album : ${albums}">
-                         <tr th:class="${album.userIsAuthor() ? 'info' : null}"> za sega ne moga da go podkaram :D
-                         <tr th:class="${'info'}"> az su6to za sega nqmam nareduk :/ variant s baza ima no bez neq bi bilo po-dobre
-                         <tr>
-                             <td th:text="${album.id}"></td>
-                             <td th:text="${album.name}"></td>
-                             <td th:text="${album.author.fullName}"></td>
-                             <td>
-                                 <a th:href="@{/admin/albums/edit/{id}(id=${album.id})}">Edit</a>
-                                 <a th:href="@{/admin/albums/delete/{id}(id=${album.id})}">Delete</a>
-                             </td>
-                         </tr>
-                     </th:block>
-                    -->
-
                     <th:block th:each="album : ${albums}">
-                        <tr th:class="${user.isAdmin() ? 'info' : null}"> <!--dava error-->
+                        <tr th:class="info">
 
                             <td th:text="${album.id}"></td>
                             <td th:text="${album.name}"></td>
                             <td th:text="${album.author.fullName}"></td>
+                            <td>
+                            <th:block th:each="image : ${album.imagePathList}">
+                                <img th:src="${image}" width="20" height="20"/>
+                            </th:block>
+                            </td>
                             <td>
                                 <a th:href="@{/admin/albums/edit/{id}(id=${album.id})}">Edit</a>
                                 <a th:href="@{/admin/albums/delete/{id}(id=${album.id})}">Delete</a>
@@ -43,17 +33,6 @@
 
                         </tr>
                     </th:block>
-
-                    <!-- <td th:text="${user.albums}"></td>
-                     <td th:text="${user.fullName}"></td>
-                     <td th:text="${user.email}"></td>
-                     <td>
-                         <a th:href="@{/admin/users/edit/{id}(id=${user.id})}">Edit</a>
-                         <a th:href="@{/admin/users/delete/{id}(id=${user.id})}">Delete</a>
-                         <a th:href="@{/admin/album/edit/{id}(id=${user.id})}">View User Albums</a>
-                     </td>
-                 </tr>
-             </th:block>-->
 
                     </tbody>
 

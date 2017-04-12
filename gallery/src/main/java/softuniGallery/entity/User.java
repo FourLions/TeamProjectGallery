@@ -121,13 +121,14 @@ public class User {
     public boolean isAuthor(Article article){
         return Objects.equals(this.getId(),article.getAuthor().getId());
     }
-    /*@Transient
-    public boolean isAuthor(Album album) {
-        return Objects.equals(this.getId(), album.getAuthor().getId());
-    }*/
 
     @Transient
     public boolean isAuthor(Link link) {
         return Objects.equals(this.getId(), link.getAuthor().getId());
+    }
+
+    @Transient
+    public boolean isAuthor(Album album) {
+        return Objects.equals(this.getId(), album.getAuthor().getId());
     }
 }
