@@ -1,7 +1,7 @@
 <main xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            <form class="form-horizontal" th:action="@{/admin/users/edit/{id}(id=${user.id})}" method="post">
+            <form class="form-horizontal" th:action="@{/profile/edit/{id}(id=${user.id})}" method="post">
                 <fieldset>
                     <legend>Edit User</legend>
                     <div class="form-group">
@@ -34,27 +34,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="roles">Make User Admin</label>
-                        <div class="col-sm-6">
-                            <th:block th:each="role : ${roles}">
-                                <div th:switch="${role.name}">
-                                    <p th:case="ROLE_ADMIN">
-                                      <!--  <br/>-->
-                                    <div class="col-sm-4">
-                                        <input id="roles" type="checkbox" name="roles"
-                                               th:value="${role.id}"
-                                               th:text="${role.getSimpleName()}"
-                                               th:checked="${user.roles.contains(role)}"/>
-                                    </div>
-                                    </p>
-                                </div>
-                            </th:block>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
-                            <a class="btn btn-default" th:href="@{/admin/users/}">Cancel</a>
+                            <a class="btn btn-default" th:href="@{/profile}">Cancel</a>
                             <input value="Edit" type="submit" class="btn btn-success"/>
                         </div>
                     </div>

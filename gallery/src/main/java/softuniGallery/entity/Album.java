@@ -67,4 +67,10 @@ public class Album {
         return Objects.equals(this.getAuthor().getId(), albumP.getAuthor().getId());
 
     }
+    @Transient
+    public boolean isAuthor(Integer author_id){
+        return this.author.getAlbums()
+                .stream()
+                .anyMatch(role->role.getId() == author_id);//.getName().equals("ROLE_ADMIN"));
+    }
 }

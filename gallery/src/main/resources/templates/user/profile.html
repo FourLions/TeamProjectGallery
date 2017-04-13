@@ -9,10 +9,15 @@
                     <div>Username:</div>
                     <span th:text="${user.fullName}"></span>
 
-                </div>
+                    <div>
+                        <a class="btn btn-default" th:href="@{/profile/edit/{id} (id=${user.id})}">Edit Profile</a><!--{id}(id = ${link.id})-->
+                        <!--  <input type="submit" class="btn btn-success" value="Edit"/>-->
+                      </div>
 
-            </div>
+                  </div>
 
-        </div>
-    </div>
-</main>
+              </div>
+
+          </div>
+      </div>
+  </main>

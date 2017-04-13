@@ -45,4 +45,9 @@ public class Role {
     public String getSimpleName() {
         return StringUtils.capitalize(this.getName().substring(5).toLowerCase());
     }
+
+    @Transient
+    public boolean isTwo(int id) {
+        return id == 2;
+    }
 }

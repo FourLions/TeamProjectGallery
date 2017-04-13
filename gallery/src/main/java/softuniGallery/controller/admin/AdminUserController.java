@@ -130,6 +130,6 @@ public class AdminUserController {
 
         this.userRepository.delete(user);
 
-        return "redirect:/admin/users";
+        return "redirect:/admin/users/";
     }
 }

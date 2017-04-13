@@ -9,11 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import softuniGallery.bindingModel.UserBindingModel;
+import softuniGallery.bindingModel.UserEditBindingModel;
 import softuniGallery.entity.Role;
 import softuniGallery.entity.User;
 import softuniGallery.repository.RoleRepository;
@@ -21,6 +19,8 @@ import softuniGallery.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.util.StringUtils;
 
 @Controller
 public class UserController {
@@ -85,5 +85,47 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("view", "user/profile");
         return "base-layout";
+    }
+
+    @GetMapping("/profile/edit/{id}")
+    public String editProfile(@PathVariable Integer id, Model model) {
+        if (!this.userRepository.exists(id)) {
+            return "redirect:/admin/users/";
+        }
+
+        User user = this.userRepository.findOne(id);
+
+        model.addAttribute("user", user);
+        model.addAttribute("view", "user/editProfile");
+
+        return "base-layout";
+    }
+
+
+    @PostMapping("/profile/edit/{id}")
+    public String editProfileProcess(@PathVariable Integer id,
+                                      UserEditBindingModel userBindingModel) {
+        if (!this.userRepository.exists(id)) {
+            return "redirect:/profile";
+        }
+
+        User user = this.userRepository.findOne(id);
+
+        if (!StringUtils.isEmpty(userBindingModel.getPassword())
+                && !StringUtils.isEmpty(userBindingModel.getConfirmPassword())) {
+
+            if (userBindingModel.getPassword().equals(userBindingModel.getConfirmPassword())) {
+                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+                user.setPassword(bCryptPasswordEncoder.encode(userBindingModel.getPassword()));
+            }
+        }
+
+        user.setFullName(userBindingModel.getFullName());
+        user.setEmail(userBindingModel.getEmail());
+
+        this.userRepository.saveAndFlush(user);
+
+        return "redirect:/profile";
     }
 }
