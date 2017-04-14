@@ -69,7 +69,7 @@ public class AlbumController {
 
                 if (files.get(i) != null) {
                     String originalName = files.get(i).getOriginalFilename();
-                    File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                    File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                     try {
                         files.get(i).transferTo(imageFile);
                         String image = "/images/" + originalName;

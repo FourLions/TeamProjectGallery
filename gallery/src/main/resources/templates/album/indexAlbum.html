@@ -7,12 +7,16 @@
                         <header>
                             <h2 th:text="${album.name}"></h2>
                         </header>
+
                         <th:block th:each="image : ${album.imagePathList}">
+                            <img th:src="${image}" width="400" height="300"/>
 
-                        <img th:src="${image}" width="400" height="300"/>
-
-                            <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
-                            <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="1"></div>
+                            <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/"
+                                 data-layout="standard" data-action="like" data-show-faces="true"
+                                 data-share="true"></div>
+                            <div class="fb-comments"
+                                 data-href="https://developers.facebook.com/docs/plugins/comments#configurator"
+                                 data-numposts="1"></div>
 
                         </th:block>
 

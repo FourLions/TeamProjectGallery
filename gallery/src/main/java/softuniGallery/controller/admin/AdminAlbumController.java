@@ -90,7 +90,8 @@ public class AdminAlbumController {
 
         this.albumRepository.delete(album);
 
-        return "redirect:/admin/users/userAlbums/" + userId;
+        //return "redirect:/admin/users/userAlbums/" + userId;
+        return  "redirect:/admin/albums/";
     }
 
 }
