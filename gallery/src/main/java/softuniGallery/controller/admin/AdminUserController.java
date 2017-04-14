@@ -1,6 +1,8 @@
 package softuniGallery.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,7 +68,23 @@ public class AdminUserController {
             return "redirect:/admin/users/";
         }
 
-        User user = this.userRepository.findOne(id);
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        User currentLoggedUser = this.userRepository.findByEmail(principal.getUsername());
+        User userToEdit = this.userRepository.findOne(id);
+
+        String redirectLink = "redirect:/admin/users/";
+
+        if (userToEdit.getFullName().equals(currentLoggedUser.getFullName())) {
+            if (userToEdit.getEmail().equals(userBindingModel.getEmail())) {
+                redirectLink = "redirect:/admin/users/";
+            }
+            else {
+                redirectLink = "redirect:/login?logout";
+            }
+        }
 
         if (!StringUtils.isEmpty(userBindingModel.getPassword())
                 && !StringUtils.isEmpty(userBindingModel.getConfirmPassword())) {
@@ -74,12 +92,12 @@ public class AdminUserController {
             if (userBindingModel.getPassword().equals(userBindingModel.getConfirmPassword())) {
                 BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-                user.setPassword(bCryptPasswordEncoder.encode(userBindingModel.getPassword()));
+                userToEdit.setPassword(bCryptPasswordEncoder.encode(userBindingModel.getPassword()));
             }
         }
 
-        user.setFullName(userBindingModel.getFullName());
-        user.setEmail(userBindingModel.getEmail());
+        userToEdit.setFullName(userBindingModel.getFullName());
+        userToEdit.setEmail(userBindingModel.getEmail());
 
         Set<Role> roles = new HashSet<>();
 
@@ -87,11 +105,11 @@ public class AdminUserController {
             roles.add(this.roleRepository.findOne(roleId));
         }
 
-        user.setRoles(roles);
+        userToEdit.setRoles(roles);
 
-        this.userRepository.saveAndFlush(user);
+        this.userRepository.saveAndFlush(userToEdit);
 
-        return "redirect:/admin/users/";
+        return redirectLink;
     }
 
     @GetMapping("/delete/{id}")

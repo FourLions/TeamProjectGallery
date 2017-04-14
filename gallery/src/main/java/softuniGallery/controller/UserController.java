@@ -90,7 +90,7 @@ public class UserController {
     @GetMapping("/profile/edit/{id}")
     public String editProfile(@PathVariable Integer id, Model model) {
         if (!this.userRepository.exists(id)) {
-            return "redirect:/admin/users/";
+            return "redirect:/";
         }
 
         User user = this.userRepository.findOne(id);
@@ -121,11 +121,20 @@ public class UserController {
             }
         }
 
+        String redirectLink = null;
+
+        if (user.getEmail().equals(userBindingModel.getEmail())) {
+            redirectLink = "redirect:/profile";
+        }
+        else {
+            redirectLink = "redirect:/login?logout";
+        }
+
         user.setFullName(userBindingModel.getFullName());
         user.setEmail(userBindingModel.getEmail());
 
         this.userRepository.saveAndFlush(user);
 
-        return "redirect:/profile";
+        return redirectLink;
     }
 }
