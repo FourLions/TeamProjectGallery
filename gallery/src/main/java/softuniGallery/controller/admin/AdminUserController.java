@@ -80,8 +80,7 @@ public class AdminUserController {
         if (userToEdit.getFullName().equals(currentLoggedUser.getFullName())) {
             if (userToEdit.getEmail().equals(userBindingModel.getEmail())) {
                 redirectLink = "redirect:/admin/users/";
-            }
-            else {
+            } else {
                 redirectLink = "redirect:/login?logout";
             }
         }
@@ -132,22 +131,36 @@ public class AdminUserController {
             return "redirect:/admin/users/";
         }
 
-        User user = this.userRepository.findOne(id);
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
 
-        for (Article article : user.getArticles()) {
+        User currentLoggedUser = this.userRepository.findByEmail(principal.getUsername());
+        User userToDelete = this.userRepository.findOne(id);
+
+        String redirectLink = "redirect:/admin/users/";
+
+        if (userToDelete.getFullName().equals(currentLoggedUser.getFullName())) {
+            redirectLink = "redirect:/login?logout";
+
+        } else {
+            redirectLink = "redirect:/admin/users/";
+        }
+
+        for (Article article : userToDelete.getArticles()) {
             this.articleRepository.delete(article);
         }
 
-        for (Album album : user.getAlbums()) {
+        for (Album album : userToDelete.getAlbums()) {
             this.albumRepository.delete(album);
         }
 
-        for (Link link : user.getLinks()) {
+        for (Link link : userToDelete.getLinks()) {
             this.linkRepository.delete(link);
         }
 
-        this.userRepository.delete(user);
+        this.userRepository.delete(userToDelete);
 
-        return "redirect:/admin/users/";
+        return redirectLink;
     }
 }
