@@ -16,13 +16,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr th:class="info">
-                            <td th:text="${user.fullName}"></td>
-                            <td th:text="${user.email}"></td>
-                            <td th:text="${user.telephoneNumber}"></td>
-                            <td th:text="${user.town}"></td>
-                            <td th:text="${user.country}"></td>
-                        </tr>
+                    <tr th:class="info">
+                        <td th:text="${user.fullName}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.telephoneNumber}"></td>
+                        <td th:text="${user.town}"></td>
+                        <td th:text="${user.country}"></td>
+                    </tr>
                     </tbody>
                 </table>
                 <div>
@@ -33,14 +33,14 @@
                 <footer>
                     <div class="pull-right">
                         <th:block sec:authorize="isAuthenticated()">
-                            <a class="btn btn-success btn-xs"
+                            <a class="btn btn-success"
                                th:href="@{/profile/info/{id}(id = ${user.id})}">Edit Information</a>
                             <a class="btn btn-default" th:href="@{/profile/edit/{id} (id=${user.id})}">Edit Profile</a>
                         </th:block>
                     </div>
                 </footer>
 
-          </div>
-      </div>
+            </div>
+        </div>
     </div>
-  </main>
+</main>

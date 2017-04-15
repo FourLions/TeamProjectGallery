@@ -2,32 +2,14 @@
     <div class="container body-content">
         <div class="row">
             <th:block th:each="album : ${albums}">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <article>
-                        <header>
-                            <h2 th:text="${album.name}"></h2>
-                        </header>
-
                         <th:block th:each="image : ${album.imagePathList}">
-                            <img th:src="${image}" width="400" height="300"/>
-
-                            <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/"
-                                 data-layout="standard" data-action="like" data-show-faces="true"
-                                 data-share="true"></div>
-                            <div class="fb-comments"
-                                 data-href="https://developers.facebook.com/docs/plugins/comments#configurator"
-                                 data-numposts="1"></div>
-
+                            <a th:href="@{/album/{id}(id=${album.id})}">
+                                <img th:src="${image}" width="200" height="150"/>
+                            </a>
+                            <small class="author" th:text="${album.author.fullName}"></small>
                         </th:block>
-
-                        <small class="author" th:text="${album.author.fullName}"></small>
-
-                        <footer>
-                            <div class="pull-right">
-                                <a class="btn btn-default btn-xs"
-                                   th:href="@{/album/{id}(id=${album.id})}">See more &raquo;</a>
-                            </div>
-                        </footer>
                     </article>
                 </div>
             </th:block>

@@ -12,11 +12,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/test}">
-                            My Test
-                        </a>
-                    </li>
                     <li class="dropdown" sec:authorize="isAuthenticated()">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Links<span
                                 class="caret"></span></a>

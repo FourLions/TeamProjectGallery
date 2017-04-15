@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.UserEditBindingModel;
+import softuniGallery.bindingModel.UserInfoBindingModel;
 import softuniGallery.entity.*;
 import softuniGallery.repository.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -161,6 +165,61 @@ public class AdminUserController {
 
         this.userRepository.delete(userToDelete);
 
+        return redirectLink;
+    }
+
+
+    @GetMapping("/info/{id}")
+    public String editInfo(@PathVariable Integer id, Model model) {
+        if (!this.userRepository.exists(id)) {
+            return "redirect:/admin/users/";
+        }
+
+        User user = this.userRepository.findOne(id);
+        List<Role> roles = this.roleRepository.findAll();
+
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
+        model.addAttribute("view", "admin/user/editInfo");
+
+        return "base-layout";
+    }
+
+
+    @PostMapping("/info/{id}")
+    public String editInfoProcess(@PathVariable Integer id,
+                                  UserInfoBindingModel userInfoBindingModel) {
+        if (!this.userRepository.exists(id)) {
+            return "redirect:/admin/users/";
+        }
+
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        User currentLoggedUser = this.userRepository.findByEmail(principal.getUsername());
+        User userToEdit = this.userRepository.findOne(id);
+        String redirectLink = "redirect:/admin/users/";
+
+        userToEdit.setTown(userInfoBindingModel.getTown());
+        userToEdit.setCountry(userInfoBindingModel.getCountry());
+        userToEdit.setTelephoneNumber(userInfoBindingModel.getTelephoneNumber());
+        userToEdit.setInformation(userInfoBindingModel.getInformation());
+
+        MultipartFile file = userInfoBindingModel.getProfilePicture();
+
+        if (file != null) {
+            String originalName = file.getOriginalFilename();
+            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+            try {
+                file.transferTo(imageFile);
+                userToEdit.setProfilePicture("/images/" + originalName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.userRepository.saveAndFlush(userToEdit);
         return redirectLink;
     }
 }

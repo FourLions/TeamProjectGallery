@@ -21,6 +21,7 @@
                             <td th:text="${user.email}"></td>
                             <td>
                                 <a th:href="@{/admin/users/edit/{id}(id=${user.id})}">Edit</a>
+                                <a th:href="@{/admin/users/info/{id}(id=${user.id})}">Edit Info</a>
                                 <a th:href="@{/admin/users/delete/{id}(id=${user.id})}">Delete</a>
                                 <!--<a th:href="@{/admin/users/userAlbums/{id}(id=${user.id})}">View User Albums</a>-->
                             </td>
