@@ -17,6 +17,11 @@ public class User {
     private Set<Article> articles;
     private Set<Album> albums;
     private Set<Link> links;
+    private String town;
+    private String country;
+    private String telephoneNumber;
+    private String information;
+    private String profilePicture;
 
     public User(String email, String fullName, String password) {
         this.email = email;
@@ -30,6 +35,51 @@ public class User {
 
     public User() {
 
+    }
+
+    @Column(name = "town")
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    @Column(name = "country")
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    @Column(name = "phoneNumber")
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    @Column(columnDefinition = "text", name = "information")
+    public String getInformation() {
+        return information;
+    }
+
+    public void setInformation(String information) {
+        this.information = information;
+    }
+
+    @Column(columnDefinition = "text", name = "profilePicture")
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     @OneToMany(mappedBy = "author")

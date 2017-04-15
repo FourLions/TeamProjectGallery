@@ -3,21 +3,44 @@
         <div class="row">
             <div id="main" class="col-sm-9">
                 <div>
-                    <div>Email:</div>
-                    <span th:text="${user.email}"></span>
-                    <br/>
-                    <div>Username:</div>
-                    <span th:text="${user.fullName}"></span>
+                    <img th:src="${user.profilePicture}" width="200" height="300"/>
+                </div>
+                <table class="table table-striped table-hover ">
+                    <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Town</th>
+                        <th>Country</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:class="info">
+                            <td th:text="${user.fullName}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.telephoneNumber}"></td>
+                            <td th:text="${user.town}"></td>
+                            <td th:text="${user.country}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <div>About:</div>
+                    <span th:text="${user.information}"></span>
+                </div>
 
-                    <div>
-                        <a class="btn btn-default" th:href="@{/profile/edit/{id} (id=${user.id})}">Edit Profile</a><!--{id}(id = ${link.id})-->
-                        <!--  <input type="submit" class="btn btn-success" value="Edit"/>-->
-                      </div>
-
-                  </div>
-
-              </div>
+                <footer>
+                    <div class="pull-right">
+                        <th:block sec:authorize="isAuthenticated()">
+                            <a class="btn btn-success btn-xs"
+                               th:href="@{/profile/info/{id}(id = ${user.id})}">Edit Information</a>
+                            <a class="btn btn-default" th:href="@{/profile/edit/{id} (id=${user.id})}">Edit Profile</a>
+                        </th:block>
+                    </div>
+                </footer>
 
           </div>
       </div>
+    </div>
   </main>

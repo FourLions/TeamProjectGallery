@@ -10,8 +10,10 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.UserBindingModel;
 import softuniGallery.bindingModel.UserEditBindingModel;
+import softuniGallery.bindingModel.UserInfoBindingModel;
 import softuniGallery.entity.Role;
 import softuniGallery.entity.User;
 import softuniGallery.repository.RoleRepository;
@@ -21,6 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 @Controller
 public class UserController {
@@ -136,5 +141,50 @@ public class UserController {
         this.userRepository.saveAndFlush(user);
 
         return redirectLink;
+    }
+
+    @GetMapping("/profile/info/{id}")
+    public String editInfo(@PathVariable Integer id, Model model) {
+        if (!this.userRepository.exists(id)) {
+            return "redirect:/profile";
+        }
+
+        User user = this.userRepository.findOne(id);
+
+        model.addAttribute("user", user);
+        model.addAttribute("view", "user/info");
+
+        return "base-layout";
+    }
+
+    @PostMapping("/profile/info/{id}")
+    public String editInfoProcess(@PathVariable Integer id, UserInfoBindingModel userInfoBindingModel) {
+        if (!this.userRepository.exists(id)) {
+            return "redirect:/profile";
+        }
+
+        User user = this.userRepository.findOne(id);
+
+        user.setTown(userInfoBindingModel.getTown());
+        user.setCountry(userInfoBindingModel.getCountry());
+        user.setTelephoneNumber(userInfoBindingModel.getTelephoneNumber());
+        user.setInformation(userInfoBindingModel.getInformation());
+
+        MultipartFile file = userInfoBindingModel.getProfilePicture();
+
+        if (file != null) {
+            String originalName = file.getOriginalFilename();
+            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+            try {
+                file.transferTo(imageFile);
+                user.setProfilePicture("/images/" + originalName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.userRepository.saveAndFlush(user);
+
+        return "redirect:/profile";
     }
 }

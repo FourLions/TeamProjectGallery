@@ -1,0 +1,50 @@
+<main xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" th:action="@{/profile/info/{id}(id=${user.id})}" method="post" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Edit Information</legend>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_town">Town</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" type="text" id="user_town" placeholder="Town" name="town"
+                                   required="required" th:value="${user.town}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_country">Country</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" type="text" id="user_country" placeholder="Country"
+                                   name="country" required="required" th:value="${user.country}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_telephone_number">Phone Number</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" type="text" id="user_telephone_number" placeholder="Phone Number"
+                                   name="telephoneNumber" required="required" th:value="${user.telephoneNumber}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="image">Profile Picture</label>
+                        <div class="col-sm-4 ">
+                            <input type="file" class="form-control" id="image" name="profilePicture"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_information">Write something about you</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="6" id="user_information" name="information"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" th:href="@{/profile}">Cancel</a>
+                            <input value="Edit" type="submit" class="btn btn-success"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>

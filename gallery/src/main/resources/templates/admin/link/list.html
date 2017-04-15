@@ -22,8 +22,8 @@
                             <td th:text="${link.content}"></td>
                             <td th:text="${link.link}"></td>
                             <td>
-                                <a th:href="@{/link/edit/{id}(id = ${link.id})}">Edit</a>
-                                <a th:href="@{/link/delete/{id}(id = ${link.id})}">Delete</a>
+                                <a th:href="@{/admin/links/edit/{id}(id=${link.id})}">Edit</a>
+                                <a th:href="@{/admin/links/delete/{id}(id=${link.id})}">Delete</a>
                             </td>
                         </tr>
                     </th:block>

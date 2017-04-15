@@ -1,0 +1,32 @@
+<main>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" th:action="@{/admin/links/edit/{id}(id=${link.id})}" method="POST">
+                <fieldset>
+                    <legend>Edit Link</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="link_content">Content</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="6" id="link_content" name="content" th:field="${link.content}"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="link_link">Link</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="6" id="link_link" name="link" th:field="${link.link}"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" th:href="@{/admin/links/}">Cancel</a>
+                            <input value="Edit" type="submit" class="btn btn-success"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>

@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import softuniGallery.bindingModel.LinkBindingModel;
 import softuniGallery.entity.Link;
 import softuniGallery.repository.LinkRepository;
 
@@ -25,5 +28,63 @@ public class AdminLinksController {
         model.addAttribute("view", "admin/link/list");
 
         return "base-layout";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        if (!this.linkRepository.exists(id)) {
+            return "redirect:/admin/links";
+        }
+
+        Link link = this.linkRepository.findOne(id);
+
+        model.addAttribute("link", link);
+        model.addAttribute("view", "admin/link/edit");
+
+        return "base-layout";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editProcess(@PathVariable Integer id, LinkBindingModel linkBindingModel) {
+
+        if (!this.linkRepository.exists(id)) {
+            return "redirect:/admin/links/";
+        }
+
+        Link link = this.linkRepository.findOne(id);
+
+        link.setContent(linkBindingModel.getContent());
+        link.setLink(linkBindingModel.getLink());
+
+        this.linkRepository.saveAndFlush(link);
+
+        return "redirect:/admin/links/";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, Model model) {
+        if (!this.linkRepository.exists(id)) {
+            return "redirect:/admin/links/";
+        }
+
+        Link link = this.linkRepository.findOne(id);
+
+        model.addAttribute("link", link);
+        model.addAttribute("view", "admin/link/delete");
+
+        return "base-layout";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteProcess(@PathVariable Integer id) {
+        if (!this.linkRepository.exists(id)) {
+            return "redirect:/admin/links/";
+        }
+
+        Link link = this.linkRepository.findOne(id);
+
+        this.linkRepository.delete(link);
+
+        return "redirect:/admin/links/";
     }
 }
