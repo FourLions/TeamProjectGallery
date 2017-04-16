@@ -1,0 +1,30 @@
+<main>
+    <div class="well">
+        <form class="form-horizontal" th:action="@{/album/createAlbum}" method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Create Album</legend>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="album_name">Album name</label>
+                    <div class="col-sm-4 ">
+                        <input type="text" class="form-control" id="album_name" placeholder="Album Name"
+                               name="name"/>
+                    </div>
+                </div>
+
+                <input type="file" name="images"/><br/>
+                <input type="file" name="images"/><br/>
+                <input type="file" name="images"/><br/>
+                <input type="submit" value="Submit"/>
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <a class="btn btn-default" th:href="@{/}">Cancel</a>
+                        <input type="submit" class="btn btn-primary" value="Submit"/>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+</main>
