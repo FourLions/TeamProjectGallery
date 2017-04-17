@@ -10,6 +10,17 @@ public class AlbumBindingModel {
     private List<MultipartFile> pictures;
 
     @NotNull
+    private MultipartFile picture;
+
+    public MultipartFile getPicture() {
+        return picture;
+    }
+
+    public void setPicture(MultipartFile picture) {
+        this.picture = picture;
+    }
+
+    @NotNull
     private String name;
 
     public String getName() {

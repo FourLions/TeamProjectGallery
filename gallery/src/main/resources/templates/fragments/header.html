@@ -28,6 +28,11 @@
                             <li><a th:href="@{/album/viewAlbums}">View Albums</a></li>
                         </ul>
                     </li>
+                   <!-- <li sec:authorize="isAuthenticated()">
+                        <a th:href="@{/upload}">
+                            TestUpload
+                        </a>
+                    </li>-->
                     <li sec:authorize="isAuthenticated()">
                         <a th:href="@{/article/create}">
                             Create Article

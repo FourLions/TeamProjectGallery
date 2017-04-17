@@ -34,7 +34,7 @@ public class AlbumController {
     @GetMapping("/album/createAlbum")
     @PreAuthorize("isAuthenticated()")
     public String create(Model model) {
-        model.addAttribute("view", "album/createAlbum");
+        model.addAttribute("view", "up/upload");
         return "base-layout";
     }
 
@@ -48,7 +48,6 @@ public class AlbumController {
 
         User userEntity = this.userRepository.findByEmail(user.getUsername());
 
-
         Album albumEntity = new Album(
                 albumBindingModel.getName(),
                 userEntity
@@ -59,6 +58,7 @@ public class AlbumController {
 
         uploadFiles(albumEntity, files, listImages);
 
+
         this.albumRepository.saveAndFlush(albumEntity);
         return "redirect:/album/viewAlbums";
     }
@@ -66,7 +66,10 @@ public class AlbumController {
     private void uploadFiles(Album albumEntity, List<MultipartFile> files, List<String> listImages) {
         if (files != null && files.size() > 0) {
             for (int i = 0; i < files.size(); i++) {
-
+                boolean setAlbumPicture = false;
+                if (i == 0) {
+                    setAlbumPicture = true;
+                }
                 if (files.get(i) != null) {
                     String originalName = files.get(i).getOriginalFilename();
                     File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
@@ -75,6 +78,9 @@ public class AlbumController {
                         String image = "/images/" + originalName;
                         listImages.add(image);
                         albumEntity.setImagePathList(listImages);
+                        if (setAlbumPicture) {
+                            albumEntity.setAlbumPicture(image);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -1,19 +1,16 @@
 <main>
     <div class="container body-content">
         <div class="row">
-            <div class="col-md-4">
-                <article>
 
-                    <th:block th:each="image : ${album.imagePathList}">
-
+            <th:block th:each="image : ${album.imagePathList}">
+                <div class="col-md-4">
+                    <aritcle>
                         <img th:src="${image}" width="300" height="200"/>
+                    </aritcle>
+                    <!--<small class="author" th:text="${album.author.fullName}"></small>-->
+                </div>
+            </th:block>
 
-                        <small class="author" th:text="${album.author.fullName}"></small>
-
-                    </th:block>
-
-                </article>
-            </div>
         </div>
     </div>
 </main>

@@ -1,6 +1,8 @@
 package softuniGallery.entity;
 
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,15 @@ public class Album {
     private String name;
     private User author;
     private List<String> imagePathList;
+    private String albumPicture;
+
+    public String getAlbumPicture() {
+        return albumPicture;
+    }
+
+    public void setAlbumPicture(String albumPicture) {
+        this.albumPicture = albumPicture;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

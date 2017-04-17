@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import softuniGallery.entity.Album;
 import softuniGallery.repository.AlbumRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
