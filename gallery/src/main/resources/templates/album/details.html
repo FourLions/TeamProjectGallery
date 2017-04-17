@@ -17,6 +17,7 @@
         <footer>
             <div class="pull-right">
                 <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(album)}">
+                    <a class="btn btn-success btn-xs" th:href="@{/album/addPicture/{id}(id = ${album.id})}">Add Picture</a>
                     <a class="btn btn-success btn-xs" th:href="@{/album/edit/{id}(id = ${album.id})}">Edit</a>
                     <a class="btn btn-danger btn-xs" th:href="@{/album/delete/{id}(id = ${album.id})}">Delete</a>
                 </th:block>

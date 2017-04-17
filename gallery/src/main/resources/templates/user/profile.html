@@ -1,7 +1,7 @@
 <main xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container body-container">
         <div class="row">
-            <div id="main" class="col-sm-9">
+            <div id="main" class="col-sm-3">
                 <div>
                     <img th:src="${user.profilePicture}" width="200" height="300"/>
                 </div>
@@ -9,17 +9,33 @@
                     <thead>
                     <tr>
                         <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:class="info">
+                        <td th:text="${user.fullName}"></td>
+                    </tr>
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:class="info">
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.telephoneNumber}"></td>
+                    </tr>
+                    </tbody>
+                    <thead>
+                    <tr>
                         <th>Town</th>
                         <th>Country</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:class="info">
-                        <td th:text="${user.fullName}"></td>
-                        <td th:text="${user.email}"></td>
-                        <td th:text="${user.telephoneNumber}"></td>
                         <td th:text="${user.town}"></td>
                         <td th:text="${user.country}"></td>
                     </tr>

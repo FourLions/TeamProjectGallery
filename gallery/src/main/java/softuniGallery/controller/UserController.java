@@ -174,7 +174,7 @@ public class UserController {
 
         if (file != null) {
             String originalName = file.getOriginalFilename();
-            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
             try {
                 file.transferTo(imageFile);
                 user.setProfilePicture("/images/" + originalName);
