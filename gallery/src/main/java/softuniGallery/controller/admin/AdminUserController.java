@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.UserEditBindingModel;
 import softuniGallery.bindingModel.UserInfoBindingModel;
+import softuniGallery.controller.UserController;
 import softuniGallery.entity.*;
 import softuniGallery.repository.*;
 
@@ -197,7 +198,7 @@ public class AdminUserController {
                 .getAuthentication()
                 .getPrincipal();
 
-        User currentLoggedUser = this.userRepository.findByEmail(principal.getUsername());
+        //User currentLoggedUser = this.userRepository.findByEmail(principal.getUsername());
         User userToEdit = this.userRepository.findOne(id);
         String redirectLink = "redirect:/admin/users/";
 
@@ -208,16 +209,9 @@ public class AdminUserController {
 
         MultipartFile file = userInfoBindingModel.getProfilePicture();
 
-        if (file != null) {
-            String originalName = file.getOriginalFilename();
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
-            try {
-                file.transferTo(imageFile);
-                userToEdit.setProfilePicture("/images/" + originalName);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        UserController userController = new UserController();
+
+        userController.upladFile(userToEdit, file);
 
         this.userRepository.saveAndFlush(userToEdit);
         return redirectLink;

@@ -99,7 +99,7 @@ public class CategoryController {
             return "redirect:/admin/categories/";
         }
         Category category = this.categoryRepository.findOne(id);
-        //Преди да изтрием категорията, трябва да изтрием всички артикъли (снимки) с тази категория
+
         for(Article article : category.getArticles()){
             this.articleRepository.delete(article);
         }

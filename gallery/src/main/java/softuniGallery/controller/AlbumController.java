@@ -63,7 +63,7 @@ public class AlbumController {
         return "redirect:/album/viewAlbums";
     }
 
-    private void uploadFiles(Album albumEntity, List<MultipartFile> files, List<String> listImages) {
+    public void uploadFiles(Album albumEntity, List<MultipartFile> files, List<String> listImages) {
         if (files != null && files.size() > 0) {
             for (int i = 0; i < files.size(); i++) {
                 boolean setAlbumPicture = false;
@@ -153,6 +153,14 @@ public class AlbumController {
 
         uploadFiles(album, files, listImages);
 
+        deleteImage(imagesPath, listImages);
+
+        this.albumRepository.saveAndFlush(album);
+
+        return "redirect:/album/" + album.getId();
+    }
+
+    public void deleteImage(List<String> imagesPath, List<String> listImages) {
         if (imagesPath != null && imagesPath.size() > 0) {
 
             for (int i = 0; i < imagesPath.size(); i++) {
@@ -166,13 +174,9 @@ public class AlbumController {
                 }
             }
         }
-
-        this.albumRepository.saveAndFlush(album);
-
-        return "redirect:/album/" + album.getId();
     }
 
-    private void deleteFiles(String originalName) {
+    public void deleteFiles(String originalName) {
         try {
             File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalName);
             if (imageFile.delete()) {
@@ -219,6 +223,14 @@ public class AlbumController {
 
         List<String> imagesPath = album.getImagePathList();
 
+        deleteListImages(imagesPath);
+
+        this.albumRepository.delete(album);
+
+        return "redirect:/album/viewAlbums";
+    }
+
+    public void deleteListImages(List<String> imagesPath) {
         if (imagesPath != null && imagesPath.size() > 0) {
 
             for (int i = 0; i < imagesPath.size(); i++) {
@@ -229,10 +241,6 @@ public class AlbumController {
                 }
                 }
             }
-
-        this.albumRepository.delete(album);
-
-        return "redirect:/album/viewAlbums";
     }
 
     private boolean isUserAuthorOrAdmin(Album album) {

@@ -172,6 +172,14 @@ public class UserController {
 
         MultipartFile file = userInfoBindingModel.getProfilePicture();
 
+        upladFile(user, file);
+
+        this.userRepository.saveAndFlush(user);
+
+        return "redirect:/profile";
+    }
+
+    public void upladFile(User user, MultipartFile file) {
         if (file != null) {
             String originalName = file.getOriginalFilename();
             File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
@@ -182,9 +190,5 @@ public class UserController {
                 e.printStackTrace();
             }
         }
-
-        this.userRepository.saveAndFlush(user);
-
-        return "redirect:/profile";
     }
 }
