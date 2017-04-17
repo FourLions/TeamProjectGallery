@@ -8,17 +8,21 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="album_name">Post Name</label>
                         <div class="col-sm-4 ">
-                            <input type="text" class="form-control" id="album_name" placeholder="Post Name" name="name" th:value="${album.name}" disabled="disabled"/>
+                            <input type="text" class="form-control" id="album_name" placeholder="Post Name" name="name"
+                                   th:value="${album.name}" disabled="disabled"/>
+                            <img th:src="${album.albumPicture}" width="200" height="150"/>
                         </div>
+
                     </div>
 
-                    <th:block th:each="image : ${album.imagePathList}">
+                    <!--<th:block th:each="image : ${album.imagePathList}">
 
                         <img th:src="${image}" width="400" height="300"/>
 
                         <small class="author" th:text="${album.author.fullName}"></small>
 
-                    </th:block>
+                    </th:block>-->
+
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">

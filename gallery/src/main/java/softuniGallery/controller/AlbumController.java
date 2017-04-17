@@ -34,7 +34,7 @@ public class AlbumController {
     @GetMapping("/album/createAlbum")
     @PreAuthorize("isAuthenticated()")
     public String create(Model model) {
-        model.addAttribute("view", "up/upload");
+        model.addAttribute("view", "album/createAlbum");
         return "base-layout";
     }
 
