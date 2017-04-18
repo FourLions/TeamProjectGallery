@@ -1,0 +1,32 @@
+<main>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" th:action="@{/album/editPicture/{id}(id=${id})}" method="POST" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Edit Picture</legend>
+
+                    <th:block>
+                        <div class="col-md-4">
+                            <aritcle>
+                                <img th:src="${album.imagePathList.get(0)}" width="200" height="100"/>
+                            </aritcle>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="image">Choose a Picture</label>
+                            <div class="col-sm-4 ">
+                                <input type="file" name="pictures" id="image"/>
+                            </div>
+                        </div>
+                    </th:block>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" th:href="@{/album/{id}(id = ${album.id})}">Cancel</a>
+                            <input type="submit" class="btn btn-success" value="Edit"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>

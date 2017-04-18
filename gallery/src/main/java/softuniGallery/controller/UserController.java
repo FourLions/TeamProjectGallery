@@ -172,17 +172,17 @@ public class UserController {
 
         MultipartFile file = userInfoBindingModel.getProfilePicture();
 
-        upladFile(user, file);
+        uploadFile(user, file);
 
         this.userRepository.saveAndFlush(user);
 
         return "redirect:/profile";
     }
 
-    public void upladFile(User user, MultipartFile file) {
+    public void uploadFile(User user, MultipartFile file) {
         if (file != null) {
             String originalName = file.getOriginalFilename();
-            File imageFile = new File("user.dir\\src\\main\\resources\\static\\images", originalName);
+            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
             try {
                 file.transferTo(imageFile);
                 user.setProfilePicture("/images/" + originalName);

@@ -211,7 +211,7 @@ public class AdminUserController {
 
         UserController userController = new UserController();
 
-        userController.upladFile(userToEdit, file);
+        userController.uploadFile(userToEdit, file);
 
         this.userRepository.saveAndFlush(userToEdit);
         return redirectLink;
