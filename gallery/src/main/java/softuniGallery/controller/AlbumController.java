@@ -239,8 +239,8 @@ public class AlbumController {
                     String originalName = imagesPath.get(i);
                     deleteFiles(originalName);
                 }
-                }
             }
+        }
     }
 
     private boolean isUserAuthorOrAdmin(Album album) {
@@ -305,4 +305,57 @@ public class AlbumController {
 
         return "redirect:/album/" + album.getId();
     }
+
+    @GetMapping("/album/editPicture/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String editPicture(@PathVariable Integer id, Model model) {
+        if (!this.albumRepository.exists(id)) {
+            return "redirect:/album/viewAlbums";
+        }
+
+        Album album = this.albumRepository.findOne(id);
+
+        if (!isUserAuthorOrAdmin(album)) {
+            return "redirect:/album/" + id;
+        }
+
+        model.addAttribute("view", "album/editPicture");
+        model.addAttribute("album", album);
+
+        return "base-layout";
+    }
+
+//    @PostMapping("/album/editPicture/{id}")
+//    @PreAuthorize("isAuthenticated()")
+//    public String editPictureProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
+//        if (!this.albumRepository.exists(id)) {
+//            return "redirect:/album/viewAlbums";
+//        }
+//
+//        Album album = this.albumRepository.findOne(id);
+//
+//        if (!isUserAuthorOrAdmin(album)) {
+//            return "redirect:/album/" + id;
+//        }
+//
+//        List<String> imagesPath = album.getImagePathList();
+//
+//        MultipartFile file = albumBindingModel.getPicture();
+//
+//        if (file != null) {
+//            String originalName = file.getOriginalFilename();
+//            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+//            try {
+//                file.transferTo(imageFile);
+//                String pathPicture = "/images/" + originalName;
+//                imagesPath.add(pathPicture);
+//                album.setImagePathList(imagesPath);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        this.albumRepository.saveAndFlush(album);
+//
+//        return "redirect:/album/" + album.getId();
+//    }
 }

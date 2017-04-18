@@ -182,7 +182,7 @@ public class UserController {
     public void upladFile(User user, MultipartFile file) {
         if (file != null) {
             String originalName = file.getOriginalFilename();
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+            File imageFile = new File("user.dir\\src\\main\\resources\\static\\images", originalName);
             try {
                 file.transferTo(imageFile);
                 user.setProfilePicture("/images/" + originalName);

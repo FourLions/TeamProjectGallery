@@ -46,6 +46,7 @@ public class Album {
     }
 
     @ElementCollection
+    @OrderColumn(name = "index_id")
     public List<String> getImagePathList() {
         return imagePathList;
     }
