@@ -1,21 +1,20 @@
 <main>
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            <form class="form-horizontal" th:action="@{/album/addPicture/{id}(id=${album.id})}" method="POST" enctype="multipart/form-data">
+            <form class="form-horizontal" th:action="@{/album/deletePicture/{id}(id=${image.id})}" method="POST">
                 <fieldset>
-                    <legend>Add Picture</legend>
+                    <legend>Delete Picture</legend>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="album_image">Choose a Picture</label>
                         <div class="col-sm-4 ">
-                            <input type="file" class="form-control" id="album_image" name="picture"/>
+                            <img th:src="${image.path}" width="250" height="150"/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <a class="btn btn-default" th:href="@{/album/{id}(id = ${album.id})}">Cancel</a>
-                            <input type="submit" class="btn btn-success" value="Add Picture"/>
+                            <input type="submit" class="btn btn-danger" value="Delete"/>
                         </div>
                     </div>
                 </fieldset>

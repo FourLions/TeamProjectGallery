@@ -65,16 +65,16 @@ public class AdminAlbumController {
 
         album.setName(albumBindingModel.getName());
 
-        List<String> imagesPath = album.getImagePathList();
+        //List<String> imagesPath = album.getImagePathList();
 
         List<MultipartFile> files = albumBindingModel.getPictures();
         List<String> listImages = new LinkedList<>();
 
         AlbumController albumController = new AlbumController();
 
-        albumController.uploadFiles(album, files, listImages);
+        //albumController.uploadFiles(album, files, listImages);
 
-        albumController.deleteImage(imagesPath, listImages);
+        //albumController.deleteImage(imagesPath, listImages);
 
         this.albumRepository.saveAndFlush(album);
 
@@ -103,11 +103,11 @@ public class AdminAlbumController {
 
         Album album = this.albumRepository.findOne(id);
 
-        List<String> imagesPath = album.getImagePathList();
+        //List<String> imagesPath = album.getImagePathList();
 
         AlbumController albumController = new AlbumController();
 
-        albumController.deleteListImages(imagesPath);
+        //albumController.deleteListImages(imagesPath);
 
         this.albumRepository.delete(album);
 

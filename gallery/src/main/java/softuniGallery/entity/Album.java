@@ -4,6 +4,7 @@ package softuniGallery.entity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,49 +16,61 @@ public class Album {
     private Integer id;
     private String name;
     private User author;
-    private List<String> imagePathList;
+    //private List<String> imagePathList;
     private String albumPicture;
-
-    public String getAlbumPicture() {
-        return albumPicture;
-    }
-
-    public void setAlbumPicture(String albumPicture) {
-        this.albumPicture = albumPicture;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private List<ImageAlbum> imageAlbums;
 
     public Album(String name, User author) {
         this.author = author;
         this.name = name;
+        this.imageAlbums = new LinkedList<>();
     }
 
     public Album() {
 
     }
 
-    @ElementCollection
-    @OrderColumn(name = "index_id")
-    public List<String> getImagePathList() {
-        return imagePathList;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
+        return this.id;
     }
 
-    public void setImagePathList(List<String> imagePathList) {
-        this.imagePathList = imagePathList;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @OneToMany(mappedBy = "album")
+    public List<ImageAlbum> getImageAlbums() {
+        return this.imageAlbums;
+    }
+
+    public void setImageAlbums(List<ImageAlbum> imageAlbums) {
+        this.imageAlbums = imageAlbums;
     }
 
     @Column(nullable = false)
+    public String getAlbumPicture() {
+        return this.albumPicture;
+    }
+
+    public void setAlbumPicture(String albumPicture) {
+        this.albumPicture = albumPicture;
+    }
+
+////    @ElementCollection
+////    @OrderColumn(name = "index_id")
+////    public List<String> getImagePathList() {
+////        return imagePathList;
+////    }
+//
+//    public void setImagePathList(List<String> imagePathList) {
+//        this.imagePathList = imagePathList;
+//    }
+
+    @Column(nullable = false)
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String albumNameConstr) {
@@ -67,7 +80,7 @@ public class Album {
     @ManyToOne()
     @JoinColumn(nullable = false, name = "authorId")
     public User getAuthor() {
-        return author;
+        return this.author;
     }
 
     public void setAuthor(User author) {
@@ -83,6 +96,6 @@ public class Album {
     public boolean isAuthor(Integer author_id){
         return this.author.getAlbums()
                 .stream()
-                .anyMatch(role->role.getId() == author_id);//.getName().equals("ROLE_ADMIN"));
+                .anyMatch(role->role.getId() == author_id);
     }
 }

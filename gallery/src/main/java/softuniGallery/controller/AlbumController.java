@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.AlbumBindingModel;
 import softuniGallery.entity.Album;
+import softuniGallery.entity.ImageAlbum;
 import softuniGallery.entity.User;
 import softuniGallery.repository.AlbumRepository;
+import softuniGallery.repository.ImageRepository;
 import softuniGallery.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,8 @@ public class AlbumController {
     private AlbumRepository albumRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @GetMapping("/album/createAlbum")
     @PreAuthorize("isAuthenticated()")
@@ -54,30 +58,29 @@ public class AlbumController {
         );
 
         List<MultipartFile> files = albumBindingModel.getPictures();
-        List<String> listImages = new LinkedList<>();
-
-        uploadFiles(albumEntity, files, listImages);
-
-
+        List<ImageAlbum> imageAlbumList = new LinkedList<>();
         this.albumRepository.saveAndFlush(albumEntity);
-        return "redirect:/album/viewAlbums";
-    }
+        ImageAlbum imageAlbum = new ImageAlbum();
 
-    public void uploadFiles(Album albumEntity, List<MultipartFile> files, List<String> listImages) {
         if (files != null && files.size() > 0) {
             for (int i = 0; i < files.size(); i++) {
+
                 boolean setAlbumPicture = false;
+
                 if (i == 0) {
                     setAlbumPicture = true;
                 }
                 if (files.get(i) != null) {
-                    String originalName = files.get(i).getOriginalFilename();
-                    File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                     try {
+                        String originalName = files.get(i).getOriginalFilename();
+                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                         files.get(i).transferTo(imageFile);
                         String image = "/images/" + originalName;
-                        listImages.add(image);
-                        albumEntity.setImagePathList(listImages);
+                        imageAlbum.setPath(image);
+                        imageAlbum.setAlbum(albumEntity);
+                        this.imageRepository.saveAndFlush(imageAlbum);
+                        imageAlbumList.add(imageAlbum);
+
                         if (setAlbumPicture) {
                             albumEntity.setAlbumPicture(image);
                         }
@@ -87,7 +90,13 @@ public class AlbumController {
                 }
             }
         }
+
+        albumEntity.setImageAlbums(imageAlbumList);
+
+        this.albumRepository.saveAndFlush(albumEntity);
+        return "redirect:/album/viewAlbums";
     }
+
 
     @GetMapping("/album/{id}")
     public String details(Model model, @PathVariable Integer id) {
@@ -112,9 +121,9 @@ public class AlbumController {
         return "base-layout";
     }
 
-    @GetMapping("/album/edit/{id}")
+    @GetMapping("/album/editName/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String editName(@PathVariable Integer id, Model model) {
         if (!this.albumRepository.exists(id)) {
             return "redirect:/album/viewAlbums";
         }
@@ -125,15 +134,15 @@ public class AlbumController {
             return "redirect:/album/" + id;
         }
 
-        model.addAttribute("view", "album/edit");
+        model.addAttribute("view", "album/editName");
         model.addAttribute("album", album);
 
         return "base-layout";
     }
 
-    @PostMapping("/album/edit/{id}")
+    @PostMapping("/album/editName/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String editProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
+    public String editNameProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
         if (!this.albumRepository.exists(id)) {
             return "redirect:/album/viewAlbums";
         }
@@ -144,49 +153,13 @@ public class AlbumController {
             return "redirect:/album/" + id;
         }
 
-        album.setName(albumBindingModel.getName());
+        String name = albumBindingModel.getName();
 
-        List<String> imagesPath = album.getImagePathList();
-
-        List<MultipartFile> files = albumBindingModel.getPictures();
-        List<String> listImages = new LinkedList<>();
-
-        uploadFiles(album, files, listImages);
-
-        deleteImage(imagesPath, listImages);
+        album.setName(name);
 
         this.albumRepository.saveAndFlush(album);
 
         return "redirect:/album/" + album.getId();
-    }
-
-    public void deleteImage(List<String> imagesPath, List<String> listImages) {
-        if (imagesPath != null && imagesPath.size() > 0) {
-
-            for (int i = 0; i < imagesPath.size(); i++) {
-
-                if (imagesPath.get(i) != null) {
-                    String originalName = imagesPath.get(i);
-
-                    if (!listImages.contains(originalName)) {
-                        deleteFiles(originalName);
-                    }
-                }
-            }
-        }
-    }
-
-    public void deleteFiles(String originalName) {
-        try {
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalName);
-            if (imageFile.delete()) {
-                System.out.println(imageFile.getName() + " is deleted!");
-            } else {
-                System.out.println("Delete operation is failed!");
-            }
-        } catch (Exception ex) {
-            System.out.println("Failed to delete image!");
-        }
     }
 
     @GetMapping("/album/delete/{id}")
@@ -221,25 +194,33 @@ public class AlbumController {
             return "redirect:/album" + id;
         }
 
-        List<String> imagesPath = album.getImagePathList();
+        List<ImageAlbum> imageAlbumList = album.getImageAlbums();
 
-        deleteListImages(imagesPath);
+        for (int i = 0; i < imageAlbumList.size(); i++) {
+
+            ImageAlbum imageAlbum = imageAlbumList.get(i);
+            String originalNameAndFolder = imageAlbum.getPath();
+
+            this.imageRepository.delete(imageAlbumList.get(i));
+
+            deleteFile(originalNameAndFolder);
+        }
 
         this.albumRepository.delete(album);
 
         return "redirect:/album/viewAlbums";
     }
 
-    public void deleteListImages(List<String> imagesPath) {
-        if (imagesPath != null && imagesPath.size() > 0) {
-
-            for (int i = 0; i < imagesPath.size(); i++) {
-
-                if (imagesPath.get(i) != null) {
-                    String originalName = imagesPath.get(i);
-                    deleteFiles(originalName);
-                }
+    private void deleteFile(String originalNameAndFolder) {
+        try {
+            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalNameAndFolder);
+            if (imageFile.delete()) {
+                System.out.println(imageFile.getName() + " is deleted!");
+            } else {
+                System.out.println("Delete operation is failed!");
             }
+        } catch (Exception ex) {
+            System.out.println("Failed to delete image!");
         }
     }
 
@@ -279,27 +260,32 @@ public class AlbumController {
         }
 
         Album album = this.albumRepository.findOne(id);
+        List<ImageAlbum> imageAlbumList = album.getImageAlbums();
+        ImageAlbum imageAlbum = new ImageAlbum();
 
         if (!isUserAuthorOrAdmin(album)) {
             return "redirect:/album/" + id;
         }
 
-        List<String> imagesPath = album.getImagePathList();
-
         MultipartFile file = albumBindingModel.getPicture();
 
         if (file != null) {
-            String originalName = file.getOriginalFilename();
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+
             try {
+                String originalName = file.getOriginalFilename();
+                File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                 file.transferTo(imageFile);
                 String pathPicture = "/images/" + originalName;
-                imagesPath.add(pathPicture);
-                album.setImagePathList(imagesPath);
+                imageAlbum.setPath(pathPicture);
+                imageAlbum.setAlbum(album);
+                this.imageRepository.saveAndFlush(imageAlbum);
+                imageAlbumList.add(imageAlbum);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        album.setImageAlbums(imageAlbumList);
 
         this.albumRepository.saveAndFlush(album);
 
@@ -309,53 +295,111 @@ public class AlbumController {
     @GetMapping("/album/editPicture/{id}")
     @PreAuthorize("isAuthenticated()")
     public String editPicture(@PathVariable Integer id, Model model) {
-        if (!this.albumRepository.exists(id)) {
+        if (!this.imageRepository.exists(id)) {
             return "redirect:/album/viewAlbums";
         }
 
-        Album album = this.albumRepository.findOne(id);
+        ImageAlbum image = this.imageRepository.findOne(id);
+        Album album = image.getAlbum();
 
         if (!isUserAuthorOrAdmin(album)) {
-            return "redirect:/album/" + id;
+            return "redirect:/album/" + album.getId();
         }
 
         model.addAttribute("view", "album/editPicture");
+        model.addAttribute("image", image);
         model.addAttribute("album", album);
 
         return "base-layout";
     }
 
-//    @PostMapping("/album/editPicture/{id}")
-//    @PreAuthorize("isAuthenticated()")
-//    public String editPictureProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
-//        if (!this.albumRepository.exists(id)) {
-//            return "redirect:/album/viewAlbums";
-//        }
-//
-//        Album album = this.albumRepository.findOne(id);
-//
-//        if (!isUserAuthorOrAdmin(album)) {
-//            return "redirect:/album/" + id;
-//        }
-//
-//        List<String> imagesPath = album.getImagePathList();
-//
-//        MultipartFile file = albumBindingModel.getPicture();
-//
-//        if (file != null) {
-//            String originalName = file.getOriginalFilename();
-//            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
-//            try {
-//                file.transferTo(imageFile);
-//                String pathPicture = "/images/" + originalName;
-//                imagesPath.add(pathPicture);
-//                album.setImagePathList(imagesPath);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        this.albumRepository.saveAndFlush(album);
-//
-//        return "redirect:/album/" + album.getId();
-//    }
+    @PostMapping("/album/editPicture/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String editPictureProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
+        if (!this.imageRepository.exists(id)) {
+            return "redirect:/album/viewAlbums";
+        }
+
+        ImageAlbum imageAlbum = this.imageRepository.findOne(id);
+        Album album = imageAlbum.getAlbum();
+        String originalNameAndFolder = imageAlbum.getPath();
+        String albumPicturePath = album.getAlbumPicture();
+
+        if (!isUserAuthorOrAdmin(album)) {
+            return "redirect:/album/" + album.getId();
+        }
+
+        List<MultipartFile> files = albumBindingModel.getPictures();
+
+        if (files != null && files.size() > 0) {
+            for (int i = 0; i < files.size(); i++) {
+                if (files.get(i) != null) {
+                    try {
+                        String originalName = files.get(i).getOriginalFilename();
+                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                        files.get(i).transferTo(imageFile);
+                        String pathPicture = "/images/" + originalName;
+
+                        if (albumPicturePath.equals(imageAlbum.getPath())) {
+                            album.setAlbumPicture(pathPicture);
+                            this.albumRepository.saveAndFlush(album);
+                        }
+
+                        imageAlbum.setPath(pathPicture);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        deleteFile(originalNameAndFolder);
+
+        this.imageRepository.saveAndFlush(imageAlbum);
+
+        return "redirect:/album/" + album.getId();
+    }
+
+    @GetMapping("/album/deletePicture/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String deletePicture(@PathVariable Integer id, Model model) {
+        if (!this.imageRepository.exists(id)) {
+            return "redirect:/album/viewAlbums";
+        }
+
+        ImageAlbum image = this.imageRepository.findOne(id);
+        Album album = image.getAlbum();
+
+        if (!isUserAuthorOrAdmin(album)) {
+            return "redirect:/album/" + album.getId();
+        }
+
+        model.addAttribute("view", "album/deletePicture");
+        model.addAttribute("image", image);
+        model.addAttribute("album", album);
+
+        return "base-layout";
+    }
+
+    @PostMapping("/album/deletePicture/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String deletePictureProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
+        if (!this.imageRepository.exists(id)) {
+            return "redirect:/album/viewAlbums";
+        }
+
+        ImageAlbum image = this.imageRepository.findOne(id);
+        Album album = image.getAlbum();
+        String originalNameAndFolder = image.getPath();
+
+        if (!isUserAuthorOrAdmin(album)) {
+            return "redirect:/album/" + album.getId();
+        }
+
+        deleteFile(originalNameAndFolder);
+
+        this.imageRepository.delete(image);
+
+        return "redirect:/album/" + album.getId();
+    }
 }
