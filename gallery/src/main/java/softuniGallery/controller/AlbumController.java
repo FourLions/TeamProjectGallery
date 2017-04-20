@@ -59,11 +59,13 @@ public class AlbumController {
 
         List<MultipartFile> files = albumBindingModel.getPictures();
         List<ImageAlbum> imageAlbumList = new LinkedList<>();
+        albumEntity.setAlbumPicture("Some text"); // това Адаш при теб дето дава грешка, според мен е от дропването на базата и го за записало да е Not null
         this.albumRepository.saveAndFlush(albumEntity);
-        ImageAlbum imageAlbum = new ImageAlbum();
 
         if (files != null && files.size() > 0) {
             for (int i = 0; i < files.size(); i++) {
+
+                ImageAlbum imageAlbum = new ImageAlbum();
 
                 boolean setAlbumPicture = false;
 

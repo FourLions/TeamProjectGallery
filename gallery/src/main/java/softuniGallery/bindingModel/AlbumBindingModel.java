@@ -8,15 +8,22 @@ import java.util.List;
 
 public class AlbumBindingModel {
 
+    private List<MultipartFile> pictures;
+
     @NotNull
     private String name;
 
     @NotNull
     private MultipartFile picture;
 
-    private List<ImageAlbum> imageAlbums;
 
-    private List<MultipartFile> pictures;
+    public void setPictures(List<MultipartFile> pictures) {
+        this.pictures = pictures;
+    }
+
+    public List<MultipartFile> getPictures() {
+        return this.pictures;
+    }
 
     public MultipartFile getPicture() {
         return this.picture;
@@ -26,6 +33,8 @@ public class AlbumBindingModel {
         this.picture = picture;
     }
 
+    //private List<ImageAlbum> imageAlbums;
+
     public String getName() {
         return this.name;
     }
@@ -34,19 +43,14 @@ public class AlbumBindingModel {
         this.name = albumNameBind;
     }
 
-    public List<MultipartFile> getPictures() {
-        return this.pictures;
-    }
 
-    public void setPictures(List<MultipartFile> pictures) {
-        this.pictures = pictures;
-    }
 
-    public List<ImageAlbum> getImageAlbums() {
-        return this.imageAlbums;
-    }
 
-    public void setImageAlbums(List<ImageAlbum> imageAlbums) {
-        this.imageAlbums = imageAlbums;
-    }
+//    //public List<ImageAlbum> getImageAlbums() {
+//        return this.imageAlbums;
+//    }
+
+//    public void setImageAlbums(List<ImageAlbum> imageAlbums) {
+//        this.imageAlbums = imageAlbums;
+//    }
 }

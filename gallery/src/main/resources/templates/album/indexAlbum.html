@@ -4,9 +4,9 @@
             <th:block th:each="album : ${albums}">
                 <div class="col-md-3">
                     <article>
-                        <th:block th:each="image : ${album.albumPicture}">
+                        <th:block>
                             <a th:href="@{/album/{id}(id=${album.id})}">
-                                <img th:src="${image}" width="200" height="150"/>
+                                <img th:src="${album.albumPicture}" width="200" height="150"/>
                             </a>
                             <small class="author" th:text="${album.author.fullName}"></small>
                         </th:block>
