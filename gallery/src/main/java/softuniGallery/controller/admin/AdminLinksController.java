@@ -24,10 +24,22 @@ public class AdminLinksController {
     public String listLinks(Model model) {
         List<Link> links = this.linkRepository.findAll();
 
+        setLinksSummary(links);
         model.addAttribute("links", links);
         model.addAttribute("view", "admin/link/list");
 
         return "base-layout";
+    }
+
+    private void setLinksSummary(List<Link> links) {
+        for (Link currentLink : links) {
+            if (currentLink.getLink().length() <= 50) {
+                currentLink.setLinkSummary(currentLink.getLink().substring(0, currentLink.getLink().length()));
+            } else {
+                currentLink.setLinkSummary(currentLink.getLink().substring(0, 50) + "...");
+
+            }
+        }
     }
 
     @GetMapping("/edit/{id}")

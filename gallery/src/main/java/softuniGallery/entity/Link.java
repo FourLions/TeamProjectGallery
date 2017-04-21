@@ -14,6 +14,9 @@ public class Link {
 
     private User author;
 
+    @Transient
+    private String linkSummary;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
@@ -52,6 +55,16 @@ public class Link {
         this.author = author;
     }
 
+    @Transient
+    public String getLinkSummary() {
+        return linkSummary;
+    }
+
+    public void setLinkSummary(String linkSummary) {
+
+        this.linkSummary = linkSummary;
+    }
+
     public Link(String link, String content, User author) {
         this.link = link;
         this.content = content;
@@ -61,4 +74,5 @@ public class Link {
     public Link() {
 
     }
+
 }

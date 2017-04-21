@@ -7,7 +7,9 @@
             <th:block th:each="image : ${album.getImageAlbums()}">
                 <div class="col-md-4">
                     <aritcle>
-                        <img th:src="${image.path}" width="300" height="200"/>
+                        <a th:href="@{/imageDetails/{id}(id=${image.id})}">
+                            <img th:src="${image.path}" width="300" height="200"/>
+                        </a>
                     </aritcle>
                     <div class="pull-right">
                         <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(album)}">
