@@ -81,7 +81,7 @@ public class ArticleController {
     private void uploadFile(Article articleEntity, MultipartFile file) {
         if (file != null) {
             String originalName = file.getOriginalFilename();
-            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
             try {
                 file.transferTo(imageFile);
                 articleEntity.setImagePath("/images/" + originalName);
@@ -154,10 +154,15 @@ public class ArticleController {
         article.setContent(articleBindingModel.getContent());
         article.setTitle(articleBindingModel.getTitle());
         article.setTags(tags);
+        String originalNameAndFolder = article.getImagePath();
 
         MultipartFile file = articleBindingModel.getPicture();
 
         uploadFile(article, file);
+
+        AlbumController albumController = new AlbumController();
+
+        albumController.deleteFile(originalNameAndFolder);
 
         this.articleRepository.saveAndFlush(article);
 
@@ -197,6 +202,12 @@ public class ArticleController {
         if (!isUserAuthorOrAdmin(article)) {
             return "redirect:/article/" + id;
         }
+
+        String originalNameAndFolder = article.getImagePath();
+
+        AlbumController albumController = new AlbumController();
+
+        albumController.deleteFile(originalNameAndFolder);
 
         this.articleRepository.delete(article);
 

@@ -169,10 +169,15 @@ public class UserController {
         user.setCountry(userInfoBindingModel.getCountry());
         user.setTelephoneNumber(userInfoBindingModel.getTelephoneNumber());
         user.setInformation(userInfoBindingModel.getInformation());
+        String originalNameAndFolder = user.getProfilePicture();
 
         MultipartFile file = userInfoBindingModel.getProfilePicture();
 
         uploadFile(user, file);
+
+        AlbumController albumController = new AlbumController();
+
+        albumController.deleteFile(originalNameAndFolder);
 
         this.userRepository.saveAndFlush(user);
 
