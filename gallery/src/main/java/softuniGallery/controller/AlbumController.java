@@ -419,12 +419,12 @@ public class AlbumController {
     }
 
     @GetMapping("/imageDetails/{id}")
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     public String pictureDetails(@PathVariable Integer id, Model model) {
         ImageAlbum image = this.imageRepository.findOne(id);
         Album album = image.getAlbum();
 
-        if (!this.imageRepository.exists(id) || !isUserAuthorOrAdmin(album)) {
+        if (!this.imageRepository.exists(id) ) {//|| !isUserAuthorOrAdmin(album)
             return "redirect:/album/" + album.getId();
         }
 

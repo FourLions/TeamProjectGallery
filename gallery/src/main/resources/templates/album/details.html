@@ -8,13 +8,15 @@
                 <div class="col-md-4">
                     <aritcle>
                         <a th:href="@{/imageDetails/{id}(id=${image.id})}">
-                            <img th:src="${image.path}" width="300" height="200"/>
+                            <img style="margin-top: 30px" th:src="${image.path}" width="300" height="200"/>
                         </a>
                     </aritcle>
                     <div class="pull-right">
                         <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(album)}">
-                            <a class="btn btn-success btn-xs" th:href="@{/album/editPicture/{id}(id=${image.id})}">Edit Picture</a>
-                            <a class="btn btn-danger btn-xs" th:href="@{/album/deletePicture/{id}(id = ${image.id})}">Delete Picture</a>
+                            <a class="btn btn-success btn-xs" th:href="@{/album/editPicture/{id}(id=${image.id})}">Edit
+                                Picture</a>
+                            <a class="btn btn-danger btn-xs" th:href="@{/album/deletePicture/{id}(id = ${image.id})}">Delete
+                                Picture</a>
                         </th:block>
                     </div>
                 </div>
@@ -23,8 +25,10 @@
         <footer>
             <div class="pull-right">
                 <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(album)}">
-                    <a class="btn btn-success btn-xs" th:href="@{/album/addPicture/{id}(id = ${album.id})}">Add Picture</a>
-                    <a class="btn btn-success btn-xs" th:href="@{/album/editName/{id}(id = ${album.id})}">Edit Name Album</a>
+                    <a class="btn btn-success btn-xs" th:href="@{/album/addPicture/{id}(id = ${album.id})}">Add
+                        Picture</a>
+                    <a class="btn btn-success btn-xs" th:href="@{/album/editName/{id}(id = ${album.id})}">Edit Name
+                        Album</a>
                     <a class="btn btn-danger btn-xs" th:href="@{/album/delete/{id}(id = ${album.id})}">Delete Album</a>
                 </th:block>
                 <a class="btn btn-default btn-xs" th:href="@{/album/viewAlbums}">back &raquo;</a>
