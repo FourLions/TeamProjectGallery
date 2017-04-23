@@ -1,6 +1,10 @@
 package softuniGallery.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.AlbumBindingModel;
 import softuniGallery.controller.AlbumController;
 import softuniGallery.entity.Album;
+import softuniGallery.entity.ImageAlbum;
 import softuniGallery.entity.User;
 import softuniGallery.repository.AlbumRepository;
+import softuniGallery.repository.ImageRepository;
 import softuniGallery.repository.UserRepository;
 
 import javax.persistence.Transient;
@@ -28,6 +34,8 @@ public class AdminAlbumController {
     private UserRepository userRepository;
     @Autowired
     private AlbumRepository albumRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @GetMapping("/")
     public String listAlbums(Model model){
@@ -39,8 +47,44 @@ public class AdminAlbumController {
         return "base-layout";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    @GetMapping("/details/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String details(@PathVariable Integer id, Model model) {
+
+        ImageAlbum image = this.imageRepository.findOne(id);
+        Album album = image.getAlbum();
+
+        if (!this.imageRepository.exists(id) || !isUserAuthorOrAdmin(album)) {
+            return "redirect:/admin/albums/";
+        }
+
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+            UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+
+            User entityUser = this.userRepository.findByEmail(principal.getUsername());
+
+            model.addAttribute("user", entityUser);
+        }
+
+        model.addAttribute("view", "admin/album/details");
+        model.addAttribute("image", image);
+        model.addAttribute("album", album);
+
+        return "base-layout";
+    }
+
+    private boolean isUserAuthorOrAdmin(Album album) {
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        User userEntity = this.userRepository.findByEmail(user.getUsername());
+
+        return userEntity.isAdmin() || userEntity.isAuthor(album);
+    }
+
+    @GetMapping("/editName/{id}")
+    public String editName(@PathVariable Integer id, Model model) {
         if (!this.albumRepository.exists(id)) {
             return "redirect:/admin/albums/";
         }
@@ -48,40 +92,32 @@ public class AdminAlbumController {
         Album album = this.albumRepository.findOne(id);
 
         model.addAttribute("album", album);
-        model.addAttribute("view", "admin/album/edit");
+        model.addAttribute("view", "admin/album/editName");
 
         return "base-layout";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editProcess(@PathVariable Integer id,
+    @PostMapping("/editName/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String editNameProcess(@PathVariable Integer id,
                               AlbumBindingModel albumBindingModel) {
         if (!this.albumRepository.exists(id)) {
             return "redirect:/admin/albums/";
         }
 
         Album album = this.albumRepository.findOne(id);
-        int userId = album.getAuthor().getId();
 
-        album.setName(albumBindingModel.getName());
+        String name = albumBindingModel.getName();
 
-        //List<String> imagesPath = album.getImagePathList();
-
-        List<MultipartFile> files = albumBindingModel.getPictures();
-        List<String> listImages = new LinkedList<>();
-
-        AlbumController albumController = new AlbumController();
-
-        //albumController.uploadFiles(album, files, listImages);
-
-        //albumController.deleteImage(imagesPath, listImages);
+        album.setName(name);
 
         this.albumRepository.saveAndFlush(album);
 
-        return "redirect:/admin/users/userAlbums/" + userId;
+        return "redirect:/admin/albums/";
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String delete(@PathVariable Integer id, Model model){
         if (!this.albumRepository.exists(id)) {
             return "redirect:/admin/albums/";
@@ -103,15 +139,117 @@ public class AdminAlbumController {
 
         Album album = this.albumRepository.findOne(id);
 
-        //List<String> imagesPath = album.getImagePathList();
+        List<ImageAlbum> imageAlbumList = album.getImageAlbums();
 
-        AlbumController albumController = new AlbumController();
+        for (int i = 0; i < imageAlbumList.size(); i++) {
 
-        //albumController.deleteListImages(imagesPath);
+            ImageAlbum imageAlbum = imageAlbumList.get(i);
+            String originalNameAndFolder = imageAlbum.getPath();
+
+            this.imageRepository.delete(imageAlbumList.get(i));
+
+            AlbumController albumController = new AlbumController();
+
+            albumController.deleteFile(originalNameAndFolder);
+        }
 
         this.albumRepository.delete(album);
 
         return  "redirect:/admin/albums/";
     }
 
+    @GetMapping("/editPicture/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String editPicture(@PathVariable Integer id, Model model) {
+        if (!this.imageRepository.exists(id)) {
+            return "redirect:/admin/details";
+        }
+
+        ImageAlbum image = this.imageRepository.findOne(id);
+        Album album = image.getAlbum();
+
+        if (!isUserAuthorOrAdmin(album)) {
+            return "redirect:/album/details";
+        }
+
+        model.addAttribute("view", "admin/album/editPicture");
+        model.addAttribute("image", image);
+        model.addAttribute("album", album);
+
+        return "base-layout";
+    }
+
+    @PostMapping("/editPicture/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String editPictureProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
+        if (!this.imageRepository.exists(id)) {
+            return "redirect:/admin/details";
+        }
+
+        ImageAlbum imageAlbum = this.imageRepository.findOne(id);
+        Album album = imageAlbum.getAlbum();
+        String originalNameAndFolder = imageAlbum.getPath();
+        String albumPicturePath = album.getAlbumPicture();
+
+        if (!isUserAuthorOrAdmin(album)) {
+            return "redirect:/album/details";
+        }
+
+        List<MultipartFile> files = albumBindingModel.getPictures();
+
+        AlbumController albumController = new AlbumController();
+
+        albumController.editImage(imageAlbum, album, albumPicturePath, files);
+
+        albumController.deleteFile(originalNameAndFolder);
+
+        this.imageRepository.saveAndFlush(imageAlbum);
+
+        return "redirect:/admin/details";
+    }
+
+    @GetMapping("/deletePicture/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String deletePicture(@PathVariable Integer id, Model model) {
+        if (!this.imageRepository.exists(id)) {
+            return "redirect:/admin/details";
+        }
+
+        ImageAlbum image = this.imageRepository.findOne(id);
+        Album album = image.getAlbum();
+
+        if (!isUserAuthorOrAdmin(album)) {
+            return "redirect:/album/details";
+        }
+
+        model.addAttribute("view", "admin/album/deletePicture");
+        model.addAttribute("image", image);
+        model.addAttribute("album", album);
+
+        return "base-layout";
+    }
+
+    @PostMapping("/deletePicture/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String deletePictureProcess(@PathVariable Integer id, AlbumBindingModel albumBindingModel) {
+        if (!this.imageRepository.exists(id)) {
+            return "redirect:/admin/details";
+        }
+
+        ImageAlbum image = this.imageRepository.findOne(id);
+        Album album = image.getAlbum();
+        String originalNameAndFolder = image.getPath();
+
+        if (!isUserAuthorOrAdmin(album)) {
+            return "redirect:/album/details";
+        }
+
+        AlbumController albumController = new AlbumController();
+
+        albumController.deleteFile(originalNameAndFolder);
+
+        this.imageRepository.delete(image);
+
+        return "redirect:/album/" + album.getId();
+    }
 }

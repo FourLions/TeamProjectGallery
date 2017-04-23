@@ -4,9 +4,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Minko Vasilev on 4/4/2017.
- */
+
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -24,14 +22,14 @@ public class Category {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId(){ return id; }
+    public Integer getId(){ return this.id; }
     public void setId(Integer id){ this.id=id; }
 
     @Column(nullable = false, unique = true)
-    public String getName(){ return name; }
+    public String getName(){ return this.name; }
     public void setName(String name){ this.name = name; }
     @OneToMany(mappedBy = "category")
-    public Set<Article> getArticles(){ return articles; }
+    public Set<Article> getArticles(){ return this.articles; }
     public void setArticles(Set<Article> articles){ this.articles=articles;}
 
 

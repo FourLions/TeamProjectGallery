@@ -15,7 +15,7 @@ public class ArticleBindingModel {
     private String content;
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -23,7 +23,7 @@ public class ArticleBindingModel {
     }
 
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void setContent(String content) {
@@ -31,7 +31,7 @@ public class ArticleBindingModel {
     }
 
     public MultipartFile getPicture() {
-        return picture;
+        return this.picture;
     }
 
     public void setPicture(MultipartFile picture) {
@@ -40,7 +40,7 @@ public class ArticleBindingModel {
 
     private Integer categoryId;
     public Integer getCategoryId(){
-        return categoryId;
+        return this.categoryId;
     }
     public void setCategoryId(Integer categoryId){
         this.categoryId = categoryId;
@@ -48,6 +48,6 @@ public class ArticleBindingModel {
 
     private String tagString;
 
-    public String getTagString(){return tagString;}
+    public String getTagString(){return this.tagString;}
     public void setTagString(String tagString){this.tagString=tagString;}
 }

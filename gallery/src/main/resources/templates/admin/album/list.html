@@ -12,30 +12,26 @@
                         <th>Images</th>
                     </tr>
                     </thead>
-
                     <tbody>
-
                     <th:block th:each="album : ${albums}">
                         <tr th:class='info'>
                             <td th:text="${album.id}"></td>
                             <td th:text="${album.name}"></td>
                             <td th:text="${album.author.fullName}"></td>
                             <td>
-                                <th:block th:each="image : ${album.imagePathList}">
-                                    <img th:src="${image}" width="20" height="20"/>
+                                <th:block th:each="image : ${album.getImageAlbums()}">
+                                    <a th:href="@{/admin/albums/details/{id}(id=${image.id})}">
+                                        <img th:src="${image.path}" width="100" height="100"/>
+                                    </a>
                                 </th:block>
                             </td>
                             <td>
-                                <a th:href="@{/admin/albums/edit/{id}(id=${album.id})}">Edit</a>
-                                <a th:href="@{/admin/albums/delete/{id}(id=${album.id})}">Delete</a>
+                                <a th:href="@{/admin/albums/editName/{id}(id=${album.id})}">Edit Album Name</a>
+                                <a th:href="@{/admin/albums/delete/{id}(id=${album.id})}">Delete Album</a>
                             </td>
-
                         </tr>
-
                     </th:block>
-
                     </tbody>
-
                 </table>
             </div>
         </div>

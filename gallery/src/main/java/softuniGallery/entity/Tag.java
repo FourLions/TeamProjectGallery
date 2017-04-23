@@ -6,9 +6,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Minko Vasilev on 4/6/2017.
- */
+
 @Entity
 @Table(name = "tags")
 public class Tag {
@@ -24,15 +22,15 @@ public class Tag {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId(){return id;}
+    public Integer getId(){return this.id;}
 
     public void setId(Integer id){this.id=id;}
     @Column(unique = true, nullable = false)
-    public String getName(){return name;}
+    public String getName(){return this.name;}
 
     public void setName(String name){this.name = name;}
     @ManyToMany(mappedBy = "tags")
-    public Set<Article> getArticles(){return articles;}
+    public Set<Article> getArticles(){return this.articles;}
 
     public void setArticles(Set<Article> articles){this.articles=articles;}
 }

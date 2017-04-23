@@ -39,7 +39,7 @@ public class User {
 
     @Column(name = "town")
     public String getTown() {
-        return town;
+        return this.town;
     }
 
     public void setTown(String town) {
@@ -48,7 +48,7 @@ public class User {
 
     @Column(name = "country")
     public String getCountry() {
-        return country;
+        return this.country;
     }
 
     public void setCountry(String country) {
@@ -57,7 +57,7 @@ public class User {
 
     @Column(name = "phoneNumber")
     public String getTelephoneNumber() {
-        return telephoneNumber;
+        return this.telephoneNumber;
     }
 
     public void setTelephoneNumber(String telephoneNumber) {
@@ -66,7 +66,7 @@ public class User {
 
     @Column(columnDefinition = "text", name = "information")
     public String getInformation() {
-        return information;
+        return this.information;
     }
 
     public void setInformation(String information) {
@@ -75,7 +75,7 @@ public class User {
 
     @Column(columnDefinition = "text", name = "profilePicture")
     public String getProfilePicture() {
-        return profilePicture;
+        return this.profilePicture;
     }
 
     public void setProfilePicture(String profilePicture) {
@@ -84,7 +84,7 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     public Set<Link> getLinks() {
-        return links;
+        return this.links;
     }
 
     public void setLinks(Set<Link> links) {
@@ -93,7 +93,7 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     public Set<Album> getAlbums() {
-        return albums;
+        return this.albums;
     }
 
     public void setAlbums(Set<Album> albums) {
@@ -102,7 +102,7 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     public Set<Article> getArticles() {
-        return articles;
+        return this.articles;
     }
 
     public void setArticles(Set<Article> articles) {
@@ -112,7 +112,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles")
     public Set<Role> getRoles() {
-        return roles;
+        return this.roles;
     }
 
     public void setRoles(Set<Role> roles) {
@@ -122,7 +122,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -131,7 +131,7 @@ public class User {
 
     @Column(name = "email", unique = true, nullable = false)
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -140,7 +140,7 @@ public class User {
 
     @Column(name = "fullName", nullable = false)
     public String getFullName() {
-        return fullName;
+        return this.fullName;
     }
 
     public void setFullName(String fullName) {
@@ -149,7 +149,7 @@ public class User {
 
     @Column(name = "password", length = 60, nullable = false)
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {

@@ -59,7 +59,7 @@ public class AlbumController {
 
         List<MultipartFile> files = albumBindingModel.getPictures();
         List<ImageAlbum> imageAlbumList = new LinkedList<>();
-        albumEntity.setAlbumPicture("Some text"); // това Адаш при теб дето дава грешка, според мен е от дропването на базата и го за записало да е Not null
+        albumEntity.setAlbumPicture("Some text");
         this.albumRepository.saveAndFlush(albumEntity);
 
         if (files != null && files.size() > 0) {
@@ -75,7 +75,7 @@ public class AlbumController {
                 if (files.get(i) != null) {
                     try {
                         String originalName = files.get(i).getOriginalFilename();
-                        File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                         files.get(i).transferTo(imageFile);
                         String image = "/images/" + originalName;
                         imageAlbum.setPath(image);
@@ -99,6 +99,15 @@ public class AlbumController {
         return "redirect:/album/viewAlbums";
     }
 
+    @GetMapping("/album/viewAlbums")
+    public String listAlbums(Model model){
+        List<Album> albums = this.albumRepository.findAll();
+
+        model.addAttribute("albums", albums);
+        model.addAttribute("view", "/album/indexAlbum");
+
+        return "base-layout";
+    }
 
     @GetMapping("/album/{id}")
     public String details(Model model, @PathVariable Integer id) {
@@ -213,9 +222,9 @@ public class AlbumController {
         return "redirect:/album/viewAlbums";
     }
 
-    private void deleteFile(String originalNameAndFolder) {
+    public void deleteFile(String originalNameAndFolder) {
         try {
-            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalNameAndFolder);
+            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalNameAndFolder);
             if (imageFile.delete()) {
                 System.out.println(imageFile.getName() + " is deleted!");
             } else {
@@ -275,7 +284,7 @@ public class AlbumController {
 
             try {
                 String originalName = file.getOriginalFilename();
-                File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                 file.transferTo(imageFile);
                 String pathPicture = "/images/" + originalName;
                 imageAlbum.setPath(pathPicture);
@@ -333,12 +342,22 @@ public class AlbumController {
 
         List<MultipartFile> files = albumBindingModel.getPictures();
 
+        editImage(imageAlbum, album, albumPicturePath, files);
+
+        deleteFile(originalNameAndFolder);
+
+        this.imageRepository.saveAndFlush(imageAlbum);
+
+        return "redirect:/album/" + album.getId();
+    }
+
+    public void editImage(ImageAlbum imageAlbum, Album album, String albumPicturePath, List<MultipartFile> files) {
         if (files != null && files.size() > 0) {
             for (int i = 0; i < files.size(); i++) {
                 if (files.get(i) != null) {
                     try {
                         String originalName = files.get(i).getOriginalFilename();
-                        File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                         files.get(i).transferTo(imageFile);
                         String pathPicture = "/images/" + originalName;
 
@@ -354,12 +373,6 @@ public class AlbumController {
                 }
             }
         }
-
-        deleteFile(originalNameAndFolder);
-
-        this.imageRepository.saveAndFlush(imageAlbum);
-
-        return "redirect:/album/" + album.getId();
     }
 
     @GetMapping("/album/deletePicture/{id}")
@@ -417,6 +430,7 @@ public class AlbumController {
 
         model.addAttribute("view", "album/pictureDetails");
         model.addAttribute("image", image);
+        model.addAttribute("album", album);
 
         return "base-layout";
     }

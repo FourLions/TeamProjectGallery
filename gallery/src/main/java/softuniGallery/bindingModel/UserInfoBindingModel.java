@@ -18,7 +18,7 @@ public class UserInfoBindingModel {
     private MultipartFile profilePicture;
 
     public String getTown() {
-        return town;
+        return this.town;
     }
 
     public void setTown(String town) {
@@ -26,7 +26,7 @@ public class UserInfoBindingModel {
     }
 
     public String getCountry() {
-        return country;
+        return this.country;
     }
 
     public void setCountry(String country) {
@@ -34,7 +34,7 @@ public class UserInfoBindingModel {
     }
 
     public String getTelephoneNumber() {
-        return telephoneNumber;
+        return this.telephoneNumber;
     }
 
     public void setTelephoneNumber(String telephoneNumber) {
@@ -42,7 +42,7 @@ public class UserInfoBindingModel {
     }
 
     public String getInformation() {
-        return information;
+        return this.information;
     }
 
     public void setInformation(String information) {
@@ -50,7 +50,7 @@ public class UserInfoBindingModel {
     }
 
     public MultipartFile getProfilePicture() {
-        return profilePicture;
+        return this.profilePicture;
     }
 
     public void setProfilePicture(MultipartFile profilePicture) {

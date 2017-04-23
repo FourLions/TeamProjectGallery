@@ -33,8 +33,6 @@ public class AlbumBindingModel {
         this.picture = picture;
     }
 
-    //private List<ImageAlbum> imageAlbums;
-
     public String getName() {
         return this.name;
     }
@@ -43,14 +41,4 @@ public class AlbumBindingModel {
         this.name = albumNameBind;
     }
 
-
-
-
-//    //public List<ImageAlbum> getImageAlbums() {
-//        return this.imageAlbums;
-//    }
-
-//    public void setImageAlbums(List<ImageAlbum> imageAlbums) {
-//        this.imageAlbums = imageAlbums;
-//    }
 }

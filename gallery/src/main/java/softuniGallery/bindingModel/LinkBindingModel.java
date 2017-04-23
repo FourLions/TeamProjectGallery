@@ -12,7 +12,7 @@ public class LinkBindingModel {
     private String content;
 
     public String getLink() {
-        return link;
+        return this.link;
     }
 
     public void setLink(String link) {
@@ -20,7 +20,7 @@ public class LinkBindingModel {
     }
 
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void setContent(String content) {

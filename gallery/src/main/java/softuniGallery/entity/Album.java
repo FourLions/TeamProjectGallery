@@ -58,16 +58,6 @@ public class Album {
         this.albumPicture = albumPicture;
     }
 
-////    @ElementCollection
-////    @OrderColumn(name = "index_id")
-////    public List<String> getImagePathList() {
-////        return imagePathList;
-////    }
-//
-//    public void setImagePathList(List<String> imagePathList) {
-//        this.imagePathList = imagePathList;
-//    }
-
     @Column(nullable = false)
     public String getName() {
         return this.name;

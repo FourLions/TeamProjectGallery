@@ -11,7 +11,7 @@ public class UserEditBindingModel extends UserBindingModel {
     }
 
     public List<Integer> getRoles() {
-        return roles;
+        return this.roles;
     }
 
     public void setRoles(List<Integer> roles) {

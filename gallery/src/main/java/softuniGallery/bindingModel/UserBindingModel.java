@@ -13,7 +13,7 @@ public class UserBindingModel {
     private String confirmPassword;
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -21,7 +21,7 @@ public class UserBindingModel {
     }
 
     public String getFullName() {
-        return fullName;
+        return this.fullName;
     }
 
     public void setFullName(String fullName) {
@@ -29,7 +29,7 @@ public class UserBindingModel {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -37,7 +37,7 @@ public class UserBindingModel {
     }
 
     public String getConfirmPassword() {
-        return confirmPassword;
+        return this.confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {

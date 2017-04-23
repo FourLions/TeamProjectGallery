@@ -20,7 +20,7 @@ public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -29,7 +29,7 @@ public class Link {
 
     @Column(columnDefinition = "text", nullable = false)
     public String getLink() {
-        return link;
+        return this.link;
     }
 
     public void setLink(String link) {
@@ -38,7 +38,7 @@ public class Link {
 
     @Column(columnDefinition = "text", nullable = false)
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void setContent(String content) {
@@ -48,7 +48,7 @@ public class Link {
     @ManyToOne()
     @JoinColumn(nullable = false, name = "authorId")
     public User getAuthor() {
-        return author;
+        return this.author;
     }
 
     public void setAuthor(User author) {
@@ -57,7 +57,7 @@ public class Link {
 
     @Transient
     public String getLinkSummary() {
-        return linkSummary;
+        return this.linkSummary;
     }
 
     public void setLinkSummary(String linkSummary) {

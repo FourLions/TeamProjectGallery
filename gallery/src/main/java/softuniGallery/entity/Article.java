@@ -30,7 +30,7 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -39,7 +39,7 @@ public class Article {
 
     @Column(nullable = false)
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -48,7 +48,7 @@ public class Article {
 
     @Column(columnDefinition = "text", nullable = false)
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void setContent(String content) {
@@ -58,7 +58,7 @@ public class Article {
     @ManyToOne()
     @JoinColumn(nullable = false, name = "authorId")
     public User getAuthor() {
-        return author;
+        return this.author;
     }
 
     public void setAuthor(User author) {
@@ -67,7 +67,7 @@ public class Article {
 
     @Column(columnDefinition = "text", nullable = false)
     public String getImagePath() {
-        return imagePath;
+        return this.imagePath;
     }
 
 
@@ -82,11 +82,11 @@ public class Article {
 
     @ManyToOne()
     @JoinColumn(nullable = false, name ="categoryId")
-    public Category getCategory(){return category;}
+    public Category getCategory(){return this.category;}
     public void setCategory(Category category){this.category=category;}
 
     @ManyToMany()
     @JoinColumn(table="articles_tags")
-    public Set<Tag> getTags(){return tags;}
+    public Set<Tag> getTags(){return this.tags;}
     public void setTags(Set<Tag> tags){this.tags=tags;}
 }

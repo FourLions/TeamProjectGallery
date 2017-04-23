@@ -20,7 +20,7 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     public Set<User> getUsers() {
-        return users;
+        return this.users;
     }
     public void setUsers(Set<User> users) {
         this.users = users;
@@ -28,14 +28,14 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
-        return id;
+        return this.id;
     }
     public void setId(Integer id) {
         this.id = id;
     }
     @Column(name = "name", nullable = false)
     public String getName() {
-        return name;
+        return this.name;
     }
     public void setName(String name) {
         this.name = name;

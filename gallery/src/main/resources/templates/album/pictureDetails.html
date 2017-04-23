@@ -8,6 +8,11 @@
                     <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
                     <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="1"></div>
                 </article>
+                <footer>
+                    <div class="pull-right">
+                        <a class="btn btn-default btn-xs" th:href="@{/album/{id}(id = ${album.id})}">back &raquo;</a>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
