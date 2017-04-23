@@ -60,13 +60,24 @@
                     </li>
 
                     <li sec:authorize="isAnonymous()">
+                        <a th:href="@{/link/viewLinks}">
+                            Links
+                        </a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a th:href="@{/album/viewAlbums}">
+                            Albums
+                        </a>
+                    </li>
+
+                    <li sec:authorize="isAnonymous()">
                         <a th:href="@{/register}">
-                            REGISTER
+                            Register
                         </a>
                     </li>
                     <li sec:authorize="isAnonymous()">
                         <a th:href="@{/login}">
-                            LOGIN
+                            Login
                         </a>
                     </li>
                 </ul>

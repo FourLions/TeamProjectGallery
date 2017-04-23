@@ -1,9 +1,11 @@
 package softuniGallery.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -18,6 +20,8 @@ import softuniGallery.controller.UserController;
 import softuniGallery.entity.*;
 import softuniGallery.repository.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
@@ -38,6 +42,8 @@ public class AdminUserController {
     private LinkRepository linkRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @GetMapping("/")
     public String listUsers(Model model) {
@@ -131,7 +137,7 @@ public class AdminUserController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteProcess(@PathVariable Integer id) {
+    public String deleteProcess(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
         if (!this.userRepository.exists(id)) {
             return "redirect:/admin/users/";
         }
@@ -143,9 +149,10 @@ public class AdminUserController {
         User currentLoggedUser = this.userRepository.findByEmail(principal.getUsername());
         User userToDelete = this.userRepository.findOne(id);
 
-        String redirectLink = "redirect:/admin/users/";
+        String redirectLink = "";
 
         if (userToDelete.getFullName().equals(currentLoggedUser.getFullName())) {
+            logOutCurrentUser(request, response);
             redirectLink = "redirect:/login?logout";
 
         } else {
@@ -157,7 +164,11 @@ public class AdminUserController {
         }
 
         for (Album album : userToDelete.getAlbums()) {
-            this.albumRepository.delete(album);
+            for(ImageAlbum currentPicture : album.getImageAlbums()) {
+                this.imageRepository.delete(currentPicture);
+            }
+
+            this.albumRepository.delete(album);//error
         }
 
         for (Link link : userToDelete.getLinks()) {
@@ -167,6 +178,14 @@ public class AdminUserController {
         this.userRepository.delete(userToDelete);
 
         return redirectLink;
+    }
+
+    private void logOutCurrentUser(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
     }
 
 

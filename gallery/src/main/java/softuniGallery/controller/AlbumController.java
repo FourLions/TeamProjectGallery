@@ -75,7 +75,7 @@ public class AlbumController {
                 if (files.get(i) != null) {
                     try {
                         String originalName = files.get(i).getOriginalFilename();
-                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                        File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                         files.get(i).transferTo(imageFile);
                         String image = "/images/" + originalName;
                         imageAlbum.setPath(image);
@@ -224,7 +224,7 @@ public class AlbumController {
 
     public void deleteFile(String originalNameAndFolder) {
         try {
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalNameAndFolder);
+            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalNameAndFolder);
             if (imageFile.delete()) {
                 System.out.println(imageFile.getName() + " is deleted!");
             } else {
@@ -284,7 +284,7 @@ public class AlbumController {
 
             try {
                 String originalName = file.getOriginalFilename();
-                File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                 file.transferTo(imageFile);
                 String pathPicture = "/images/" + originalName;
                 imageAlbum.setPath(pathPicture);
@@ -357,7 +357,7 @@ public class AlbumController {
                 if (files.get(i) != null) {
                     try {
                         String originalName = files.get(i).getOriginalFilename();
-                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                        File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                         files.get(i).transferTo(imageFile);
                         String pathPicture = "/images/" + originalName;
 
