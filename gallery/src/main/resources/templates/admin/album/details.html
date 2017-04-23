@@ -1,0 +1,20 @@
+<main>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-12">
+                <article>
+                    <img th:src="${image.path}" width="100%" height="100%"/>
+                </article>
+                <footer>
+                    <div class="pull-right">
+                        <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(album)}">
+                            <a class="btn btn-success btn-xs" th:href="@{/admin/albums/editPicture/{id}(id=${image.id})}">Edit Picture</a>
+                            <a class="btn btn-danger btn-xs" th:href="@{/admin/albums/deletePicture/{id}(id = ${image.id})}">Delete Picture</a>
+                            <a class="btn btn-default btn-xs" th:href="@{/admin/albums/}">back &raquo;</a>
+                        </th:block>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</main>

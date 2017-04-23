@@ -1,0 +1,24 @@
+<main>
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" th:action="@{/admin/albums/deletePicture/{id}(id=${image.id})}" method="POST">
+                <fieldset>
+                    <legend>Delete Picture</legend>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 ">
+                            <img th:src="${image.path}" width="250" height="150"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" th:href="@{/admin/albums/details/{id}(id = ${image.id})}">Cancel</a>
+                            <input type="submit" class="btn btn-danger" value="Delete"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>
