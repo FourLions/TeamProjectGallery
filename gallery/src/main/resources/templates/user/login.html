@@ -17,6 +17,15 @@
                         </div>
                     </div>
 
+                    <div class="form-check">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <label class="form-check-label col-offset-sm-5">
+                                <input type="checkbox" class="form-check-input" name="rememberMe"/>
+                                Remember Me
+                            </label>
+                        </div>
+                    </div>
+
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                     <div class="form-group">
