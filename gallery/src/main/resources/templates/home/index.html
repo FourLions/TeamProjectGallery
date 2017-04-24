@@ -1,26 +1,25 @@
 <main xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:c="http://java.sun.com/xml/ns/javaee"
       xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container body-content">
-
-        <ul class="col-lg-offset-10 col-md-8">
-            <p>Latest 5 registered users:</p>
-            <li th:each="user : ${latestFiveUsers}">
-            <span th:text="${user.fullName}"></span>
-            </li>
-        </ul>
-        <div class="row">
-                <div class="col-md-6" th:each="category : ${categories}">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4" th:each="category : ${categories}">
                     <header>
                         <h2>
-
                             <a th:href="@{/category/{id}(id=${category.id})}" th:text="${category.name
-                            +' (' + #sets.size(category.articles) + ')'}">
+                                +' (' + #sets.size(category.articles) + ')'}">
                             </a>
                         </h2>
                     </header>
-
                 </div>
-
+            </div>
         </div>
+        <ul class="col-md-offset-1 col-md-3">
+            <p>Latest 5 registered users:</p>
+            <li th:each="user : ${latestFiveUsers}">
+            <a th:href="@{/profileInfo/{id}(id=${user.id})}" th:text="${user.fullName}"></a>
+            </li>
+        </ul>
+
     </div>
 </main>

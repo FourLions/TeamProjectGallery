@@ -60,4 +60,11 @@ public class GalleryHomeController {
 
         return "base-layout";
     }
+
+    @RequestMapping("/error/404")
+    public String notFound(Model model) {
+        model.addAttribute("view", "error/404");
+
+        return "base-layout";
+    }
 }

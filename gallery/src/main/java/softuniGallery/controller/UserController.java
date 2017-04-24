@@ -185,6 +185,20 @@ public class UserController {
         return "redirect:/profile";
     }
 
+    @GetMapping("/profileInfo/{id}")
+    public String profileInfo(@PathVariable Integer id, Model model) {
+        if (!this.userRepository.exists(id)) {
+            return "redirect:/error/404";
+        }
+
+        User user = this.userRepository.findOne(id);
+
+        model.addAttribute("user", user);
+        model.addAttribute("view", "user/profileInfo");
+
+        return "base-layout";
+    }
+
     public void uploadFile(User user, MultipartFile file) {
         if (file != null) {
             String originalName = file.getOriginalFilename();
