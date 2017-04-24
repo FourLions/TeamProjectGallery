@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.UserBindingModel;
@@ -19,11 +20,9 @@ import softuniGallery.entity.User;
 import softuniGallery.repository.RoleRepository;
 import softuniGallery.repository.UserRepository;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.util.StringUtils;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -42,6 +41,8 @@ public class UserController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
+
+        response.addCookie(new Cookie("RememberMe", "loggedOut"));
 
         return "redirect:/login?logout";
     }
@@ -109,7 +110,7 @@ public class UserController {
 
     @PostMapping("/profile/edit/{id}")
     public String editProfileProcess(@PathVariable Integer id,
-                                      UserEditBindingModel userBindingModel) {
+                                     UserEditBindingModel userBindingModel) {
         if (!this.userRepository.exists(id)) {
             return "redirect:/profile";
         }
