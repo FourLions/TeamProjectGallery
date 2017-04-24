@@ -10,9 +10,9 @@
 
                         <p th:text="${link.content}"> </p>
 
-                        <img th:src="${link.link}" width="400" height="300"/>
+                        <img th:src="${link.link}" class="img-thumbnail"/>
 
-                        <footer>
+                        <footer style="margin-top: 30px">
                             <div class="pull-left">
                                 <a class="btn btn-default btn-xs"
                                    th:href="@{/link/{id}(id=${link.id})}">Read more &raquo;</a>

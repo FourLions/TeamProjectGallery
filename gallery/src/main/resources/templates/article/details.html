@@ -7,7 +7,7 @@
                         <h2 th:text="${article.title}"></h2>
                     </header>
 
-                    <img th:src="${article.imagePath}" width="400" height="300"/>
+                    <img th:src="${article.imagePath}" class="img-thumbnail"/>
 
                     <p th:text="${article.content}"></p>
 
@@ -18,8 +18,7 @@
                            th:href="@{/tag/{name}(name=${tag.name})}" th:text="${tag.name}"></a>
                     </p>
 
-                    <footer>
-
+                    <footer style="margin-top: 30px">
                         <div class="pull-right">
                             <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(article)}">
                             <a class="btn btn-success btn-xs" th:href="@{/article/edit/{id}(id = ${article.id})}">Edit</a>

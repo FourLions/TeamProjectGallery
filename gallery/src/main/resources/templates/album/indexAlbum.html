@@ -7,7 +7,7 @@
                         <th:block>
                             <a th:href="@{/album/{id}(id=${album.id})}">
                                 <button style="margin-top: 20px">
-                                    <img  th:src="${album.albumPicture}" width="200" height="150"/>
+                                    <img  th:src="${album.albumPicture}" class="img-thumbnail"/>
                                 </button>
                             </a>
                             <small class="author" th:text="${album.author.fullName}"></small>

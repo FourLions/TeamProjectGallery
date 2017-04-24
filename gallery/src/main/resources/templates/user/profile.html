@@ -3,7 +3,7 @@
         <div class="row">
             <div id="main" class="col-sm-3">
                 <div>
-                    <img th:src="${user.profilePicture}" width="200" height="300"/>
+                    <img th:src="${user.profilePicture}" class="img-thumbnail"/>
                 </div>
                 <table class="table table-striped table-hover ">
                     <thead>
@@ -46,7 +46,7 @@
                     <span th:text="${user.information}"></span>
                 </div>
 
-                <footer>
+                <footer style="margin-top: 30px">
                     <div class="pull-right">
                         <th:block sec:authorize="isAuthenticated()">
                             <a class="btn btn-success"

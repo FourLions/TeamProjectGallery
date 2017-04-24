@@ -15,7 +15,6 @@
                     <tbody>
 
                     <th:block th:each="link : ${links}">
-                        <!-- <tr th:class="${link.isAdmin() ? 'info' : null}"> -->
                         <tr th:class="info">
                             <td th:text="${link.author.id}"></td>
                             <td th:text="${link.author.fullName}"></td>
