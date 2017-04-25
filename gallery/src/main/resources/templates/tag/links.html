@@ -1,8 +1,8 @@
 <main>
     <div class="container body-content">
-        <h1>Category - <th:block th:text="${linkCategory.name}"></th:block></h1>
+        <h1>Search by Tag - <th:block th:text="${tag.name}"></th:block></h1>
         <div class="row">
-            <th:block th:each="link : ${links}">
+            <th:block th:each="link : ${tag.links}">
                 <div class="col-md-6">
                     <article>
                         <header>
@@ -17,8 +17,8 @@
                             <a class="btn btn-default btn-xs" th:each="tag:${link.linkTags}" th:href="@{/tagLink/{name}(name=${tag.name})}" th:text="${tag.name}"></a>
                         </p>
 
-                        <footer style="margin-top: 30px">
-                            <div class="pull-left">
+                        <footer>
+                            <div class="pull-right">
                                 <a class="btn btn-default btn-xs"
                                    th:href="@{/link/{id}(id=${link.id})}">Read more &raquo;</a>
                             </div>

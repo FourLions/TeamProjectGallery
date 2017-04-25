@@ -8,7 +8,7 @@
                     <header>
                         <h2>
                             <a th:href="@{/category/{id}(id=${category.id})}" th:text="${category.name
-                                +' (' + #sets.size(category.articles) + ')'}">
+                                +' (' + #sets.size(category.articles) + ')'}" style="color: #eac67a">
                             </a>
                         </h2>
                     </header>
@@ -20,7 +20,7 @@
                     <header>
                         <h2>
                             <a th:href="@{/linkCategory/{id}(id=${category.id})}" th:text="${category.name
-                                +' (' + #sets.size(category.links) + ')'}">
+                                +' (' + #sets.size(category.links) + ')'}" style="color: #eac67a">
                             </a>
                         </h2>
                     </header>
@@ -30,7 +30,7 @@
         <ul class="col-md-offset-1 col-md-3">
             <p>Latest 5 registered users:</p>
             <li th:each="user : ${latestFiveUsers}">
-            <a th:href="@{/profileInfo/{id}(id=${user.id})}" th:text="${user.fullName}"></a>
+            <a th:href="@{/profileInfo/{id}(id=${user.id})}" th:text="${user.fullName}" style="color: #eac67a"></a>
             </li>
         </ul>
 

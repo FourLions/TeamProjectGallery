@@ -1,6 +1,8 @@
 package softuniGallery.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "links")
@@ -16,8 +18,22 @@ public class Link {
 
     private LinkCategory linkCategory;
 
+    private Set<LinkTag> linkTags;
+
     @Transient
     private String linkSummary;
+
+    public Link(String link, String content, User author, LinkCategory linkCategory, HashSet<LinkTag> linkTags) {
+        this.link = link;
+        this.content = content;
+        this.author = author;
+        this.linkCategory = linkCategory;
+        this.linkTags = linkTags;
+    }
+
+    public Link() {
+
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,6 +83,16 @@ public class Link {
         this.linkCategory = linkCategory;
     }
 
+    @ManyToMany()
+    @JoinColumn(table = "links_tags")
+    public Set<LinkTag> getLinkTags() {
+        return this.linkTags;
+    }
+
+    public void setLinkTags(Set<LinkTag> linkTags) {
+        this.linkTags = linkTags;
+    }
+
     @Transient
     public String getLinkSummary() {
         return this.linkSummary;
@@ -76,16 +102,4 @@ public class Link {
 
         this.linkSummary = linkSummary;
     }
-
-    public Link(String link, String content, User author, LinkCategory linkCategory) {
-        this.link = link;
-        this.content = content;
-        this.author = author;
-        this.linkCategory = linkCategory;
-    }
-
-    public Link() {
-
-    }
-
 }

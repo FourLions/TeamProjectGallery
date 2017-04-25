@@ -11,6 +11,10 @@
 
                     <img th:src="${link.link}" class="img-thumbnail"/>
 
+                    <p>
+                        <a class="btn btn-default btn-xs" th:each="tag:${link.linkTags}" th:href="@{/tagLink/{name}(name=${tag.name})}" th:text="${tag.name}"></a>
+                    </p>
+
                     <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
                     <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="1"></div>
 

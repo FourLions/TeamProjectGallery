@@ -13,6 +13,16 @@ public class LinkBindingModel {
 
     private Integer categoryId;
 
+    private String tagString;
+
+    public String getTagString() {
+        return this.tagString;
+    }
+
+    public void setTagString(String tagString) {
+        this.tagString = tagString;
+    }
+
     public Integer getCategoryId() {
         return this.categoryId;
     }

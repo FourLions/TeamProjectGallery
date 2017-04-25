@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import softuniGallery.bindingModel.LinkBindingModel;
 import softuniGallery.entity.Link;
 import softuniGallery.entity.LinkCategory;
+import softuniGallery.entity.LinkTag;
 import softuniGallery.entity.User;
 import softuniGallery.repository.LinkCategoryRepository;
 import softuniGallery.repository.LinkRepository;
+import softuniGallery.repository.LinkTagRepository;
 import softuniGallery.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class LinkController {
@@ -31,6 +35,9 @@ public class LinkController {
 
     @Autowired
     private LinkCategoryRepository linkCategoryRepository;
+
+    @Autowired
+    private LinkTagRepository linkTagRepository;
 
     @GetMapping("/link/create")
     @PreAuthorize("isAuthenticated()")
@@ -53,12 +60,14 @@ public class LinkController {
 
         User userEntity = this.userRepository.findByEmail(user.getUsername());
         LinkCategory linkCategory = this.linkCategoryRepository.findOne(linkBindingModel.getCategoryId());
+        HashSet<LinkTag> linkTags = this.findTagsFromString(linkBindingModel.getTagString());
 
         Link linkEntity = new Link(
                 linkBindingModel.getLink(),
                 linkBindingModel.getContent(),
                 userEntity,
-                linkCategory
+                linkCategory,
+                linkTags
         );
 
         this.linkRepository.saveAndFlush(linkEntity);
@@ -104,10 +113,14 @@ public class LinkController {
         }
 
         List<LinkCategory> linkCategories = this.linkCategoryRepository.findAll();
+        String tagString = link.getLinkTags().stream()
+                .map(LinkTag::getName)
+                .collect(Collectors.joining(", "));
 
         model.addAttribute("view", "link/edit");
         model.addAttribute("link", link);
         model.addAttribute("linkCategories", linkCategories);
+        model.addAttribute("tags", tagString);
 
         return "base-layout";
     }
@@ -125,10 +138,12 @@ public class LinkController {
         }
 
         LinkCategory linkCategory = this.linkCategoryRepository.findOne(linkBindingModel.getCategoryId());
+        HashSet<LinkTag> linkTags = this.findTagsFromString(linkBindingModel.getTagString());
 
         link.setLinkCategory(linkCategory);
         link.setContent(linkBindingModel.getContent());
         link.setLink(linkBindingModel.getLink());
+        link.setLinkTags(linkTags);
 
         this.linkRepository.saveAndFlush(link);
 
@@ -181,5 +196,24 @@ public class LinkController {
         User userEntity = this.userRepository.findByEmail(user.getUsername());
 
         return userEntity.isAdmin() || userEntity.isAuthor(link);
+    }
+
+    private HashSet<LinkTag> findTagsFromString(String tagString) {
+
+        HashSet<LinkTag> linkTags = new HashSet<>();
+
+        String[] tagNames = tagString.split(",\\s*");
+
+        for (String tagName : tagNames) {
+            LinkTag currentTag = this.linkTagRepository.findByName(tagName);
+
+            if (currentTag == null) {
+                currentTag = new LinkTag(tagName);
+                this.linkTagRepository.saveAndFlush(currentTag);
+            }
+
+            linkTags.add(currentTag);
+        }
+        return linkTags;
     }
 }

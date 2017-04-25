@@ -38,9 +38,10 @@ public class ArticleController {
     private ArticleRepository articleRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @GetMapping("/article/create")
     @PreAuthorize("isAuthenticated()")
@@ -223,8 +224,6 @@ public class ArticleController {
         return userEntity.isAdmin() || userEntity.isAuthor(article);
     }
 
-    @Autowired
-    private TagRepository tagRepository;
     private HashSet<Tag> findTagsFromString(String tagString){
         HashSet<Tag> tags = new HashSet<>();
         String[] tagNames = tagString.split(",\\s*");
