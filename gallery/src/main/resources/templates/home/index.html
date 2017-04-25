@@ -3,11 +3,24 @@
     <div class="container body-content">
         <div class="col-md-8">
             <div class="row">
+                <h1>Categories Article Images</h1>
                 <div class="col-md-4" th:each="category : ${categories}">
                     <header>
                         <h2>
                             <a th:href="@{/category/{id}(id=${category.id})}" th:text="${category.name
                                 +' (' + #sets.size(category.articles) + ')'}">
+                            </a>
+                        </h2>
+                    </header>
+                </div>
+            </div>
+            <div class="row">
+                <h1>Categories Link Images</h1>
+                <div class="col-md-4" th:each="category : ${linkCategories}">
+                    <header>
+                        <h2>
+                            <a th:href="@{/linkCategory/{id}(id=${category.id})}" th:text="${category.name
+                                +' (' + #sets.size(category.links) + ')'}">
                             </a>
                         </h2>
                     </header>

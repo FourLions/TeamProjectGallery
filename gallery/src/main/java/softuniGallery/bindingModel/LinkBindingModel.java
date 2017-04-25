@@ -11,6 +11,16 @@ public class LinkBindingModel {
     @NotNull
     private String content;
 
+    private Integer categoryId;
+
+    public Integer getCategoryId() {
+        return this.categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public String getLink() {
         return this.link;
     }

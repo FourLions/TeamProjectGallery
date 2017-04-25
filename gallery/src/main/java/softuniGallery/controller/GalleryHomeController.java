@@ -6,10 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import softuniGallery.entity.Article;
-import softuniGallery.entity.Category;
-import softuniGallery.entity.User;
+import softuniGallery.entity.*;
 import softuniGallery.repository.CategoryRepository;
+import softuniGallery.repository.LinkCategoryRepository;
 import softuniGallery.repository.UserRepository;
 
 import java.util.List;
@@ -22,11 +21,14 @@ public class GalleryHomeController {
     private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private LinkCategoryRepository linkCategoryRepository;
 
     @GetMapping("/")
     public String index(Model model) {
 
         List<Category> categories = this.categoryRepository.findAll();
+        List<LinkCategory> linkCategories = this.linkCategoryRepository.findAll();
 
         List<User> latestFiveUsers = this.userRepository.findAll()
                 .stream()
@@ -37,6 +39,7 @@ public class GalleryHomeController {
         model.addAttribute("latestFiveUsers", latestFiveUsers);
         model.addAttribute("view", "home/index");
         model.addAttribute("categories", categories);
+        model.addAttribute("linkCategories", linkCategories);
 
         return "base-layout";
     }
@@ -51,6 +54,24 @@ public class GalleryHomeController {
         Set<Article> articles = category.getArticles();
         model.addAttribute("articles", articles);
         model.addAttribute("category", category);
+        return "base-layout";
+    }
+
+    @GetMapping("/linkCategory/{id}")
+    public String listLinks(Model model, @PathVariable Integer id){
+
+        model.addAttribute("view", "home/list-links");
+
+        if(!this.linkCategoryRepository.exists(id)){
+            return "redirect:/";
+        }
+
+        LinkCategory linkCategory = this.linkCategoryRepository.findOne(id);
+        Set<Link> links = linkCategory.getLinks();
+
+        model.addAttribute("links", links);
+        model.addAttribute("linkCategory", linkCategory);
+
         return "base-layout";
     }
 

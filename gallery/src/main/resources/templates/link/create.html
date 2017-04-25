@@ -19,6 +19,14 @@
                                    name="link"/>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="link_category">Category</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" id="link_category" name="categoryId">
+                                <option th:each="category : ${linkCategories}" th:value="${category.id}" th:text="${category.name}"></option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">

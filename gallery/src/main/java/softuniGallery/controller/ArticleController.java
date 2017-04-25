@@ -46,8 +46,8 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     public String create(Model model) {
         model.addAttribute("view", "article/create");
-        List<Category> categoris = this.categoryRepository.findAll();
-        model.addAttribute("categories", categoris);
+        List<Category> categories = this.categoryRepository.findAll();
+        model.addAttribute("categories", categories);
         return "base-layout";
     }
 

@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import softuniGallery.bindingModel.LinkBindingModel;
 import softuniGallery.entity.Link;
+import softuniGallery.entity.LinkCategory;
 import softuniGallery.entity.User;
+import softuniGallery.repository.LinkCategoryRepository;
 import softuniGallery.repository.LinkRepository;
 import softuniGallery.repository.UserRepository;
+
+import java.util.List;
 
 @Controller
 public class LinkController {
@@ -25,9 +29,16 @@ public class LinkController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LinkCategoryRepository linkCategoryRepository;
+
     @GetMapping("/link/create")
     @PreAuthorize("isAuthenticated()")
     public String create(Model model) {
+
+        List<LinkCategory> linkCategories = this.linkCategoryRepository.findAll();
+
+        model.addAttribute("linkCategories", linkCategories);
         model.addAttribute("view", "link/create");
 
         return "base-layout";
@@ -41,11 +52,13 @@ public class LinkController {
                 .getAuthentication().getPrincipal();
 
         User userEntity = this.userRepository.findByEmail(user.getUsername());
+        LinkCategory linkCategory = this.linkCategoryRepository.findOne(linkBindingModel.getCategoryId());
 
         Link linkEntity = new Link(
                 linkBindingModel.getLink(),
                 linkBindingModel.getContent(),
-                userEntity
+                userEntity,
+                linkCategory
         );
 
         this.linkRepository.saveAndFlush(linkEntity);
@@ -90,8 +103,11 @@ public class LinkController {
             return "redirect:/link/" + id;
         }
 
+        List<LinkCategory> linkCategories = this.linkCategoryRepository.findAll();
+
         model.addAttribute("view", "link/edit");
         model.addAttribute("link", link);
+        model.addAttribute("linkCategories", linkCategories);
 
         return "base-layout";
     }
@@ -108,6 +124,9 @@ public class LinkController {
             return "redirect:/link/" + id;
         }
 
+        LinkCategory linkCategory = this.linkCategoryRepository.findOne(linkBindingModel.getCategoryId());
+
+        link.setLinkCategory(linkCategory);
         link.setContent(linkBindingModel.getContent());
         link.setLink(linkBindingModel.getLink());
 

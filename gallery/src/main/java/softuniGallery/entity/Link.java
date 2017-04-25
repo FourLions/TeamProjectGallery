@@ -14,6 +14,8 @@ public class Link {
 
     private User author;
 
+    private LinkCategory linkCategory;
+
     @Transient
     private String linkSummary;
 
@@ -55,6 +57,16 @@ public class Link {
         this.author = author;
     }
 
+    @ManyToOne()
+    @JoinColumn(nullable = false, name = "categoryId")
+    public LinkCategory getLinkCategory() {
+        return this.linkCategory;
+    }
+
+    public void setLinkCategory(LinkCategory linkCategory) {
+        this.linkCategory = linkCategory;
+    }
+
     @Transient
     public String getLinkSummary() {
         return this.linkSummary;
@@ -65,10 +77,11 @@ public class Link {
         this.linkSummary = linkSummary;
     }
 
-    public Link(String link, String content, User author) {
+    public Link(String link, String content, User author, LinkCategory linkCategory) {
         this.link = link;
         this.content = content;
         this.author = author;
+        this.linkCategory = linkCategory;
     }
 
     public Link() {

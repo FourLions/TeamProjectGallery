@@ -18,6 +18,14 @@
                             <textarea class="form-control" rows="6" id="link_link" name="link" th:field="${link.link}"></textarea>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="link_category">Category</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" id="link_category" name="categoryId">
+                                <option th:each="category : ${linkCategories}" th:value="${category.id}" th:text="${category.name}"  th:selected="${category.id == link.linkCategory.id}"></option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
