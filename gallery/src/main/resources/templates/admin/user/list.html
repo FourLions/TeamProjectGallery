@@ -18,13 +18,12 @@
                         <tr th:class="${user.isAdmin() ? 'info' : null}">
                             <td th:text="${user.id}"></td>
                             <td><a th:href="@{/profileInfo/{id}(id=${user.id})}" th:text="${user.fullName}" style="color: white"></a></td>
-                            <!--<td th:text="${user.fullName}"></td>-->
+
                             <td th:text="${user.email}"></td>
                             <td>
                                 <a th:href="@{/admin/users/edit/{id}(id=${user.id})}">Edit</a>
                                 <a th:href="@{/admin/users/info/{id}(id=${user.id})}">Edit Info</a>
                                 <a th:href="@{/admin/users/delete/{id}(id=${user.id})}">Delete</a>
-                                <!--<a th:href="@{/admin/users/userAlbums/{id}(id=${user.id})}">View User Albums</a>-->
                             </td>
                         </tr>
                     </th:block>

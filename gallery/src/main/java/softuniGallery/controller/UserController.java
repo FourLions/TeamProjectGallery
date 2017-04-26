@@ -15,8 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.UserBindingModel;
 import softuniGallery.bindingModel.UserEditBindingModel;
 import softuniGallery.bindingModel.UserInfoBindingModel;
-import softuniGallery.entity.Role;
-import softuniGallery.entity.User;
+import softuniGallery.entity.*;
 import softuniGallery.repository.RoleRepository;
 import softuniGallery.repository.UserRepository;
 
@@ -25,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -88,7 +88,14 @@ public class UserController {
                 .getPrincipal();
 
         User user = this.userRepository.findByEmail(principal.getUsername());
+        Set<Album> albums = user.getAlbums();
+        Set<Link> links = user.getLinks();
+        Set<Article> articles = user.getArticles();
+
         model.addAttribute("user", user);
+        model.addAttribute("albums", albums);
+        model.addAttribute("links", links);
+        model.addAttribute("articles", articles);
         model.addAttribute("view", "user/profile");
         return "base-layout";
     }
@@ -192,8 +199,14 @@ public class UserController {
         }
 
         User user = this.userRepository.findOne(id);
+        Set<Album> albums = user.getAlbums();
+        Set<Link> links = user.getLinks();
+        Set<Article> articles = user.getArticles();
 
         model.addAttribute("user", user);
+        model.addAttribute("albums", albums);
+        model.addAttribute("links", links);
+        model.addAttribute("articles", articles);
         model.addAttribute("view", "user/profileInfo");
 
         return "base-layout";
