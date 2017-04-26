@@ -16,8 +16,11 @@
                     <th:block th:each="album : ${albums}">
                         <tr th:class='info'>
                             <td th:text="${album.id}"></td>
-                            <td th:text="${album.name}"></td>
-                            <td th:text="${album.author.fullName}"></td>
+                            <td><a th:text="${album.name}" th:href="@{/album/{id}(id=${album.id})}"></a></td>
+
+                            <td><a th:href="@{/profileInfo/{id}(id=${album.author.id})}"
+                                   th:text="${album.author.fullName}" style="color: white"></a>
+                            </td>
                             <td>
                                 <th:block th:each="image : ${album.getImageAlbums()}">
                                     <a th:href="@{/admin/albums/details/{id}(id=${image.id})}">

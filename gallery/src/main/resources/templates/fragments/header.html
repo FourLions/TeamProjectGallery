@@ -18,6 +18,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a th:href="@{/link/create}">Share Link</a></li>
                             <li><a th:href="@{/link/viewLinks}">View Links</a></li>
+                            <li><a th:href="@{/link/viewLinks}">Find Link</a></li>
                         </ul>
                     </li>
                     <li class="dropdown" sec:authorize="isAuthenticated()">
@@ -26,13 +27,18 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a th:href="@{/album/createAlbum}">Create Album</a></li>
                             <li><a th:href="@{/album/viewAlbums}">View Albums</a></li>
+                            <li><a th:href="@{/find}">Find Album</a></li>
                         </ul>
                     </li>
-                    <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/article/create}">
-                            Create Article
-                        </a>
+
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Articles<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/article/create}">Create Article</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/article/create}">Find Article</a></li>
+                        </ul>
                     </li>
+
                     <li class="dropdown" sec:authorize="hasRole('ADMIN')">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin
                             panel<span class="caret"></span></a>
@@ -54,20 +60,20 @@
                         </a>
                     </li>
 
-                    <li sec:authorize="isAnonymous()">
-                        <a th:href="@{/link/viewLinks}">
-                            Links
-                        </a>
+                    <li class="dropdown" sec:authorize="isAnonymous()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Links<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li sec:authorize="isAnonymous()"><a th:href="@{/link/viewLinks}">View Links</a></li>
+                            <li sec:authorize="isAnonymous()"><a th:href="@{/link/viewLinks}">Find Link</a></li>
+                        </ul>
                     </li>
-                    <li sec:authorize="isAnonymous()">
-                        <a th:href="@{/find}">
-                            Find Album
-                        </a>
-                    </li>
-                    <li sec:authorize="isAnonymous()">
-                        <a th:href="@{/album/viewAlbums}">
-                            Albums
-                        </a>
+
+                    <li class="dropdown" sec:authorize="isAnonymous()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Albums<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a th:href="@{/album/viewAlbums}">View Albums</a></li>
+                            <li><a th:href="@{/find}">Find Album</a></li>
+                        </ul>
                     </li>
 
                     <li sec:authorize="isAnonymous()">
