@@ -35,6 +35,8 @@ public class AlbumController {
     @Autowired
     private ImageRepository imageRepository;
 
+    private List<Album> found = new LinkedList<>();
+
     @GetMapping("/album/createAlbum")
     @PreAuthorize("isAuthenticated()")
     public String create(Model model) {
@@ -100,7 +102,7 @@ public class AlbumController {
     }
 
     @GetMapping("/album/viewAlbums")
-    public String listAlbums(Model model){
+    public String listAlbums(Model model) {
         List<Album> albums = this.albumRepository.findAll();
 
         model.addAttribute("albums", albums);
@@ -419,12 +421,11 @@ public class AlbumController {
     }
 
     @GetMapping("/imageDetails/{id}")
-    //@PreAuthorize("isAuthenticated()")
     public String pictureDetails(@PathVariable Integer id, Model model) {
         ImageAlbum image = this.imageRepository.findOne(id);
         Album album = image.getAlbum();
 
-        if (!this.imageRepository.exists(id) ) {//|| !isUserAuthorOrAdmin(album)
+        if (!this.imageRepository.exists(id)) {
             return "redirect:/album/" + album.getId();
         }
 
@@ -433,5 +434,41 @@ public class AlbumController {
         model.addAttribute("album", album);
 
         return "base-layout";
+    }
+
+    @GetMapping("/find")
+    public String findAlbum(Model model) {
+        model.addAttribute("view", "findAlbum/search");
+        return "base-layout";
+    }
+
+    @PostMapping("/find")
+    public String findAlbumProccess(AlbumBindingModel albumBindingModel, Model model) {
+        String searched = albumBindingModel.getName();
+        List<Album> allAlbums = this.albumRepository.findAll();
+
+        for (Album current : allAlbums) {
+            if (AlbumNameContainsSearched(searched, current.getName())) {
+                found.add(current);
+            }
+        }
+
+        return "redirect:/album/viewFoundAlbums";
+    }
+
+    private boolean AlbumNameContainsSearched(String searched, String current) {
+        return current.toLowerCase().contains(searched.toLowerCase());
+    }
+
+    @GetMapping("/album/viewFoundAlbums")
+    public String listFoundAlbums(Model model) {
+        if(found.size() > 0) {
+            model.addAttribute("albums", found);
+            model.addAttribute("view", "/album/indexAlbum");
+            found = new LinkedList<>();
+            return "base-layout";
+        }
+
+        return "findAlbum/notFound";
     }
 }

@@ -3,10 +3,10 @@ package softuniGallery.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import softuniGallery.bindingModel.AlbumBindingModel;
 import softuniGallery.entity.*;
+import softuniGallery.repository.AlbumRepository;
 import softuniGallery.repository.CategoryRepository;
 import softuniGallery.repository.LinkCategoryRepository;
 import softuniGallery.repository.UserRepository;
@@ -23,6 +23,8 @@ public class GalleryHomeController {
     private UserRepository userRepository;
     @Autowired
     private LinkCategoryRepository linkCategoryRepository;
+    @Autowired
+    private AlbumRepository albumRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -88,4 +90,6 @@ public class GalleryHomeController {
 
         return "base-layout";
     }
+
+
 }

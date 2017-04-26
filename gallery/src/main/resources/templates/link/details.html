@@ -7,20 +7,25 @@
                         <h2 th:text="${link.author.fullName}"></h2>
                     </header>
 
-                    <p th:text="${link.content}"> </p>
+                    <p th:text="${link.content}"></p>
 
                     <img th:src="${link.link}" class="img-thumbnail"/>
 
-                    <p>
-                        <a class="btn btn-default btn-xs" th:each="tag:${link.linkTags}" th:href="@{/tagLink/{name}(name=${tag.name})}" th:text="${tag.name}"></a>
+                    <p style="margin-top: 30px">
+                        <a class="btn btn-default btn-xs" th:each="tag:${link.linkTags}"
+                           th:href="@{/tagLink/{name}(name=${tag.name})}" th:text="${tag.name}"></a>
                     </p>
 
-                    <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
-                    <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="1"></div>
+                    <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/"
+                         data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                    <div class="fb-comments"
+                         data-href="https://developers.facebook.com/docs/plugins/comments#configurator"
+                         data-numposts="1"></div>
 
                     <footer style="margin-top: 30px">
                         <div class="pull-right">
-                            <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(link)}">
+                            <th:block sec:authorize="isAuthenticated()"
+                                      th:if="${user.isAdmin() OR user.isAuthor(link)}">
                                 <a class="btn btn-success btn-xs" th:href="@{/link/edit/{id}(id = ${link.id})}">Edit</a>
                                 <a class="btn btn-danger btn-xs"
                                    th:href="@{/link/delete/{id}(id = ${link.id})}">Delete</a>

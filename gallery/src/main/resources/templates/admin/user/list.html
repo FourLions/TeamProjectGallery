@@ -17,7 +17,8 @@
                     <th:block th:each="user : ${users}">
                         <tr th:class="${user.isAdmin() ? 'info' : null}">
                             <td th:text="${user.id}"></td>
-                            <td th:text="${user.fullName}"></td>
+                            <td><a th:href="@{/profileInfo/{id}(id=${user.id})}" th:text="${user.fullName}" style="color: white"></a></td>
+                            <!--<td th:text="${user.fullName}"></td>-->
                             <td th:text="${user.email}"></td>
                             <td>
                                 <a th:href="@{/admin/users/edit/{id}(id=${user.id})}">Edit</a>

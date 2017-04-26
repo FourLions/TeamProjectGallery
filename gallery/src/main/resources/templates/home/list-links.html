@@ -13,7 +13,7 @@
 
                         <img th:src="${link.link}" class="img-thumbnail"/>
 
-                        <p>
+                        <p style="margin-top: 30px  ">
                             <a class="btn btn-default btn-xs" th:each="tag:${link.linkTags}" th:href="@{/tagLink/{name}(name=${tag.name})}" th:text="${tag.name}"></a>
                         </p>
 
