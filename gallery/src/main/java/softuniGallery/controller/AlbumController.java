@@ -451,7 +451,7 @@ public class AlbumController {
     }
 
     @PostMapping("/find")
-    public String findAlbumProccess(AlbumBindingModel albumBindingModel, Model model) {
+    public String findAlbumProcess(AlbumBindingModel albumBindingModel, Model model) {
         String searched = albumBindingModel.getName();
         List<Album> allAlbums = this.albumRepository.findAll();
 
@@ -472,7 +472,7 @@ public class AlbumController {
     public String listFoundAlbums(Model model) {
         if (found.size() > 0) {
             model.addAttribute("albums", found);
-            model.addAttribute("view", "/album/indexAlbum");
+            model.addAttribute("view", "/findAlbum/index");
             found = new LinkedList<>();
             return "base-layout";
         }

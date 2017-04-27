@@ -21,6 +21,7 @@ import softuniGallery.repository.LinkTagRepository;
 import softuniGallery.repository.UserRepository;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,8 @@ public class LinkController {
 
     @Autowired
     private LinkTagRepository linkTagRepository;
+
+    private List<Link> found = new LinkedList<>();
 
     @GetMapping("/link/create")
     @PreAuthorize("isAuthenticated()")
@@ -214,5 +217,41 @@ public class LinkController {
             linkTags.add(currentTag);
         }
         return linkTags;
+    }
+
+    @GetMapping("/findLink")
+    public String findLink(Model model){
+        model.addAttribute("view", "findLink/search");
+        return "base-layout";
+    }
+
+    @PostMapping("/findLink")
+    public String findLinkProcess(LinkBindingModel linkBindingModel){
+
+        String searched = linkBindingModel.getLink();
+        List<Link> links = this.linkRepository.findAll();
+
+        for (Link link : links) {
+            if (LinkUrlContainsSearched(searched, link.getLink())){
+                found.add(link);
+            }
+        }
+
+        return "redirect:/link/viewFoundLinks";
+    }
+
+    private boolean LinkUrlContainsSearched(String searched, String link) {
+        return link.toLowerCase().contains(searched.toLowerCase());
+    }
+
+    @GetMapping("/link/viewFoundLinks")
+    public String listFoundLinks(Model model){
+        if (found.size() > 0){
+            model.addAttribute("links", found);
+            model.addAttribute("view", "/findLink/index");
+            found = new LinkedList<>();
+            return "base-layout";
+        }
+        return "findLink/notFound";
     }
 }

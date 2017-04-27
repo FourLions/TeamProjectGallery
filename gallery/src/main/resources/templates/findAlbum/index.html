@@ -1,0 +1,23 @@
+<main xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:c="http://java.sun.com/xml/ns/javaee">
+    <div class="container body-content">
+        <div class="row">
+            <th:block th:each="album : ${albums}">
+                <div class="col-md-3">
+                    <article>
+                        <header>
+                            <h2 th:text="${album.name}"></h2>
+                        </header>
+                        <th:block>
+                            <a th:href="@{/album/{id}(id=${album.id})}">
+                                <button style="margin-top: 20px">
+                                    <img  th:src="${album.albumPicture}" class="img-thumbnail"/>
+                                </button>
+                            </a>
+                            <small class="author" th:text="${album.author.fullName}"></small>
+                        </th:block>
+                    </article>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,25 @@
+<main>
+    <div class="well">
+        <form class="form-horizontal" th:action="@{/findArticle}" method="POST">
+            <fieldset>
+                <legend>Find Article</legend>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="article_title">Article Title</label>
+                    <div class="col-sm-4 ">
+                        <input type="text" class="form-control" id="article_title" placeholder="Article title"
+                               name="title" required="true"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <a class="btn btn-default" th:href="@{/}">Cancel</a>
+                        <input type="submit" class="btn btn-primary" value="Submit"/>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+</main>

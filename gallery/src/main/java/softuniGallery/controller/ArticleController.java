@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -42,6 +43,8 @@ public class ArticleController {
     private CategoryRepository categoryRepository;
     @Autowired
     private TagRepository tagRepository;
+
+    private List<Article> found = new LinkedList<>();
 
     @GetMapping("/article/create")
     @PreAuthorize("isAuthenticated()")
@@ -248,5 +251,42 @@ public class ArticleController {
             tags.add(currentTag);
         }
         return tags;
+    }
+
+    @GetMapping("/findArticle")
+    public String findArticle(Model model){
+        model.addAttribute("view", "findArticle/search");
+        return "base-layout";
+    }
+
+    @PostMapping("/findArticle")
+    public String findArticleProcess(ArticleBindingModel articleBindingModel){
+
+        String searched = articleBindingModel.getTitle();
+
+        List<Article> articles = this.articleRepository.findAll();
+
+        for (Article article : articles) {
+            if (ArticleTitleContainsSearched(searched, article.getTitle())){
+                found.add(article);
+            }
+        }
+
+        return "redirect:/article/viewFoundArticles";
+    }
+
+    private boolean ArticleTitleContainsSearched(String searched, String title) {
+        return title.toLowerCase().contains(searched.toLowerCase());
+    }
+
+    @GetMapping("/article/viewFoundArticles")
+    public String listFoundArticles(Model model){
+        if (found.size() > 0){
+            model.addAttribute("articles", found);
+            model.addAttribute("view", "/findArticle/index");
+            found = new LinkedList<>();
+            return "base-layout";
+        }
+        return "findArticle/notFound";
     }
 }

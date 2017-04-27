@@ -18,7 +18,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a th:href="@{/link/create}">Share Link</a></li>
                             <li><a th:href="@{/link/viewLinks}">View Links</a></li>
-                            <li><a th:href="@{/link/viewLinks}">Find Link</a></li>
+                            <li><a th:href="@{/findLink}">Find Link</a></li>
                         </ul>
                     </li>
                     <li class="dropdown" sec:authorize="isAuthenticated()">
@@ -36,7 +36,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li sec:authorize="isAuthenticated()"><a th:href="@{/article/create}">Create Article</a></li>
                             <li><a th:href="@{/article/viewArticles}">View Articles</a></li>
-                            <li sec:authorize="isAuthenticated()"><a th:href="@{/article/create}">Find Article</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/findArticle}">Find Article</a></li>
                         </ul>
                     </li>
 
