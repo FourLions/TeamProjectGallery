@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.AlbumBindingModel;
-import softuniGallery.entity.Album;
-import softuniGallery.entity.ImageAlbum;
-import softuniGallery.entity.User;
+import softuniGallery.entity.*;
+import softuniGallery.repository.AlbumCategoryRepository;
 import softuniGallery.repository.AlbumRepository;
 import softuniGallery.repository.ImageRepository;
 import softuniGallery.repository.UserRepository;
@@ -34,13 +33,19 @@ public class AlbumController {
     private UserRepository userRepository;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private AlbumCategoryRepository albumCategoryRepository;
 
     private List<Album> found = new LinkedList<>();
 
     @GetMapping("/album/createAlbum")
     @PreAuthorize("isAuthenticated()")
     public String create(Model model) {
+        List<AlbumCategory> albumCategories = this.albumCategoryRepository.findAll();
+
+        model.addAttribute("linkCategories", albumCategories);
         model.addAttribute("view", "album/createAlbum");
+
         return "base-layout";
     }
 
@@ -54,9 +59,12 @@ public class AlbumController {
 
         User userEntity = this.userRepository.findByEmail(user.getUsername());
 
+        AlbumCategory albumCategory= this.albumCategoryRepository.findOne(albumBindingModel.getCategoryId());
+
         Album albumEntity = new Album(
                 albumBindingModel.getName(),
-                userEntity
+                userEntity,
+                albumCategory
         );
 
         List<MultipartFile> files = albumBindingModel.getPictures();
@@ -462,7 +470,7 @@ public class AlbumController {
 
     @GetMapping("/album/viewFoundAlbums")
     public String listFoundAlbums(Model model) {
-        if(found.size() > 0) {
+        if (found.size() > 0) {
             model.addAttribute("albums", found);
             model.addAttribute("view", "/album/indexAlbum");
             found = new LinkedList<>();

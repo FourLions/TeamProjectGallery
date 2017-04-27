@@ -26,6 +26,20 @@
                     </header>
                 </div>
             </div>
+
+            <div class="row">
+                <h1>Categories Album Images</h1>
+                <div class="col-md-4" th:each="category : ${albumCategories}">
+                    <header>
+                        <h2>
+                            <a th:href="@{/albumCategory/{id}(id=${category.id})}" th:text="${category.name
+                                +' (' + #sets.size(category.links) + ')'}" style="color: #eac67a">
+                            </a>
+                        </h2>
+                    </header>
+                </div>
+            </div>
+
         </div>
         <ul class="col-md-offset-1 col-md-3">
             <p>Latest 5 registered users:</p>

@@ -10,6 +10,8 @@ public class AlbumBindingModel {
 
     private List<MultipartFile> pictures;
 
+
+    private Integer categoryId;
     @NotNull
     private String name;
 
@@ -39,6 +41,14 @@ public class AlbumBindingModel {
 
     public void setName(String albumNameBind) {
         this.name = albumNameBind;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
 }

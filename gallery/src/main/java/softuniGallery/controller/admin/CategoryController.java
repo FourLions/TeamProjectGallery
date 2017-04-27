@@ -9,14 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import softuniGallery.bindingModel.CategoryBindingModel;
-import softuniGallery.entity.Article;
-import softuniGallery.entity.Category;
-import softuniGallery.entity.Link;
-import softuniGallery.entity.LinkCategory;
-import softuniGallery.repository.ArticleRepository;
-import softuniGallery.repository.CategoryRepository;
-import softuniGallery.repository.LinkCategoryRepository;
-import softuniGallery.repository.LinkRepository;
+import softuniGallery.entity.*;
+import softuniGallery.repository.*;
 
 import java.util.Comparator;
 import java.util.List;
@@ -37,18 +31,24 @@ public class CategoryController {
 
     @Autowired
     private LinkRepository linkRepository;
-
+    @Autowired
+    private AlbumCategoryRepository albumCategoryRepository;
+    @Autowired
+    private AlbumRepository albumRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
 
     @GetMapping("/")
-    public String list (Model model){
+    public String list(Model model) {
         List<Category> categories = this.categoryRepository.findAll();
         List<LinkCategory> linkCategories = this.linkCategoryRepository.findAll();
-
+        List<AlbumCategory> albumCategories = this.albumCategoryRepository.findAll();
 
         model.addAttribute("categories", categories);
         model.addAttribute("linkCategories", linkCategories);
-        model.addAttribute("view","admin/category/list");
+        model.addAttribute("albumCategories", albumCategories);
+        model.addAttribute("view", "admin/category/list");
 
 
         categories = categories.stream()
@@ -61,24 +61,27 @@ public class CategoryController {
 
         return "base-layout";
     }
+
     @GetMapping("/create")
-    public String create(Model model){
+    public String create(Model model) {
         model.addAttribute("view", "admin/category/create");
 
         return "base-layout";
     }
+
     @PostMapping("/create")
-    public String createProcess(CategoryBindingModel categoryBindingModel){
-        if(StringUtils.isEmpty(categoryBindingModel.getName())){
+    public String createProcess(CategoryBindingModel categoryBindingModel) {
+        if (StringUtils.isEmpty(categoryBindingModel.getName())) {
             return "redirect:/admin/categories/create";
         }
         Category category = new Category(categoryBindingModel.getName());
         this.categoryRepository.saveAndFlush(category);
         return "redirect:/admin/categories/";
     }
+
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable Integer id){
-        if(!this.categoryRepository.exists(id)){
+    public String edit(Model model, @PathVariable Integer id) {
+        if (!this.categoryRepository.exists(id)) {
             return "redirect:/admin/categories/";
         }
         Category category = this.categoryRepository.findOne(id);
@@ -86,9 +89,10 @@ public class CategoryController {
         model.addAttribute("view", "admin/category/edit");
         return "base-layout";
     }
+
     @PostMapping("/edit/{id}")
-    public String editProcess(@PathVariable Integer id, CategoryBindingModel categoryBindingModel){
-        if(!this.categoryRepository.exists(id)){
+    public String editProcess(@PathVariable Integer id, CategoryBindingModel categoryBindingModel) {
+        if (!this.categoryRepository.exists(id)) {
             return "redirect:/admin/categories/";
         }
 
@@ -97,9 +101,10 @@ public class CategoryController {
         this.categoryRepository.saveAndFlush(category);
         return "redirect:/admin/categories/";
     }
+
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable Integer id){
-        if(!this.categoryRepository.exists(id)){
+    public String delete(Model model, @PathVariable Integer id) {
+        if (!this.categoryRepository.exists(id)) {
             return "redirect:/admin/categories/";
         }
         Category category = this.categoryRepository.findOne(id);
@@ -109,14 +114,15 @@ public class CategoryController {
 
         return "base-layout";
     }
+
     @PostMapping("/delete/{id}")
-    public String deleteProcess(@PathVariable Integer id){
-        if(!this.categoryRepository.exists(id)){
+    public String deleteProcess(@PathVariable Integer id) {
+        if (!this.categoryRepository.exists(id)) {
             return "redirect:/admin/categories/";
         }
         Category category = this.categoryRepository.findOne(id);
 
-        for(Article article : category.getArticles()){
+        for (Article article : category.getArticles()) {
             this.articleRepository.delete(article);
         }
         this.categoryRepository.delete(category);
@@ -124,17 +130,15 @@ public class CategoryController {
     }
 
     @GetMapping("/createLink")
-    public String createLink(Model model){
-
+    public String createLink(Model model) {
         model.addAttribute("view", "admin/category/createLink");
-
         return "base-layout";
     }
 
     @PostMapping("/createLink")
-    public String createLinkProcess(CategoryBindingModel categoryBindingModel){
+    public String createLinkProcess(CategoryBindingModel categoryBindingModel) {
 
-        if(StringUtils.isEmpty(categoryBindingModel.getName())){
+        if (StringUtils.isEmpty(categoryBindingModel.getName())) {
             return "redirect:/admin/categories/createLink";
         }
 
@@ -146,9 +150,9 @@ public class CategoryController {
     }
 
     @GetMapping("/editLink/{id}")
-    public String editLink(Model model, @PathVariable Integer id){
+    public String editLink(Model model, @PathVariable Integer id) {
 
-        if(!this.linkCategoryRepository.exists(id)){
+        if (!this.linkCategoryRepository.exists(id)) {
             return "redirect:/admin/categories/";
         }
 
@@ -161,9 +165,9 @@ public class CategoryController {
     }
 
     @PostMapping("/editLink/{id}")
-    public String editLinkProcess(@PathVariable Integer id, CategoryBindingModel categoryBindingModel){
+    public String editLinkProcess(@PathVariable Integer id, CategoryBindingModel categoryBindingModel) {
 
-        if(!this.linkCategoryRepository.exists(id)){
+        if (!this.linkCategoryRepository.exists(id)) {
             return "redirect:/admin/categories/";
         }
 
@@ -177,9 +181,9 @@ public class CategoryController {
     }
 
     @GetMapping("/deleteLink/{id}")
-    public String deleteLink(Model model, @PathVariable Integer id){
+    public String deleteLink(Model model, @PathVariable Integer id) {
 
-        if(!this.linkCategoryRepository.exists(id)){
+        if (!this.linkCategoryRepository.exists(id)) {
             return "redirect:/admin/categories/";
         }
 
@@ -192,15 +196,15 @@ public class CategoryController {
     }
 
     @PostMapping("/deleteLink/{id}")
-    public String deleteLinkProcess(@PathVariable Integer id){
+    public String deleteLinkProcess(@PathVariable Integer id) {
 
-        if(!this.linkCategoryRepository.exists(id)){
+        if (!this.linkCategoryRepository.exists(id)) {
             return "redirect:/admin/categories/";
         }
 
         LinkCategory linkCategory = this.linkCategoryRepository.findOne(id);
 
-        for(Link link : linkCategory.getLinks()){
+        for (Link link : linkCategory.getLinks()) {
             this.linkRepository.delete(link);
         }
 
@@ -208,4 +212,93 @@ public class CategoryController {
 
         return "redirect:/admin/categories/";
     }
+
+    @GetMapping("/createAlbumCategory")
+    public String createAlbumCategory(Model model) {
+        model.addAttribute("view", "admin/category/createAlbumCategory");
+        return "base-layout";
+    }
+
+    @PostMapping("/createAlbumCategory")
+    public String createAlbumCategoryProccess(CategoryBindingModel categoryBindingModel) {
+
+        if (StringUtils.isEmpty(categoryBindingModel.getName())) {
+            return "redirect:/admin/categories/createAlbumCategory";
+        }
+
+        AlbumCategory albumCategory = new AlbumCategory(categoryBindingModel.getName());
+
+        this.albumCategoryRepository.saveAndFlush(albumCategory);
+
+        return "redirect:/admin/categories/";
+    }
+
+    @GetMapping("/editAlbumCategory/{id}")
+    public String editAlbumCategory(Model model, @PathVariable Integer id) {
+
+        if (!this.albumCategoryRepository.exists(id)) {
+            return "redirect:/admin/categories/";
+        }
+
+        AlbumCategory albumCategory = this.albumCategoryRepository.findOne(id);
+
+        model.addAttribute("albumCategory", albumCategory);
+        model.addAttribute("view", "admin/category/editAlbumCategory");
+
+        return "base-layout";
+    }
+
+    @PostMapping("/editAlbumCategory/{id}")
+    public String editAlbumCategoryProccess(@PathVariable Integer id, CategoryBindingModel categoryBindingModel) {
+
+        if (!this.albumCategoryRepository.exists(id)) {
+            return "redirect:/admin/categories/";
+        }
+
+        AlbumCategory albumCategory = this.albumCategoryRepository.findOne(id);
+
+        albumCategory.setName(categoryBindingModel.getName());
+
+        this.albumCategoryRepository.saveAndFlush(albumCategory);
+
+        return "redirect:/admin/categories/";
+    }
+
+    @GetMapping("/deleteAlbumCategory/{id}")
+    public String deleteAlbum(Model model, @PathVariable Integer id) {
+
+        if (!this.albumCategoryRepository.exists(id)) {
+            return "redirect:/admin/categories/";
+        }
+
+        AlbumCategory albumCategory = this.albumCategoryRepository.findOne(id);
+
+        model.addAttribute("albumCategory", albumCategory);
+        model.addAttribute("view", "admin/category/deleteAlbumCategory");
+
+        return "base-layout";
+    }
+
+    @PostMapping("/deleteAlbumCategory/{id}")
+    public String deleteAlbumProccess(@PathVariable Integer id) {
+
+        if (!this.albumCategoryRepository.exists(id)) {
+            return "redirect:/admin/categories/";
+        }
+
+        AlbumCategory albumCategory = this.albumCategoryRepository.findOne(id);
+
+        for (Album currentAlbum : albumCategory.getAlbums()) {
+            for (ImageAlbum currentImage : currentAlbum.getImageAlbums()) {
+                this.imageRepository.delete(currentImage);
+            }
+
+            this.albumRepository.delete(currentAlbum);
+        }
+
+        this.albumCategoryRepository.delete(albumCategory);
+
+        return "redirect:/admin/categories/";
+    }
+
 }

@@ -13,6 +13,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-sm-4 control-label" for="album_category">Album Category</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="album_category" name="categoryId">
+                            <option th:each="category : ${linkCategories}" th:value="${category.id}" th:text="${category.name}" required="true"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-sm-4 control-label" for="image">*Album Profile Picture</label>
                     <div class="col-sm-4 ">
                         <input type="file" name="pictures" id="image" accept="image/*" required="true"/>

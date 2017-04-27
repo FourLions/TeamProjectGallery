@@ -16,14 +16,15 @@ public class Album {
     private Integer id;
     private String name;
     private User author;
-    //private List<String> imagePathList;
+    private AlbumCategory albumCategory;
     private String albumPicture;
     private List<ImageAlbum> imageAlbums;
 
-    public Album(String name, User author) {
+    public Album(String name, User author, AlbumCategory albumCategory) {
         this.author = author;
         this.name = name;
         this.imageAlbums = new LinkedList<>();
+        this.albumCategory = albumCategory;
     }
 
     public Album() {
@@ -87,5 +88,15 @@ public class Album {
         return this.author.getAlbums()
                 .stream()
                 .anyMatch(role->role.getId() == author_id);
+    }
+
+    @ManyToOne()
+    @JoinColumn(nullable = false, name = "categoryId")
+    public AlbumCategory getAlbumCategory() {
+        return albumCategory;
+    }
+
+    public void setAlbumCategory(AlbumCategory albumCategory) {
+        this.albumCategory = albumCategory;
     }
 }

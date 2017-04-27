@@ -42,7 +42,6 @@ public class LinkController {
     @GetMapping("/link/create")
     @PreAuthorize("isAuthenticated()")
     public String create(Model model) {
-
         List<LinkCategory> linkCategories = this.linkCategoryRepository.findAll();
 
         model.addAttribute("linkCategories", linkCategories);
