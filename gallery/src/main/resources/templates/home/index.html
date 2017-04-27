@@ -33,7 +33,7 @@
                     <header>
                         <h2>
                             <a th:href="@{/albumCategory/{id}(id=${category.id})}" th:text="${category.name
-                                +' (' + #sets.size(category.links) + ')'}" style="color: #eac67a">
+                                +' (' + #sets.size(category.albums) + ')'}" style="color: #eac67a">
                             </a>
                         </h2>
                     </header>

@@ -6,10 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import softuniGallery.bindingModel.AlbumBindingModel;
 import softuniGallery.entity.*;
-import softuniGallery.repository.AlbumRepository;
-import softuniGallery.repository.CategoryRepository;
-import softuniGallery.repository.LinkCategoryRepository;
-import softuniGallery.repository.UserRepository;
+import softuniGallery.repository.*;
 
 import java.util.List;
 import java.util.Set;
@@ -24,13 +21,14 @@ public class GalleryHomeController {
     @Autowired
     private LinkCategoryRepository linkCategoryRepository;
     @Autowired
-    private AlbumRepository albumRepository;
+    private AlbumCategoryRepository albumCategoryRepository;
 
     @GetMapping("/")
     public String index(Model model) {
 
         List<Category> categories = this.categoryRepository.findAll();
         List<LinkCategory> linkCategories = this.linkCategoryRepository.findAll();
+        List<AlbumCategory> albumCategories = this.albumCategoryRepository.findAll();
 
         List<User> latestFiveUsers = this.userRepository.findAll()
                 .stream()
@@ -42,6 +40,7 @@ public class GalleryHomeController {
         model.addAttribute("view", "home/index");
         model.addAttribute("categories", categories);
         model.addAttribute("linkCategories", linkCategories);
+        model.addAttribute("albumCategories", albumCategories);
 
         return "base-layout";
     }
@@ -73,6 +72,24 @@ public class GalleryHomeController {
 
         model.addAttribute("links", links);
         model.addAttribute("linkCategory", linkCategory);
+
+        return "base-layout";
+    }
+
+    @GetMapping("/albumCategory/{id}")
+    public String listAlbums(Model model, @PathVariable Integer id){
+
+        model.addAttribute("view", "home/list-albums");
+
+        if (!this.albumCategoryRepository.exists(id)){
+            return "redirect:/";
+        }
+
+        AlbumCategory albumCategory = this.albumCategoryRepository.findOne(id);
+        Set<Album> albums = albumCategory.getAlbums();
+
+        model.addAttribute("albums", albums);
+        model.addAttribute("albumCategory", albumCategory);
 
         return "base-layout";
     }
