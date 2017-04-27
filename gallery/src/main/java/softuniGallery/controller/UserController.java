@@ -193,6 +193,7 @@ public class UserController {
     }
 
     @GetMapping("/profileInfo/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String profileInfo(@PathVariable Integer id, Model model) {
         if (!this.userRepository.exists(id)) {
             return "redirect:/error/404";
