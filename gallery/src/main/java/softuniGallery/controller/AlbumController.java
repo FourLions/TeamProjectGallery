@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import softuniGallery.bindingModel.AlbumBindingModel;
 import softuniGallery.entity.*;
-import softuniGallery.repository.AlbumCategoryRepository;
-import softuniGallery.repository.AlbumRepository;
-import softuniGallery.repository.ImageRepository;
-import softuniGallery.repository.UserRepository;
+import softuniGallery.repository.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -35,6 +35,8 @@ public class AlbumController {
     private ImageRepository imageRepository;
     @Autowired
     private AlbumCategoryRepository albumCategoryRepository;
+    @Autowired
+    private AlbumTagRepository albumTagRepository;
 
     private List<Album> found = new LinkedList<>();
 
@@ -61,10 +63,13 @@ public class AlbumController {
 
         AlbumCategory albumCategory= this.albumCategoryRepository.findOne(albumBindingModel.getCategoryId());
 
+        HashSet<AlbumTag> albumTags = this.findTagsFromString(albumBindingModel.getTagString());
+
         Album albumEntity = new Album(
                 albumBindingModel.getName(),
                 userEntity,
-                albumCategory
+                albumCategory,
+                albumTags
         );
 
         List<MultipartFile> files = albumBindingModel.getPictures();
@@ -85,7 +90,7 @@ public class AlbumController {
                 if (files.get(i) != null) {
                     try {
                         String originalName = files.get(i).getOriginalFilename();
-                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                        File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                         files.get(i).transferTo(imageFile);
                         String image = "/images/" + originalName;
                         imageAlbum.setPath(image);
@@ -107,6 +112,25 @@ public class AlbumController {
 
         this.albumRepository.saveAndFlush(albumEntity);
         return "redirect:/album/viewAlbums";
+    }
+
+    private HashSet<AlbumTag> findTagsFromString(String tagString) {
+
+        HashSet<AlbumTag> albumTags = new HashSet<>();
+
+        String[] tagNames = tagString.split(",\\s*");
+
+        for (String tagName : tagNames) {
+            AlbumTag currentTag = this.albumTagRepository.findByName(tagName);
+
+            if (currentTag == null) {
+                currentTag = new AlbumTag(tagName);
+                this.albumTagRepository.saveAndFlush(currentTag);
+            }
+
+            albumTags.add(currentTag);
+        }
+        return albumTags;
     }
 
     @GetMapping("/album/viewAlbums")
@@ -155,6 +179,12 @@ public class AlbumController {
             return "redirect:/album/" + id;
         }
 
+        String tagString = album.getAlbumTags().stream().map(AlbumTag::getName).collect(Collectors.joining(", "));
+
+        List<AlbumCategory> categories = this.albumCategoryRepository.findAll();
+        model.addAttribute("categories", categories);
+
+        model.addAttribute("tags", tagString);
         model.addAttribute("view", "album/editName");
         model.addAttribute("album", album);
 
@@ -177,6 +207,12 @@ public class AlbumController {
         String name = albumBindingModel.getName();
 
         album.setName(name);
+
+        HashSet<AlbumTag> tags = this.findTagsFromString(albumBindingModel.getTagString());
+        album.setAlbumTags(tags);
+
+        AlbumCategory category = this.albumCategoryRepository.findOne(albumBindingModel.getCategoryId());
+        album.setAlbumCategory(category);
 
         this.albumRepository.saveAndFlush(album);
 
@@ -234,7 +270,7 @@ public class AlbumController {
 
     public void deleteFile(String originalNameAndFolder) {
         try {
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalNameAndFolder);
+            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static" + originalNameAndFolder);
             if (imageFile.delete()) {
                 System.out.println(imageFile.getName() + " is deleted!");
             } else {
@@ -294,7 +330,7 @@ public class AlbumController {
 
             try {
                 String originalName = file.getOriginalFilename();
-                File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                 file.transferTo(imageFile);
                 String pathPicture = "/images/" + originalName;
                 imageAlbum.setPath(pathPicture);
@@ -367,7 +403,7 @@ public class AlbumController {
                 if (files.get(i) != null) {
                     try {
                         String originalName = files.get(i).getOriginalFilename();
-                        File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+                        File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
                         files.get(i).transferTo(imageFile);
                         String pathPicture = "/images/" + originalName;
 

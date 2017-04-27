@@ -85,7 +85,7 @@ public class ArticleController {
     private void uploadFile(Article articleEntity, MultipartFile file) {
         if (file != null) {
             String originalName = file.getOriginalFilename();
-            File imageFile = new File("C:\\Users\\User\\IdeaProjects\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
+            File imageFile = new File("C:\\Users\\George-Lenovo\\Desktop\\TeamProjectGallery\\gallery\\src\\main\\resources\\static\\images", originalName);
             try {
                 file.transferTo(imageFile);
                 articleEntity.setImagePath("/images/" + originalName);
@@ -145,11 +145,14 @@ public class ArticleController {
         }
 
         List<Category> categories = this.categoryRepository.findAll();
+        model.addAttribute("categories", categories);
+
         String tagString = article.getTags().stream().map(Tag::getName).collect(Collectors.joining(", "));
+        model.addAttribute("tags", tagString);
         model.addAttribute("view", "article/edit");
         model.addAttribute("article", article);
-        model.addAttribute("categories", categories);
-        model.addAttribute("tags", tagString);
+
+
         return "base-layout";
     }
 
@@ -164,10 +167,11 @@ public class ArticleController {
         Article article = this.articleRepository.findOne(id);
         Category category = this.categoryRepository.findOne(articleBindingModel.getCategoryId());
         HashSet<Tag> tags = this.findTagsFromString(articleBindingModel.getTagString());
+        article.setTags(tags);
         article.setCategory(category);
         article.setContent(articleBindingModel.getContent());
         article.setTitle(articleBindingModel.getTitle());
-        article.setTags(tags);
+
         String originalNameAndFolder = article.getImagePath();
 
         MultipartFile file = articleBindingModel.getPicture();

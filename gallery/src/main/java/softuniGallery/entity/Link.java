@@ -12,7 +12,7 @@ public class Link {
 
     private String link;
 
-    private String content;
+    private String title;
 
     private User author;
 
@@ -23,9 +23,9 @@ public class Link {
     @Transient
     private String linkSummary;
 
-    public Link(String link, String content, User author, LinkCategory linkCategory, HashSet<LinkTag> linkTags) {
+    public Link(String link, String title, User author, LinkCategory linkCategory, HashSet<LinkTag> linkTags) {
         this.link = link;
-        this.content = content;
+        this.title = title;
         this.author = author;
         this.linkCategory = linkCategory;
         this.linkTags = linkTags;
@@ -54,13 +54,13 @@ public class Link {
         this.link = link;
     }
 
-    @Column(columnDefinition = "text", nullable = false)
-    public String getContent() {
-        return this.content;
+    @Column(nullable = false)
+    public String getTitle() {
+        return this.title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @ManyToOne()

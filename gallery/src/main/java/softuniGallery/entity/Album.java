@@ -4,9 +4,7 @@ package softuniGallery.entity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @Entity
@@ -20,11 +18,24 @@ public class Album {
     private String albumPicture;
     private List<ImageAlbum> imageAlbums;
 
-    public Album(String name, User author, AlbumCategory albumCategory) {
+    @ManyToMany()
+    @JoinColumn(table = "albums_tags")
+    public Set<AlbumTag> getAlbumTags() {
+        return albumTags;
+    }
+
+    public void setAlbumTags(Set<AlbumTag> albumTags) {
+        this.albumTags = albumTags;
+    }
+
+    private Set<AlbumTag> albumTags;
+
+    public Album(String name, User author, AlbumCategory albumCategory, HashSet<AlbumTag> albumTags) {
         this.author = author;
         this.name = name;
         this.imageAlbums = new LinkedList<>();
         this.albumCategory = albumCategory;
+        this.albumTags = albumTags;
     }
 
     public Album() {

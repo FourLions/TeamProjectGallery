@@ -9,7 +9,7 @@ public class LinkBindingModel {
     private String link;
 
     @NotNull
-    private String content;
+    private String title;
 
     private Integer categoryId;
 
@@ -39,11 +39,11 @@ public class LinkBindingModel {
         this.link = link;
     }
 
-    public String getContent() {
-        return this.content;
+    public String getTitle() {
+        return this.title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

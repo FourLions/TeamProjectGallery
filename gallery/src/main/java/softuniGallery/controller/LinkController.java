@@ -66,7 +66,7 @@ public class LinkController {
 
         Link linkEntity = new Link(
                 linkBindingModel.getLink(),
-                linkBindingModel.getContent(),
+                linkBindingModel.getTitle(),
                 userEntity,
                 linkCategory,
                 linkTags
@@ -143,7 +143,7 @@ public class LinkController {
         HashSet<LinkTag> linkTags = this.findTagsFromString(linkBindingModel.getTagString());
 
         link.setLinkCategory(linkCategory);
-        link.setContent(linkBindingModel.getContent());
+        link.setTitle(linkBindingModel.getTitle());
         link.setLink(linkBindingModel.getLink());
         link.setLinkTags(linkTags);
 
@@ -228,11 +228,11 @@ public class LinkController {
     @PostMapping("/findLink")
     public String findLinkProcess(LinkBindingModel linkBindingModel){
 
-        String searched = linkBindingModel.getLink();
+        String searched = linkBindingModel.getTitle();
         List<Link> links = this.linkRepository.findAll();
 
         for (Link link : links) {
-            if (LinkUrlContainsSearched(searched, link.getLink())){
+            if (LinkUrlContainsSearched(searched, link.getTitle())){
                 found.add(link);
             }
         }

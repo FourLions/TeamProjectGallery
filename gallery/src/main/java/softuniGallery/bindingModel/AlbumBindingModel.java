@@ -10,6 +10,15 @@ public class AlbumBindingModel {
 
     private List<MultipartFile> pictures;
 
+    public String getTagString() {
+        return tagString;
+    }
+
+    public void setTagString(String tagString) {
+        this.tagString = tagString;
+    }
+
+    private String tagString;
 
     private Integer categoryId;
     @NotNull

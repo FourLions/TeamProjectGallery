@@ -27,8 +27,7 @@
                 <th:block sec:authorize="isAuthenticated()" th:if="${user.isAdmin() OR user.isAuthor(album)}">
                     <a class="btn btn-success btn-xs" th:href="@{/album/addPicture/{id}(id = ${album.id})}">Add
                         Picture</a>
-                    <a class="btn btn-success btn-xs" th:href="@{/album/editName/{id}(id = ${album.id})}">Edit Name
-                        Album</a>
+                    <a class="btn btn-success btn-xs" th:href="@{/album/editName/{id}(id = ${album.id})}">Edit Album</a>
                     <a class="btn btn-danger btn-xs" th:href="@{/album/delete/{id}(id = ${album.id})}">Delete Album</a>
                 </th:block>
                 <a class="btn btn-default btn-xs" th:href="@{/album/viewAlbums}">back &raquo;</a>

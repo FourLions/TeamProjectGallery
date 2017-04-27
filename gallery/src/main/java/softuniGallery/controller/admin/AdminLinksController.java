@@ -65,7 +65,7 @@ public class AdminLinksController {
 
         Link link = this.linkRepository.findOne(id);
 
-        link.setContent(linkBindingModel.getContent());
+        link.setTitle(linkBindingModel.getTitle());
         link.setLink(linkBindingModel.getLink());
 
         this.linkRepository.saveAndFlush(link);
