@@ -19,7 +19,7 @@
                             <td th:text="${link.author.id}"></td>
                             <td><a th:href="@{/profileInfo/{id}(id=${link.author.id})}"
                                    th:text="${link.author.fullName}"></a></td>
-                            <td><a th:href="@{/link/{id}(id=${link.id})}" th:text="${link.content}"></a></td>
+                            <td><a th:href="@{/link/{id}(id=${link.id})}" th:text="${link.title}"></a></td>
                             <td th:text="${link.linkSummary}"></td>
                             <td>
                                 <a th:href="@{/admin/links/edit/{id}(id=${link.id})}">Edit</a>
